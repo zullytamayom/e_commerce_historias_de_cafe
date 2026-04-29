@@ -96,9 +96,9 @@ function initCart() {
       adjuntarBotonesCarrito
   )
 
-  // ===========================
+
   // AGREGAR AL CARRITO
-  // ===========================
+
   function agregarAlCarrito(nombre, precio, imgSrc, desdeStorage = false) {
 
     const itemExistente =
@@ -263,9 +263,9 @@ function initCart() {
 
   }
 
-  // ===========================
+ 
   // ACTUALIZAR ITEM
-  // ===========================
+ 
   function actualizarCantidadItem(div, nuevaCantidad) {
 
     const precio =
@@ -285,9 +285,9 @@ function initCart() {
 
   }
 
-  // ===========================
+  
   // ELIMINAR
-  // ===========================
+  
   function eliminarItem(div) {
 
     const nombreProducto = div.dataset.nombre
@@ -363,9 +363,9 @@ function initCart() {
 
   }
 
-  // ===========================
+
   // CONTEO
-  // ===========================
+
   function updateConteo() {
 
     conteoProductos.textContent =
@@ -375,9 +375,7 @@ function initCart() {
 
   }
 
-  // ===========================
   // SUBTOTAL
-  // ===========================
   function updateSubtotal() {
 
     subtotalValor.textContent =
@@ -392,9 +390,8 @@ function initCart() {
 
   }
 
-  // ===========================
+
   // CARGAR STORAGE
-  // ===========================
   if (carritoGuardado.length > 0) {
 
     carritoGuardado.forEach(producto => {

@@ -1,15 +1,16 @@
 const express = require("express");
 const cors = require("cors");
+require('dotenv').config({ path: '../.env' });
+console.log("Token cargado:", process.env.PAYMENT_ACCESS_TOKEN ? "SÍ" : "NO");
 const { MercadoPagoConfig, Preference } = require("mercadopago");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-// 1. REEMPLAZA CON TU ACCESS TOKEN QUE EMPIEZA CON "TEST-"
+
 const client = new MercadoPagoConfig({
-  accessToken:
-    "APP_USR-6567033703264462-042811-849490e9cc24f30d63f02d461be9d0f1-3364574445",
+  accessToken: process.env.PAYMENT_ACCESS_TOKEN
 });
 
 app.post("/create_preference", async (req, res) => {

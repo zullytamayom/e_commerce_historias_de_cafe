@@ -84,6 +84,9 @@ document.addEventListener("DOMContentLoaded", () => {
   );
   loadComponent("footer-container", "/components/footer/footer.html");
   const formularioExistente = document.querySelector('form[action*="formspree.io"]');
+
+  loadComponent("register-container", "/components/register/register.html");
+  loadComponent("login-container", "/components/login/login.html");
   
   if (formularioExistente) {
     console.log("Formulario detectado en el HTML base. Activando validación...");

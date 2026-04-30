@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historias de Café - Acceso</title>
     <link rel="stylesheet" href="users.css">
+    <link rel="stylesheet" href="/components/register/register.css">
+    <link rel="stylesheet" href="/components/login/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
     <div class="hero-background">
-        <img src="image_d7950d.jpg" alt="Finca de Café" class="bg-image-anim">
+        <img src="/assets/img/despulpado.png" alt="Finca de Café" class="bg-image-anim">
         <div class="overlay"></div>
     </div>
 
@@ -27,63 +29,10 @@
             <div class="auth-wrapper">
                 <div class="glass-card">
                     
-                    <!-- CONTENEDOR LOGIN -->
-                    <div id="login-component-container">
-                        <!-- COMPONENTE LOGIN INCRUSTADO -->
-                        <div class="auth-component">
-                            <div class="component-header">
-                                <i class="fas fa-coffee"></i>
-                                <h2>Inicia Sesión en tu Origen</h2>
-                            </div>
-                            <form id="login-form" class="auth-form">
-                                <div class="form-group">
-                                    <label>Correo Electrónico</label>
-                                    <input type="email" name="email" placeholder="ejemplo@correo.com" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Contraseña</label>
-                                    <div class="password-wrapper">
-                                        <input type="password" name="password" id="login-pass" placeholder="******" required>
-                                        <a href="#" class="forgot-link">Olvidé mi contraseña</a>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn-coffee">ENTRAR</button>
-                            </form>
-                            <p class="toggle-text">¿No tienes cuenta? <a href="#" onclick="switchView()">Crear Cuenta</a></p>
-                        </div>
-                    </div>
+               
+                    <div id="login-container"></div>
 
-                    <!-- CONTENEDOR REGISTRO (Oculto inicialmente) -->
-                    <div id="register-component-container" class="hidden">
-                        <!-- COMPONENTE REGISTRO INCRUSTADO -->
-                        <div class="auth-component">
-                            <div class="team-avatars">
-                                <div class="avatar blue">N</div>
-                                <div class="avatar photo"><img src="image_d7950d.jpg" alt="User"></div>
-                                <div class="avatar yellow">A</div>
-                            </div>
-                            <div class="component-header">
-                                <h2>Únete a Nuestra Historia</h2>
-                                <span class="sub-title">Historias de Café</span>
-                            </div>
-                            <form id="register-form" class="auth-form">
-                                <div class="form-group">
-                                    <label>Nombre Completo</label>
-                                    <input type="text" name="fullname" placeholder="Zully Tamayo Martinez" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Correo Electrónico</label>
-                                    <input type="email" name="email" placeholder="zully@correo.com" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Contraseña</label>
-                                    <input type="password" name="password" placeholder="******" required>
-                                </div>
-                                <button type="submit" class="btn-coffee">REGISTRARME</button>
-                            </form>
-                            <p class="toggle-text">¿Ya tienes cuenta? <a href="#" onclick="switchView()">Inicia Sesión</a></p>
-                        </div>
-                    </div>
+                    <div id="register-container"></div>
 
                 </div>
             </div>
@@ -93,13 +42,13 @@
 
     <script>
         function switchView() {
-            // Asegúrate de que estos IDs coincidan exactamente con los de arriba
-            const login = document.getElementById('login-component-container');
-            const register = document.getElementById('register-component-container');
+            const login = document.getElementById('login-container');
+            const register = document.getElementById('register-container');
             
             login.classList.toggle('hidden');
             register.classList.toggle('hidden');
         }
     </script>
+    <script src="/js/main.js"></script>
 </body>
 </html>

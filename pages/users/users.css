@@ -80,8 +80,8 @@ body, html {
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 25px;
-    padding: 40px;
-    width: 100%;
+    width: 80%;
+    height: auto;
     max-width: 400px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     color: white;

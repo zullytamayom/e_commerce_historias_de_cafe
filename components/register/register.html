@@ -1,33 +1,45 @@
+<link rel="stylesheet" href="/components/register/register.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <div class="auth-component" id="register-container">
     <div class="team-avatars">
         <div class="avatar blue">N</div>
         <div class="avatar photo"><img src="image_d7950d.jpg" alt="User"></div>
         <div class="avatar yellow">A</div>
     </div>
-    <div class="component-header">
-        <h2>Únete a Nuestra Historia</h2>
-        <span class="sub-title">Historias de Café</span>
+   <div class="card">
+        <!-- Imagen -->
+        <div class="header-imagen">
+            <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Coffee">
+        </div>
+
+        <!-- Formulario -->
+        <div class="contenedor-formulario">
+            <div class="tabs">
+                <a class="tab">Iniciar Sesión</a>
+                <a class="tab active">Registrarse</a>
+            </div>
+
+            <form>
+                   <div class="grupo-input">
+                   <i class="fa-solid fa-user"></i>
+                    <input type="text" placeholder="Nombre Completo:">
+                </div>
+                <div class="grupo-input">
+                    <i class="fa-regular fa-envelope"></i>
+                    <input type="email" placeholder="Correo electrónico:">
+                </div>
+
+                <div class="grupo-input">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" placeholder="Contraseña:">
+                </div>
+
+                <div class="grupo-input">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" placeholder="Confirmar Contraseña:">
+                </div>
+
+                <button type="submit" class="btn-registrarse">Registrarse</button>
+            </form>
+        </div>
     </div>
-    <form id="register-form" class="auth-form">
-        <div class="form-group">
-            <label>Nombre Completo</label>
-            <input type="text" name="fullname" placeholder="Zully Tamayo Martinez" required>
-        </div>
-        <div class="form-group">
-            <label>Correo Electrónico</label>
-            <input type="email" name="email" placeholder="zully@correo.com" required>
-        </div>
-        <div class="form-group">
-            <label>Contraseña</label>
-            <input type="password" name="password" placeholder="******" required>
-        </div>
-        <div class="checkbox-group">
-            <input type="checkbox" id="terms" required>
-            <label for="terms">Acepto los Términos y Política de Privacidad</label>
-        </div>
-        <button type="submit" class="btn-coffee">
-            <i class="fas fa-map-marked-alt"></i> REGISTRARME Y EXPLORAR
-        </button>
-    </form>
-    <p class="toggle-text">¿Ya tienes cuenta? <a href="#" onclick="showLogin()">Inicia Sesión</a></p>
-</div>

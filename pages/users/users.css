@@ -75,16 +75,20 @@ body, html {
 .auth-wrapper { flex: 1; display: flex; justify-content: center; }
 
 .glass-card {
-    background: var(--glass-bg);
+       background: var(--glass-bg);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 25px;
-    width: 80%;
-    height: auto;
+    padding: 40px;
+    width: 100%;
     max-width: 400px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     color: white;
+     max-height: 97vh; 
+    display: flex;
+    flex-direction: column;
+  
 }
 
 .hidden { display: none; }

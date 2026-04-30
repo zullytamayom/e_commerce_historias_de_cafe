@@ -13,7 +13,7 @@ body, html {
     overflow: hidden;
 }
 
-/* Animación de la imagen image_d7950d.jpg */
+/* Animación de la imagen gifBackground */
 .hero-background {
     position: fixed;
     top: 0;
@@ -27,8 +27,6 @@ body, html {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: brightness(0.5);
-    animation: zoomSuave 30s infinite alternate ease-in-out;
 }
 
 @keyframes zoomSuave {

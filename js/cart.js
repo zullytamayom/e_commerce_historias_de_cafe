@@ -25,6 +25,8 @@ function initCart() {
   const subtotalValor = document.querySelector('#subtotal-valor')
   const conteoProductos = document.querySelector('.conteo-productos')
   const btnPagar = document.querySelector('.btn-pagar')
+  const badgeNav = document.getElementById('conteo-productos-nav');
+
 
   carritoItems.innerHTML = ''
 
@@ -368,10 +370,19 @@ function initCart() {
 
   function updateConteo() {
 
+    if (conteoProductos) {
     conteoProductos.textContent =
-        cantidadItems === 1
-            ? '1 producto'
-            : `${cantidadItems} productos`
+      cantidadItems === 1
+        ? '1 producto'
+        : `${cantidadItems} productos`;
+   }
+
+    if (badgeNav) {
+        badgeNav.textContent = cantidadItems;
+        console.log("Badge actualizado a:", cantidadItems);
+    } else {
+        console.warn("No se encontró el badge con ID: conteo-productos-nav");
+    }
 
   }
 

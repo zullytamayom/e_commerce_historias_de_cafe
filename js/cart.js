@@ -1,7 +1,8 @@
 // initCart — callback de loadComponent en main.js
 // Se ejecuta cuando cart.html ya está en el DOM
 
-function initCart() {
+function initCart()
+{
 
   // VARIABLES
   let cantidadItems = 0
@@ -31,10 +32,13 @@ function initCart() {
   carritoItems.innerHTML = ''
 
   // ALERTAS
-  function alertaProducto(texto, icono = "success") {
+  function alertaProducto(texto, icono = "success")
+  {
 
-    if (typeof Swal !== "undefined") {
-      Swal.fire({
+    if (typeof Swal !== "undefined")
+      {
+      Swal.fire(
+      {
         toast: true,
         position: "top-end",
         icon: icono,
@@ -42,27 +46,33 @@ function initCart() {
         showConfirmButton: false,
         timer: 1400
       })
-    } else {
+    }
+    else
+    {
       alert(texto)
     }
 
   }
 
   // ABRIR / CERRAR
-  window.toggleCarrito = function () {
+  window.toggleCarrito = function ()
+  {
     carritoLateral.classList.toggle('abierto')
     carritoOverlay.classList.toggle('activo')
   }
 
   // BOTONES DEL CATÁLOGO
-  function adjuntarBotonesCarrito() {
+  function adjuntarBotonesCarrito()
+  {
 
-    document.querySelectorAll('.btn-cart').forEach(function (boton) {
+    document.querySelectorAll('.btn-cart').forEach(function (boton)
+    {
 
       if (boton.dataset.cartReady) return
       boton.dataset.cartReady = 'true'
 
-      boton.addEventListener('click', function () {
+      boton.addEventListener('click', function ()
+      {
 
         const card = boton.closest('.card')
 
@@ -82,7 +92,8 @@ function initCart() {
 
         agregarAlCarrito(nombre, precio, imgSrc)
 
-        if (!carritoLateral.classList.contains('abierto')) {
+        if (!carritoLateral.classList.contains('abierto'))
+        {
           toggleCarrito()
         }
 
@@ -101,7 +112,8 @@ function initCart() {
 
   // AGREGAR AL CARRITO
 
-  function agregarAlCarrito(nombre, precio, imgSrc, desdeStorage = false) {
+  function agregarAlCarrito(nombre, precio, imgSrc, desdeStorage = false)
+  {
 
     const itemExistente =
         carritoItems.querySelector(
@@ -109,7 +121,8 @@ function initCart() {
         )
 
     // SI YA EXISTE
-    if (itemExistente) {
+    if (itemExistente)
+    {
 
       const nuevaCantidad =
           parseInt(itemExistente.dataset.cantidad) + 1
@@ -181,7 +194,8 @@ function initCart() {
 
     // BOTON +
     div.querySelector('.btn-sumar-item')
-        .addEventListener('click', function () {
+        .addEventListener('click', function ()
+        {
 
           const nueva =
               parseInt(div.dataset.cantidad) + 1
@@ -210,7 +224,8 @@ function initCart() {
 
     // BOTON -
     div.querySelector('.btn-restar-item')
-        .addEventListener('click', function () {
+        .addEventListener('click', function ()
+        {
 
           const nueva =
               parseInt(div.dataset.cantidad) - 1
@@ -227,7 +242,8 @@ function initCart() {
                   p => p.nombre === div.dataset.nombre
               )
 
-          if (prodMenos && prodMenos.cantidad > 1) {
+          if (prodMenos && prodMenos.cantidad > 1)
+          {
             prodMenos.cantidad -= 1
             guardarCarritoStorage()
           }
@@ -239,7 +255,8 @@ function initCart() {
 
     // ELIMINAR
     div.querySelector('.btn-eliminar')
-        .addEventListener('click', function () {
+        .addEventListener('click', function ()
+        {
           eliminarItem(div)
         })
 
@@ -249,9 +266,11 @@ function initCart() {
     updateConteo()
     updateSubtotal()
 
-    if (!desdeStorage) {
+    if (!desdeStorage)
+    {
 
-      carritoGuardado.push({
+      carritoGuardado.push(
+      {
         nombre: nombre,
         precio: precio,
         imgSrc: imgSrc,
@@ -268,7 +287,8 @@ function initCart() {
  
   // ACTUALIZAR ITEM
  
-  function actualizarCantidadItem(div, nuevaCantidad) {
+  function actualizarCantidadItem(div, nuevaCantidad)
+  {
 
     const precio =
         parseFloat(div.dataset.precio)
@@ -290,7 +310,8 @@ function initCart() {
   
   // ELIMINAR
   
-  function eliminarItem(div) {
+  function eliminarItem(div)
+  {
 
     const nombreProducto = div.dataset.nombre
     const cantidad = parseInt(div.dataset.cantidad)
@@ -309,7 +330,8 @@ function initCart() {
         cancelButtonColor: "#999"
       }).then((result) => {
 
-        if (result.isConfirmed) {
+        if (result.isConfirmed)
+        {
 
           cantidadItems -= cantidad
           totalAcumulado -= precio * cantidad
@@ -333,13 +355,16 @@ function initCart() {
 
       })
 
-    } else {
+    }
+    else
+    {
 
       let confirmar = confirm(
           `¿Deseas quitar ${nombreProducto} del carrito?`
       )
 
-      if (confirmar) {
+      if (confirmar)
+      {
 
         cantidadItems -= cantidad
         totalAcumulado -= precio * cantidad
@@ -365,10 +390,63 @@ function initCart() {
 
   }
 
+  //API DE PAGO
+
+ const checkoutButton = document.getElementById("btn-pagar");
+
+  if (checkoutButton) {
+    checkoutButton.addEventListener("click", async () => {
+      
+      const items = [];
+      document.querySelectorAll('.carrito-item').forEach(div =>
+      {
+        items.push({
+          title: div.dataset.nombre,
+          unit_price: Number(div.dataset.precio),
+          quantity: Number(div.dataset.cantidad),
+          currency_id: 'COP'
+        });
+      });
+
+      if (items.length === 0) return alert("Tu carretilla está vacía");
+
+      try {
+        checkoutButton.textContent = "Cargando pago...";
+        checkoutButton.disabled = true;
+
+        const response = await fetch("http://localhost:3000/create_preference",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ items })
+        });
+
+        const data = await response.json();
+
+        if (data.init_point)
+        {
+          // REDIRECCIÓN DIRECTA: Esto ignora el error del SDK
+          window.location.href = data.init_point;
+        } else
+        {
+          throw new Error("No se pudo obtener el link de pago");
+        }
+
+      }
+      catch (error)
+      {
+        console.error("Error:", error);
+        alert("Error al conectar con el servidor de pagos");
+        checkoutButton.textContent = "Ir a pagar";
+        checkoutButton.disabled = false;
+      }
+    });
+  }
 
   // CONTEO
 
-  function updateConteo() {
+  function updateConteo()
+  {
 
     if (conteoProductos) {
     conteoProductos.textContent =
@@ -387,7 +465,8 @@ function initCart() {
   }
 
   // SUBTOTAL
-  function updateSubtotal() {
+  function updateSubtotal()
+  {
 
     subtotalValor.textContent =
         '$' +
@@ -403,11 +482,14 @@ function initCart() {
 
 
   // CARGAR STORAGE
-  if (carritoGuardado.length > 0) {
+  if (carritoGuardado.length > 0)
+  {
 
-    carritoGuardado.forEach(producto => {
+    carritoGuardado.forEach(producto =>
+    {
 
-      for (let i = 0; i < producto.cantidad; i++) {
+      for (let i = 0; i < producto.cantidad; i++)
+      {
 
         agregarAlCarrito(
             producto.nombre,
@@ -415,56 +497,7 @@ function initCart() {
             producto.imgSrc,
             true
         )
-
       }
-
     })
-  }
-
-    //API DE PAGO
-
- const checkoutButton = document.getElementById("btn-pagar");
-
-  if (checkoutButton) {
-    checkoutButton.addEventListener("click", async () => {
-      
-      const items = [];
-      document.querySelectorAll('.carrito-item').forEach(div => {
-        items.push({
-          title: div.dataset.nombre,
-          unit_price: Number(div.dataset.precio),
-          quantity: Number(div.dataset.cantidad),
-          currency_id: 'COP'
-        });
-      });
-
-      if (items.length === 0) return alert("Tu carretilla está vacía");
-
-      try {
-        checkoutButton.textContent = "Cargando pago...";
-        checkoutButton.disabled = true;
-
-        const response = await fetch("http://localhost:3000/create_preference", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ items })
-        });
-
-        const data = await response.json();
-
-        if (data.init_point) {
-          // REDIRECCIÓN DIRECTA: Esto ignora el error del SDK
-          window.location.href = data.init_point;
-        } else {
-          throw new Error("No se pudo obtener el link de pago");
-        }
-
-      } catch (error) {
-        console.error("Error:", error);
-        alert("Error al conectar con el servidor de pagos");
-        checkoutButton.textContent = "Ir a pagar";
-        checkoutButton.disabled = false;
-      }
-    });
   }
 }

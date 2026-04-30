@@ -14,12 +14,12 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body {
-    background-color: #f0e6dd;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+body, html {
+    margin: 0;
+    padding: 0;
     min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    overflow-y: auto;
 }
 
 .card {
@@ -28,23 +28,26 @@ body {
     border-radius: 40px;
     overflow: hidden;
     box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    
 }
 
 .header-imagen {
     width: 100%;
-    height: 250px;
+    height: 25vh; 
+    min-height: 120px;
     background-color: #fff;
     border-bottom-left-radius: 80px; 
+    flex-shrink: 0;
 }
 
 .header-imagen img {
-    width: 100%;
-    height: 100%;
+    width: 90%;
+    height: auto;
     object-fit: cover;
 }
 
 .contenedor-formulario {
-    padding: 30px;
+  padding: 20px 30px; 
     background-color: #8d6e63;
     color: #f3e5f5;
 }
@@ -53,7 +56,7 @@ body {
 .tabs {
     display: flex;
     justify-content: space-around;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .tab {
@@ -72,7 +75,7 @@ body {
 .grupo-input {
     display: flex;
     align-items: center;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     border-bottom: 2px solid #5d4037;
     padding-bottom: 5px;
 }

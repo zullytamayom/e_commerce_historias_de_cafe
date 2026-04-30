@@ -409,4 +409,51 @@ function initCart() {
 
     })
   }
+
+    //API DE PAGO
+
+ const checkoutButton = document.getElementById("btn-pagar");
+
+  if (checkoutButton) {
+    checkoutButton.addEventListener("click", async () => {
+      
+      const items = [];
+      document.querySelectorAll('.carrito-item').forEach(div => {
+        items.push({
+          title: div.dataset.nombre,
+          unit_price: Number(div.dataset.precio),
+          quantity: Number(div.dataset.cantidad),
+          currency_id: 'COP'
+        });
+      });
+
+      if (items.length === 0) return alert("Tu carretilla está vacía");
+
+      try {
+        checkoutButton.textContent = "Cargando pago...";
+        checkoutButton.disabled = true;
+
+        const response = await fetch("http://localhost:3000/create_preference", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ items })
+        });
+
+        const data = await response.json();
+
+        if (data.init_point) {
+          // REDIRECCIÓN DIRECTA: Esto ignora el error del SDK
+          window.location.href = data.init_point;
+        } else {
+          throw new Error("No se pudo obtener el link de pago");
+        }
+
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error al conectar con el servidor de pagos");
+        checkoutButton.textContent = "Ir a pagar";
+        checkoutButton.disabled = false;
+      }
+    });
+  }
 }

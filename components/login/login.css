@@ -1,0 +1,19 @@
+.password-wrapper { position: relative; }
+.forgot-link { 
+    position: absolute; 
+    right: 0; 
+    bottom: -18px; 
+    font-size: 0.7rem; 
+    color: #D7CCC8; 
+}
+.separator { 
+    display: flex; align-items: center; text-align: center; margin: 20px 0; font-size: 0.8rem; opacity: 0.6;
+}
+.separator::before, .separator::after { 
+    content: ''; flex: 1; border-bottom: 1px solid rgba(255,255,255,0.3); margin: 0 10px; 
+}
+.btn-google { 
+    width: 100%; padding: 10px; border-radius: 25px; border: 1px solid white; 
+    background: transparent; color: white; cursor: pointer; display: flex; 
+    align-items: center; justify-content: center; gap: 10px;
+}

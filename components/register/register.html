@@ -1,0 +1,33 @@
+<div class="auth-component" id="register-container">
+    <div class="team-avatars">
+        <div class="avatar blue">N</div>
+        <div class="avatar photo"><img src="image_d7950d.jpg" alt="User"></div>
+        <div class="avatar yellow">A</div>
+    </div>
+    <div class="component-header">
+        <h2>Únete a Nuestra Historia</h2>
+        <span class="sub-title">Historias de Café</span>
+    </div>
+    <form id="register-form" class="auth-form">
+        <div class="form-group">
+            <label>Nombre Completo</label>
+            <input type="text" name="fullname" placeholder="Zully Tamayo Martinez" required>
+        </div>
+        <div class="form-group">
+            <label>Correo Electrónico</label>
+            <input type="email" name="email" placeholder="zully@correo.com" required>
+        </div>
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" name="password" placeholder="******" required>
+        </div>
+        <div class="checkbox-group">
+            <input type="checkbox" id="terms" required>
+            <label for="terms">Acepto los Términos y Política de Privacidad</label>
+        </div>
+        <button type="submit" class="btn-coffee">
+            <i class="fas fa-map-marked-alt"></i> REGISTRARME Y EXPLORAR
+        </button>
+    </form>
+    <p class="toggle-text">¿Ya tienes cuenta? <a href="#" onclick="showLogin()">Inicia Sesión</a></p>
+</div>

@@ -7,6 +7,7 @@
 .avatar.yellow { background: #ffb703; color: #333; }
 .avatar.photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 .checkbox-group { display: flex; gap: 10px; font-size: 0.75rem; margin: 15px 0; align-items: center; }
+
 * {
     margin: 0;
     padding: 0;
@@ -28,7 +29,6 @@ body, html {
     border-radius: 40px;
     overflow: hidden;
     box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-    
 }
 
 .header-imagen {
@@ -47,11 +47,10 @@ body, html {
 }
 
 .contenedor-formulario {
-  padding: 20px 30px; 
+    padding: 20px 30px; 
     background-color: #8d6e63;
     color: #f3e5f5;
 }
-
 
 .tabs {
     display: flex;
@@ -72,10 +71,15 @@ body, html {
     padding-bottom: 5px;
 }
 
+/* ── campo-wrapper: agrupa input + mensaje de error ───────── */
+.campo-wrapper {
+    margin-bottom: 22px;
+}
+
+/* ── grupo-input: fila icono + input (+ ojito) ────────────── */
 .grupo-input {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
     border-bottom: 2px solid #5d4037;
     padding-bottom: 5px;
 }
@@ -99,11 +103,40 @@ body, html {
     color: rgba(255, 255, 255, 0.5);
 }
 
+/* ── Ojito ─────────────────────────────────────────────────── */
+.toggle-pass {
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 1rem;
+    margin-left: 8px;
+    flex-shrink: 0;
+    transition: color 0.2s;
+}
 
+.toggle-pass:hover {
+    color: #fff;
+}
+
+/* ── Mensaje de error: dentro del campo-wrapper ───────────── */
+.invalid-feedback {
+    display: block;
+    color: #ffffff;
+    font-size: 0.72rem;
+    padding-left: 36px;    /* alineado con el texto del input */
+    margin-top: -20px;
+    white-space: nowrap;
+}
+
+/* Línea del input cuando hay error */
+.grupo-input:has(input.is-invalid) {
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.7);
+}
+
+/* ── Botón registrarse ─────────────────────────────────────── */
 .btn-registrarse {
     display: block;
     width: 70%;
-    margin: 40px auto 10px;
+    margin: 20px auto 10px;
     padding: 12px;
     border-radius: 30px;
     border: none;

@@ -1,6 +1,6 @@
 function loadComponent(containerId, path, callback) {
   const container = document.getElementById(containerId);
-  if (!container) return; // ✅ Si el contenedor no existe en esta página, no hace nada
+  if (!container) return; //  Si el contenedor no existe en esta página, no hace nada
 
   fetch(path)
     .then((res) => res.text())
@@ -85,7 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
   loadComponent("footer-container", "/components/footer/footer.html");
   const formularioExistente = document.querySelector('form[action*="formspree.io"]');
 
-  loadComponent("register-container", "/components/register/register.html");
+  loadComponent("register-container", "/components/register/register.html", initRegisterForm);
+
   loadComponent("login-container", "/components/login/login.html");
   
   if (formularioExistente) {
@@ -177,17 +178,4 @@ function cargarFormContact() {
 }
 
 
-function mostrarError(input, mensaje) {
-  input.classList.add("is-invalid");
-  const error = document.createElement("div");
-  error.className = "invalid-feedback";
-  error.textContent = mensaje;
-  input.parentElement.appendChild(error);
 
-  input.addEventListener("input", function () {
-    if (input.value.trim() !== "") {
-      input.classList.remove("is-invalid");
-      error.remove();
-    }
-  });
-}

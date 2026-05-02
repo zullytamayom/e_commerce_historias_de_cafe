@@ -77,105 +77,20 @@ function handlePageAnimation() {
 document.addEventListener("DOMContentLoaded", () => {
   handlePageAnimation();
 
-  loadComponent(
-    "navbar-container",
-    "/components/navBar/navBar.html",
-    initNavbar,
-  );
+  loadComponent("navbar-container","/components/navBar/navBar.html", initNavbar);
   loadComponent("footer-container", "/components/footer/footer.html");
-  const formularioExistente = document.querySelector('form[action*="formspree.io"]');
-
-  loadComponent("register-container", "/components/register/register.html", initRegisterForm);
-
-  loadComponent("login-container", "/components/login/login.html");
-  
-  if (formularioExistente) {
-    console.log("Formulario detectado en el HTML base. Activando validación...");
-    cargarFormContact(); 
-  } else {
-    // Si no existe, quizás es porque se carga dinámicamente en otra página
-    loadComponent("form", "/pages/contactanosParts/contactanos.html", cargarFormContact);
-  }
-  loadComponent(
-  "carrito-container", 
-  "/components/cart/cart.html", 
-  (typeof initCart === 'function') ? initCart : () => console.warn("initCart no definida")
-); //  carrito
-  loadComponent(
-    "productform-container",
-    "/components/product/productForm.html",
-    (typeof initProductLogic === 'function')? initProductLogic :() => console.warn("producto no definido") 
-  );
+  loadComponent("register-container", "/components/register/register.html");
+  loadComponent("contact-container", "/components/contact/contact.html", cargarFormContact); // conectar el formulario de contacto
+  loadComponent("login-container", "/components/login/login.html"); 
  
+  loadComponent("carrito-container","/components/cart/cart.html",(typeof initCart === 'function') ? initCart : () => console.warn("initCart no definida")
+  ); //  carrito
+  
+  loadComponent("productform-container","/components/product/productForm.html",(typeof initProductLogic === 'function')? initProductLogic :() => console.warn("producto no definido")
+  );
 });
-// Validación del formulario — solo si existe en esta página
-function cargarFormContact() {
-  // 1. Buscamos el formulario dentro del contenedor con ID 'form'
-  const form = document.querySelector('form[action*="formspree.io"]');
 
-  if (!form) {
-    console.warn("No se encontró el formulario dentro del contenedor #form.");
-    return;
-  }
 
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    // Limpiar errores previos
-    form.querySelectorAll(".invalid-feedback").forEach((el) => el.remove());
-    form.querySelectorAll(".is-invalid").forEach((el) => el.classList.remove("is-invalid"));
-
-    let isValid = true;
-
-    // 2. Buscamos los inputs DENTRO del formulario (más seguro que getElementById global)
-    const nombreInput = form.querySelector("#name");
-    const emailInput = form.querySelector("#email");
-    const telefonoInput = form.querySelector("#number");
-    const mensajeInput = form.querySelector("#message");
-
-    // --- Validaciones ---
-    
-    // Nombre
-    const nombreRegex = /^[a-zA-Z\s]+$/;
-    const nombreVal = nombreInput.value.trim();
-    if (nombreVal === "") {
-      mostrarError(nombreInput, "Ingresa tu nombre");
-      isValid = false;
-    } else if (nombreVal.length < 3) {
-      mostrarError(nombreInput, "Mínimo 3 caracteres");
-      isValid = false;
-    } else if (!nombreRegex.test(nombreVal)) {
-      mostrarError(nombreInput, "Solo letras y espacios");
-      isValid = false;
-    }
-
-    // Email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(emailInput.value.trim())) {
-      mostrarError(emailInput, "Email no válido");
-      isValid = false;
-    }
-
-    // Teléfono
-    const telefonoRegex = /^[0-9+\s]+$/;
-    const telefonoVal = telefonoInput.value.trim();
-    if (telefonoVal.length < 10 || !telefonoRegex.test(telefonoVal)) {
-      mostrarError(telefonoInput, "Teléfono inválido (mín. 10 dígitos)");
-      isValid = false;
-    }
-
-    // Mensaje
-    if (mensajeInput.value.trim().length < 10) {
-      mostrarError(mensajeInput, "Mensaje demasiado corto");
-      isValid = false;
-    }
-
-    if (isValid) {
-      console.log("¡Formulario validado con éxito!");
-      form.submit();
-    }
-  });
-}
 
 
 

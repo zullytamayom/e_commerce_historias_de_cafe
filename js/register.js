@@ -69,12 +69,23 @@ function cargarFormRegister() {
     const emailOk  = validarEmail(inputEmail);
     const passOk   = validarFortaleza(inputPass1);
     const matchOk  = validarContrasenas(inputPass1, inputPass2);
-
+  
     if (nombreOk && emailOk && passOk && matchOk) {
       console.log("Formulario válido ✓ — enviar datos");
+
+    const formRegisterLocalStorage = {
+      name: inputName.value.trim(),
+      email: inputEmail.value.trim(),
+      password: inputPass1.value,
+    }; 
+
+    localStorage.setItem("formRegister", JSON.stringify(formRegisterLocalStorage));
+
     } else {
       console.warn("Corrige los errores antes de continuar");
     }
+
+
   });
 
 

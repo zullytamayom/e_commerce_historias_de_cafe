@@ -1,4 +1,4 @@
-function initRegisterForm() {
+function cargarFormRegister() {
   const form       = document.getElementById("register-form");
   const inputName  = document.getElementById("reg-name");
   const inputEmail = document.getElementById("reg-email");
@@ -76,7 +76,7 @@ function initRegisterForm() {
       console.warn("Corrige los errores antes de continuar");
     }
   });
-}
+
 
 // ── Validaciones por campo ─────────────────────────────────────────────────
 
@@ -125,4 +125,5 @@ function validarContrasenas(input1, input2) {
 
   limpiarError(input2);
   return true;
+}
 }

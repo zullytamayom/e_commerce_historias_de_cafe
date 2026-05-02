@@ -79,15 +79,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadComponent("navbar-container","/components/navBar/navBar.html", initNavbar);
   loadComponent("footer-container", "/components/footer/footer.html");
-  loadComponent("register-container", "/components/register/register.html");
-  loadComponent("contact-container", "/components/contact/contact.html", cargarFormContact); // conectar el formulario de contacto
+if (document.getElementById("register-container")) {
+    loadComponent("register-container", "/components/register/register.html", cargarFormRegister);
+  }
+
+  if (document.getElementById("contact-container")) {
+    loadComponent("contact-container", "/components/contact/contact.html", cargarFormContact);
+  }
   loadComponent("login-container", "/components/login/login.html"); 
+  
  
   loadComponent("carrito-container","/components/cart/cart.html",(typeof initCart === 'function') ? initCart : () => console.warn("initCart no definida")
-  ); //  carrito
-  
-  loadComponent("productform-container","/components/product/productForm.html",(typeof initProductLogic === 'function')? initProductLogic :() => console.warn("producto no definido")
-  );
+); //  carrito
+loadComponent("productform-container","/components/product/productForm.html",(typeof initProductLogic === 'function')? initProductLogic :() => console.warn("producto no definido")
+);
+
 });
 
 

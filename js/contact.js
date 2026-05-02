@@ -1,10 +1,29 @@
+const Validators = {
+    validateText: (val, min) => ({
+        notEmpty: val.length > 0,
+        minLength: val.length >= min
+    }),
+    validateEmail: (val) => ({
+        notEmpty: val.length > 0,
+        format: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)
+    }),
+    notEmpty: (val) => val.length > 0
+};
+
+function mostrarError(input, mensaje) {
+    input.classList.add("is-invalid");
+    const errorDiv = document.createElement("div");
+    errorDiv.className = "invalid-feedback";
+    errorDiv.innerText = mensaje;
+    input.parentElement.appendChild(errorDiv);
+}
 // Validación del formulario contactanos — solo si existe en esta página
 function cargarFormContact() {
   // 1. Buscamos el formulario dentro del contenedor con ID 'form'
-  const form = document.querySelector('contarct-container form[action*="formspree.io"]');
+  const form = document.querySelector('#contact-container form');
 
   if (!form) {
-    console.warn("No se encontró el formulario dentro del contenedor #form.");
+    console.warn("No se encontró el formulario dentro del contenedor #contact-container.");
     return;
   }
 

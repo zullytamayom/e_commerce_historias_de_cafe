@@ -1,0 +1,156 @@
+.team-avatars { display: flex; justify-content: center; gap: -10px; margin-bottom: 15px; }
+.avatar { 
+    width: 45px; height: 45px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center; font-weight: bold;
+}
+.avatar.blue { background: #0077b6; }
+.avatar.yellow { background: #ffb703; color: #333; }
+.avatar.photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.checkbox-group { display: flex; gap: 10px; font-size: 0.75rem; margin: 15px 0; align-items: center; }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    overflow-y: auto;
+}
+
+.card {
+    width: 350px;
+    background-color: #8d6e63; 
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+.header-imagen {
+    width: 100%;
+    height: 25vh; 
+    min-height: 120px;
+    background-color: #fff;
+    border-bottom-left-radius: 80px; 
+    flex-shrink: 0;
+}
+
+.header-imagen img {
+    width: 90%;
+    height: auto;
+    object-fit: cover;
+}
+
+.contenedor-formulario {
+    padding: 20px 30px; 
+    background-color: #8d6e63;
+    color: #f3e5f5;
+}
+
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.tab {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+}
+
+.tab.active {
+    color: #fff;
+    border-bottom: 3px solid #5d4037;
+    padding-bottom: 5px;
+}
+
+/* ── campo-wrapper: agrupa input + mensaje de error ───────── */
+.campo-wrapper {
+    margin-bottom: 22px;
+}
+
+/* ── grupo-input: fila icono + input (+ ojito) ────────────── */
+.grupo-input {
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #5d4037;
+    padding-bottom: 5px;
+}
+
+.grupo-input i {
+    margin-right: 15px;
+    color: #4e342e;
+    font-size: 1.1rem;
+}
+
+.grupo-input input {
+    background: none;
+    border: none;
+    outline: none;
+    color: #fff;
+    width: 100%;
+    font-size: 0.95rem;
+}
+
+.grupo-input input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── Ojito ─────────────────────────────────────────────────── */
+.toggle-pass {
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 1rem;
+    margin-left: 8px;
+    flex-shrink: 0;
+    transition: color 0.2s;
+}
+
+.toggle-pass:hover {
+    color: #fff;
+}
+
+/* ── Mensaje de error: dentro del campo-wrapper ───────────── */
+.invalid-feedback {
+    display: block;
+    color: #ffffff;
+    font-size: 0.72rem;
+    padding-left: 36px;    /* alineado con el texto del input */
+    margin-top: -20px;
+    white-space: nowrap;
+}
+
+/* Línea del input cuando hay error */
+.grupo-input:has(input.is-invalid) {
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.7);
+}
+
+/* ── Botón registrarse ─────────────────────────────────────── */
+.btn-registrarse {
+    display: block;
+    width: 70%;
+    margin: 20px auto 10px;
+    padding: 12px;
+    border-radius: 30px;
+    border: none;
+    background-color: #5d4037;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.3), 
+                2px 2px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.btn-registrarse:hover {
+    transform: scale(1.05);
+    background-color: #4e342e;
+}

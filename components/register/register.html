@@ -1,0 +1,66 @@
+<div class="auth-component" id="register-container"> 
+
+   <div class="card">
+        <!-- Imagen -->
+        <div class="header-imagen">
+            <img src="/assets/img/gifRegistrar.gif" alt="gifRegister">
+        </div>
+ 
+        <!-- Formulario -->
+        <div class="contenedor-formulario">
+            <div class="tabs">
+                <a class="tab">Iniciar Sesión</a>
+                <a class="tab active">Registrarse</a>
+            </div>
+ 
+            <form id="register-form">
+
+                <div class="campo-wrapper">
+                    <div class="grupo-input">
+                        <i class="fa-solid fa-user"></i>
+                        <input id="reg-name" type="text" placeholder="Nombre Completo:">
+                    </div>
+                </div>
+
+                <div class="campo-wrapper">
+                    <div class="grupo-input">
+                        <i class="fa-regular fa-envelope"></i>
+                        <input id="reg-email" type="email" placeholder="Correo electrónico:">
+                    </div>
+                </div>
+
+                <div class="campo-wrapper">
+                    <div class="grupo-input">
+                        <i class="fa-solid fa-lock"></i>
+                        <input id="password1" type="password" placeholder="Contraseña:">
+                        <i class="fa-regular fa-eye toggle-pass" data-target="password1" title="Mostrar contraseña"></i>
+                    </div>
+                </div>
+
+                <div class="campo-wrapper">
+                    <div class="grupo-input">
+                        <i class="fa-solid fa-lock"></i>
+                        <input id="password2" type="password" placeholder="Confirmar Contraseña:">
+                        <i class="fa-regular fa-eye toggle-pass" data-target="password2" title="Mostrar contraseña"></i>
+                    </div>
+                </div>
+
+                <!-- Indicadores de contraseña -->
+                <div id="pswd_info" style="display:none;">
+                    <ul>
+                        <li id="length">Mínimo 8 caracteres</li>
+                        <li id="letter">Al menos una letra</li>
+                        <li id="capital">Al menos una mayúscula</li>
+                        <li id="number">Al menos un número</li>
+                        <li id="blank">Sin espacios</li>
+                        <li id="null">Ambos campos llenos</li>
+                        <li id="match">Las contraseñas coinciden</li>
+                    </ul>
+                </div>
+
+                <button type="submit" class="btn-registrarse">Registrarse</button>
+
+            </form>
+        </div>
+    </div>
+</div>

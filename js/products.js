@@ -105,7 +105,14 @@ function initProductLogic() {
             modal.style.display = "none"; 
 
             setTimeout(() => {
-                alert('¡Producto de Historias de Café agregado con éxito!');
+                swal.fire({
+                    icon: 'success',
+                    iconColor: '#8B5E3C',
+                    title: `¡Producto de Historias de Café agregado con éxito!`,
+                    confirmButtonColor: '#8B5E3C',
+                    timer: 3400,
+                    showConfirmButton: false    
+                });
             }, 100);
             };
             reader.readAsDataURL(file);

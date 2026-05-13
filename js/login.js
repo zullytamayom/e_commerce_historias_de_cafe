@@ -1,55 +1,21 @@
-document.addEventListener("DOMContentLoaded", () => {
-    cargarFormLogin();
-});
-
-function cargarFormLogin() {
-
+function inicializarLogin() {
     const form = document.getElementById("login-form");
 
     if (!form) return;
 
-    // ojito
-    document.querySelectorAll(".toggle-pass").forEach(icono => {
-
-        icono.addEventListener("click", function () {
-
-            const input = document.getElementById(
-                this.dataset.target
-            );
-
-            const isPassword = input.type === "password";
-
-            input.type = isPassword ? "text" : "password";
-
-            this.classList.toggle("fa-eye");
-            this.classList.toggle("fa-eye-slash");
-        });
-    });
-
-    form.addEventListener("submit", function(e){
-
+    form.addEventListener("submit", function(e) {
         e.preventDefault();
 
-        const email = document
-        .getElementById("login-email")
-        .value
-        .trim();
+        // IDs correctos según tu HTML
+        const email = document.getElementById("log-email").value.trim();
+        const password = document.getElementById("log-password").value;
 
-        const password = document
-        .getElementById("login-pass")
-        .value;
-
-        const usuarios = JSON.parse(
-            localStorage.getItem("usuarios")
-        ) || [];
-
-        const usuarioEncontrado = usuarios.find(user => {
-
-            return (
-                user.email === email &&
-                user.password === password
-            );
-        });
+        // Buscamos en la clave "usuarios" (la misma que arreglamos en registro)
+        const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+        
+        const usuarioEncontrado = usuarios.find(user => 
+            user.email === email && user.password === password
+        );
 
         if (!usuarioEncontrado) {
 
@@ -58,39 +24,32 @@ function cargarFormLogin() {
                 iconColor: '#8B5E3C',
                 title: '¡Correo o contraseña incorrectos!',
                 confirmButtonColor: '#8B5E3C'
-            }); 
-            
-            return;
+            });           
         }
 
-        // sesión activa
-        localStorage.setItem(
-            "usuarioActivo",
-            JSON.stringify(usuarioEncontrado)
-        );
-
-        if (usuarioEncontrado.isAdmin) {
-
-            swal.fire({
-                icon: 'success',
-                iconColor: '#8B5E3C',
-                title: `¡Bienvenido Admin! ${usuarioEncontrado.name}!`,
-                confirmButtonColor: '#8B5E3C',
-                timer: 2400,
-                showConfirmButton: false
-            });
-        } else {
-            swal.fire({
-                icon: 'success',
-                iconColor: '#8B5E3C',
-                title: `¡Ahora eres un Coffee Lover ¡ Bienvenido! ${usuarioEncontrado.name}!`,
-                confirmButtonColor: '#8B5E3C',
-            timer: 2400,
+        localStorage.setItem("usuarioActivo", JSON.stringify(usuarioEncontrado));
+        swal.fire({
+            icon: 'success',
+            iconColor: '#8B5E3C',
+            title: `¡Bienvenido! ${usuarioEncontrado.name}!`,
+            confirmButtonColor: '#8B5E3C',
+            timer: 3400,
             showConfirmButton: false
         });
-
-            window.location.href =
-            "/pages/catalogo/catalogo.html";
+        
+        if (usuarioEncontrado.email.toLowerCase() === "admon@gmail.com") {
+            swal.fire({
+            icon: 'success',
+            iconColor: '#8B5E3C',
+            title: `¡OK! Ingresando al módulo de administración!`,
+            confirmButtonColor: '#8B5E3C',
+            timer: 3400,
+            showConfirmButton: false
+        });
+            window.location.href = "/pages/admin/admin.html"; 
+        } else {
+            // Si es cualquier otro usuario, va al catálogo
+            window.location.href = "/pages/catalogo/catalogo.html";
         }
     });
 }

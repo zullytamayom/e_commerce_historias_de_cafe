@@ -85,6 +85,15 @@ function cargarFormRegister() {
       const existe = usuariosRegistrados.some(user => user.email === nuevoUsuario.email);
 
       if (existe) {
+
+        swal.fire({
+            icon: 'info',
+            iconColor: '#8B5E3C',
+            title: `Este correo ya está registrado`,
+            confirmButtonColor: '#8B5E3C',
+            timer: 3400,
+            showConfirmButton: false
+        });
         console.warn("Este correo ya está registrado");
         mostrarError(inputEmail, "El correo ya está registrado");
       } else {
@@ -93,6 +102,14 @@ function cargarFormRegister() {
       
         localStorage.setItem("usuarios", JSON.stringify(usuariosRegistrados));
 
+        swal.fire({
+            icon: 'success',
+            iconColor: '#8B5E3C',
+            title: `Usuario registrado exitosamente`,
+            confirmButtonColor: '#8B5E3C',
+            timer: 3400,
+            showConfirmButton: false
+        });
         console.log("Usuario guardado exitosamente. Total:", usuariosRegistrados.length);
 
      

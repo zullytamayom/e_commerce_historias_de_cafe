@@ -278,8 +278,16 @@ function initCart()
       })
 
       guardarCarritoStorage()
-      alertaProducto("Producto agregado")
-
+      swal.fire({
+            icon: 'info',
+            iconColor: '#8B5E3C',
+            //background: '#999',
+            title: '¡Producto Agregado al Carrito!',
+            confirmButtonColor: '#8B5E3C',
+            timer: 2400,
+            showConfirmButton: false
+          });
+        textArea.value = "";
     }
 
   }
@@ -408,7 +416,17 @@ function initCart()
         });
       });
 
-      if (items.length === 0) return alert("Tu carretilla está vacía");
+      if (items.length === 0) return swal.fire({
+            icon: 'info',
+            iconColor: '#8B5E3C',
+            //background: '#999',
+            title: '¡Tu carretilla está vacía!',
+            confirmButtonColor: '#8B5E3C',
+            timer: 2400,
+            showConfirmButton: false
+          });
+        textArea.value = "";
+      
 
       try {
         checkoutButton.textContent = "Cargando pago...";

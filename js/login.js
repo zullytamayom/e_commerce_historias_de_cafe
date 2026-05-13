@@ -53,8 +53,13 @@ function cargarFormLogin() {
 
         if (!usuarioEncontrado) {
 
-            alert("Correo o contraseña incorrectos");
-
+            swal.fire({
+                icon: 'error',
+                iconColor: '#8B5E3C',
+                title: '¡Correo o contraseña incorrectos!',
+                confirmButtonColor: '#8B5E3C'
+            }); 
+            
             return;
         }
 
@@ -64,9 +69,28 @@ function cargarFormLogin() {
             JSON.stringify(usuarioEncontrado)
         );
 
-        alert(`Bienvenido ${usuarioEncontrado.name}`);
+        if (usuarioEncontrado.isAdmin) {
 
-        window.location.href =
-        "/pages/catalogo/catalogo.html";
+            swal.fire({
+                icon: 'success',
+                iconColor: '#8B5E3C',
+                title: `¡Bienvenido Admin! ${usuarioEncontrado.name}!`,
+                confirmButtonColor: '#8B5E3C',
+                timer: 2400,
+                showConfirmButton: false
+            });
+        } else {
+            swal.fire({
+                icon: 'success',
+                iconColor: '#8B5E3C',
+                title: `¡Ahora eres un Coffee Lover Bienvenido! ${usuarioEncontrado.name}!`,
+                confirmButtonColor: '#8B5E3C',
+            timer: 2400,
+            showConfirmButton: false
+        });
+
+            window.location.href =
+            "/pages/catalogo/catalogo.html";
+        }
     });
 }

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historias del Café</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/assets/img/logo.png">
+
+    <!-- Preload/Fonts (Opcional pero recomendado para rendimiento) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <!-- CSS Externos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <!-- CSS Propios -->
+    <link rel="stylesheet" href="/assets/css/paletaColores.css">
+    <link rel="stylesheet" href="/components/navBar/navBar.css">
+    <link rel="stylesheet" href="/components/footer/footer.css">
+    <link rel="stylesheet" href="/pages/home/home.css">
+</head>
+
+<body>
+    <!-- Navegación Dinámica -->
+    <div id="navbar-container"></div>
+
+    <!-- SECCIÓN HERO (Encabezado Principal) -->
+    <header class="hero-section container my-5.">
+        <div class="bw-wrapper">
+            <!-- Capas de Efectos Visuales -->
+            <div class="visual-layers">
+                <div class="bg-layer"></div>
+                <div class="gold-sweep"></div>
+                <div class="olive-accent"></div>
+                <div class="cream-glow"></div>
+                <div class="grain"></div>
+            </div>
+
+            <!-- Gráfico de Granos de Café (SVG) -->
+            <div class="bean-zone">
+                <svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                    <defs>
+                        <!-- Definición de un solo grano de café -->
+                        <g id="coffee-bean">
+                            <ellipse cx="0" cy="0" rx="15" ry="10" fill="#4B2C20" />
+                            <path d="M -15 0 Q 0 5 15 0" fill="none" stroke="#2D1B14" stroke-width="1.5" stroke-linecap="round" />
+                        </g>
+                        
+                        <!-- Sombra suave para los granos -->
+                        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
+                            <feOffset dx="1" dy="1" result="offsetblur" />
+                            <feComponentTransfer>
+                                <feFuncA type="linear" slope="0.4" />
+                            </feComponentTransfer>
+                            <feMerge>
+                                <feMergeNode />
+                                <feMergeNode in="SourceGraphic" />
+                            </feMerge>
+                        </filter>
+                    </defs>
+
+                    
+                    <!-- Grupo de granos distribuidos -->
+                    <g filter="url(#shadow)">
+                        <!-- Ejemplo de granos posicionados manualmente -->
+                        <use xlink:href="#coffee-bean" x="100" y="150" transform="rotate(45, 100, 150)" />
+                        <use xlink:href="#coffee-bean" x="250" y="400" transform="rotate(-20, 250, 400)" />
+                        <use xlink:href="#coffee-bean" x="450" y="200" transform="rotate(110, 450, 200)" />
+                        <use xlink:href="#coffee-bean" x="600" y="450" transform="rotate(10, 600, 450)" />
+                        <use xlink:href="#coffee-bean" x="750" y="150" transform="rotate(160, 750, 150)" />
+                        <use xlink:href="#coffee-bean" x="150" y="500" transform="rotate(75, 150, 500)" />
+                        <use xlink:href="#coffee-bean" x="900" y="500" transform="rotate(-45, 800, 500)" />
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Capas de Viñeta -->
+            <div class="vignettes">
+                <div class="vignette"></div>
+                <div class="vignette-v"></div>
+            </div>
+
+            <!-- Contenido de Texto -->
+            <div class="content-overlay">
+                <div class="eyebrow">Origen Certificado &nbsp;·&nbsp; Colombia</div>
+                <h1 class="headline">
+                    HISTORIAS<br>
+                    <span class="gold">DE CAFÉ</span><br>
+                    <span class="small-year">2026</span>
+                </h1>
+                <p class="subtitle">Sabor Puro, Origen Auténtico</p>
+                
+                <div class="divider"></div>
+                
+                <div class="actions">
+                    <button class="btn-comprar">
+                        <svg class="cart-anim" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                        </svg>
+                        Comprar Ahora
+                    </button>
+                    <a href="#" class="btn-ver">Explorar Fincas</a>
+                </div>
+            </div>
+
+       
+            <!-- Información de Pie del hero -->
+            <div class="footer-tag">
+                <span class="dot-sm"></span>
+                <span>Altitud 1.800m &nbsp;·&nbsp; Cosecha 2025</span>
+                <span class="dot-sm"></span>
+            </div>
+        </div>
+    </header>
+      
+    <!-- FOOTER DINÁMICO -->
+    <footer id="footer-container"></footer>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+</html>

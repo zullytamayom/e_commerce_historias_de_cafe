@@ -95,7 +95,7 @@ function cargarFormRegister() {
 
         console.log("Usuario guardado exitosamente. Total:", usuariosRegistrados.length);
 
-        // Opcional: limpiar el formulario después de guardar
+     
         form.reset();
         [inputName, inputEmail, inputPass1, inputPass2].forEach(limpiarError);
       }

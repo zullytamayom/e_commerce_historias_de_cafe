@@ -324,3 +324,59 @@ body {
   transform: rotate(-45deg) translate(6px, -6px);
 }
 
+/* --- SECCIÓN DE USUARIO DINÁMICA */
+
+.user-auth-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-left: 15px;
+    /* Cambiamos el borde a uno oscuro para que se vea en el fondo blanco */
+    border-left: 1px solid var(--color-border-default); 
+}
+
+.usuario-icon-nav {
+    width: 24px;
+    height: 24px;
+    /* Quitamos el invert(1) para que el icono se vea oscuro/café */
+    filter: brightness(0.3); 
+}
+
+/* El mensaje de "Hola, Usuario" en color oscuro */
+.welcome-msg {
+    color: var(--color-text-default);
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.welcome-msg strong {
+    font-size: 0.9rem;
+    color: var(--color-primary); /* Color café para el nombre */
+}
+
+/* Estilo del botón cuando dice "Salir" (Botón minimalista) */
+.btn-logout {
+    background-color: transparent !important;
+    border: 1px solid var(--color-primary) !important;
+    color: var(--color-primary) !important;
+    font-size: 0.7rem !important;
+    padding: 4px 10px !important;
+    text-transform: uppercase;
+}
+
+.btn-logout:hover {
+    background-color: var(--color-primary) !important;
+    color: white !important;
+}
+
+/* Ajuste para móviles */
+@media (max-width: 992px) {
+    .user-auth-wrapper {
+        border-left: none;
+        padding-left: 0;
+        margin-top: 15px;
+        justify-content: center;
+    }
+}

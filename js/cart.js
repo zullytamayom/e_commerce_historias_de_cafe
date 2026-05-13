@@ -279,7 +279,7 @@ function initCart()
 
       guardarCarritoStorage()
       swal.fire({
-            icon: 'info',
+            icon: 'success',
             iconColor: '#8B5E3C',
             //background: '#999',
             title: '¡Producto Agregado al Carrito!',

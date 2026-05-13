@@ -83,7 +83,7 @@ function cargarFormLogin() {
             swal.fire({
                 icon: 'success',
                 iconColor: '#8B5E3C',
-                title: `¡Ahora eres un Coffee Lover Bienvenido! ${usuarioEncontrado.name}!`,
+                title: `¡Ahora eres un Coffee Lover ¡ Bienvenido! ${usuarioEncontrado.name}!`,
                 confirmButtonColor: '#8B5E3C',
             timer: 2400,
             showConfirmButton: false

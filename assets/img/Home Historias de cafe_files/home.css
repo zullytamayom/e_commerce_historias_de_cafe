@@ -1,0 +1,187 @@
+html {
+    scroll-behavior: smooth;
+        height: 100%;
+}
+body {
+    margin: 0;
+    color: white;
+    font-family: Arial;
+ 
+    display: flex;
+    flex-direction: column;
+
+    transition: background 2s ease;
+    background: #000;
+   
+}
+
+
+/* El truco de la magia: mover el contenedor exactamente la mitad */
+@keyframes scrollInfinito {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Pausar al pasar el mouse para que el usuario pueda leer con calma */
+.barraFrases:hover .frases {
+    animation-play-state: paused;
+}
+
+
+
+#catalogo {
+    scroll-margin-top: 100px;
+}
+
+
+.rocket {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color:blue;
+    opacity: 0;
+}
+
+.rocket.lanzar {
+    animation: fly 0.8s ease-out forwards;
+}
+
+@keyframes fly {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-200px);
+  }
+}
+
+
+.slider-intergalactico {
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    background: #000;
+}
+
+.slide-list .item {
+    width: 200px;
+    height: 300px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 20px;
+    background-position: center;
+    background-size: cover;
+    display: inline-block;
+    transition: 0.5s; 
+    box-shadow: 0 30px 50px #000;
+}
+
+
+.slide-list .item:nth-child(1),
+.slide-list .item:nth-child(2) {
+    top: 0;
+    left: 0;
+    transform: none;
+    border-radius: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
+.slide-list .item:nth-child(3) { left: 50%; }
+.slide-list .item:nth-child(4) { left: calc(50% + 220px); }
+.slide-list .item:nth-child(5) { left: calc(50% + 440px); }
+.slide-list .item:nth-child(n+6) { left: calc(50% + 660px); opacity: 0; }
+
+
+.content {
+    position: absolute;
+    top: 50%;
+    left: 100px;
+    width: 300px;
+    text-align: left;
+    color: #eee;
+    transform: translateY(-50%);
+    font-family: 'Arial', sans-serif;
+    display: none; 
+}
+
+
+.slide-list .item:nth-child(2) .content {
+    display: block;
+}
+
+/* Animaciones de texto */
+.title{ font-size: 30px; text-transform: uppercase; animation: showcontent 1s ease-in-out 1 forwards;
+  background-color:  #e4dbbf94; 
+  color: #1A1A1A; /* blanco */
+  padding: 7px;
+  border-radius: 5px;
+  font-family: sans-serif;
+  font-weight: 800;
+
+}
+.description { animation: showcontent 1s ease-in-out 0.3s 1 forwards;
+  font-size: 20px;
+  line-height: 1.6; 
+  font-family: sans-serif;
+  background-color: #e4dbbfa3;
+  color: #1A1A1A; /* blanco */
+  padding: 10px;
+  border-radius: 5px;
+}
+.btn-cart { padding: 10px 20px; border: none; cursor: pointer; opacity: 0; animation: showcontent 1s ease-in-out 0.6s 1 forwards; }
+
+@keyframes showcontent {
+    from { opacity: 0; transform: translateY(100px); filter: blur(33px); }
+    to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.nav-buttons {
+    position: absolute;
+    bottom: 50px;
+    width: 100%;
+    left: 0;          
+    text-align: center;
+    z-index: 20;      
+    display: flex;     
+    justify-content: center; 
+    gap: 20px;       
+}
+
+.nav-buttons button {
+    width: 50px; 
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    background: rgba(255, 255, 255, 0.2); /* Un fondo sutil para que se vean */
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.nav-buttons button:hover {
+    background: #fff;
+    color: #000;
+}
+
+ 
+/* Línea decorativa superior */
+header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+}
+

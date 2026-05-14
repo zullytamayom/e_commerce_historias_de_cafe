@@ -1,0 +1,326 @@
+
+@import url('https://googleapis.com');
+@import url("/assets/img/paletaColores.css");
+
+:root {
+  --color-primary: #532721;
+  --color-primary-active: #3d1c18;
+  --color-secondary: #B08D57;
+  --color-secondary-muted: rgba(176, 141, 87, 0.6);
+  --color-accent: #5F6335;
+  --color-background: #E4DBBF;
+  --color-text-default: #1A1A1A;
+  --color-border-default: #B08D57;
+  --color-highlight: rgba(176, 141, 87, 0.1);
+  /* Suave para el hover */
+}
+
+/* --- Estilos Base --- */
+body {
+  background: var(--color-background);
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  padding-top: 90px;
+}
+
+.label-tag-full {
+  font-size: 11px;
+  text-align: center;
+  background: var(--color-primary);
+  color: #fff;
+  padding: 4px 0;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Contenedor Principal (Nav) --- */
+.nav-container-full {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: #ffffff;
+  border-bottom: 1px solid var(--color-border-default);
+}
+
+.nav-custom-full {
+  max-width: 1400px;
+  margin: auto 55px;
+  height: 100px;
+  /* <Agrandar la barra para tener espacio */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%;
+  flex-wrap: nowrap;
+
+}
+
+/* ---- El Logo --- */
+.brand-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  /* Ocupa todo el alto disponible */
+  flex-shrink: 0;
+}
+
+/* Agrandar el logo relativo a la barra */
+.nav-logo {
+  max-height: 100px;
+  /* <--- Ajustar este valor para más pequeño/grande */
+  width: auto;
+  object-fit: contain;
+  padding: 10px 0;
+  /* Un poco de "aire" arriba y abajo */
+}
+
+.links3 {
+  display: flex;
+  height: 100%;
+}
+
+.link3 {
+  font-size: 14px;
+  color: var(--color-text-default);
+  text-decoration: none;
+  padding: 0 15px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  transition: 0.2s;
+  border-bottom: 3px solid transparent;
+}
+
+.link3:hover,
+.link3.active3 {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+/* Recuadros de Botones carrito y usuario--- */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* ELIMINAR LOS RECUADROS POR DEFECTO DE BOOTSTAP */
+.icon-btn3 {
+  border: none !important;
+  /* <--- Quita el borde (crítico) */
+  background: transparent !important;
+  /* <--- Quita el fondo gris (crítico) */
+  outline: none !important;
+  /* <--- Quita el resalte al hacer click */
+  box-shadow: none !important;
+  /* <--- Quita sombras adicionales de Bootstrap */
+
+  /* Ajustes de tamaño del icono */
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  /* Hover circular */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  cursor: pointer;
+  font-size: 20px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+/* Nuevo efecto hover suave para botones limpios */
+.icon-btn3:hover {
+  background-color: var(--color-highlight);
+  /* Un suave tono dorado */
+  color: var(--color-primary-active);
+}
+
+/* -- Badge Dot (Verde Oliva) -- */
+.badge-dot3 {
+  background-color: var(--color-accent);
+      color: var(--color-background);
+      padding: 2px 8px;
+      border-radius: 50%;
+      font-size: 12px;
+      position: absolute;
+      top: -10px;
+      right: -9px;
+}
+@keyframes rebote-badge-dot3 {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.5); }
+  100% { transform: scale(1); }
+}
+.animar-rebote {
+  animation: rebote-badge-dot3 0.3s ease-in-out;
+}
+
+/* -- Botón CTA (sin recuadros extra) -- */
+.cta-primary {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cta-primary:hover {
+  background: var(--color-primary-active);
+}
+
+
+
+/* Estilos de la animacion de la taza de cafe para el navbar */
+
+
+#coffecup-transition {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+.coffee-stain {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+
+  background: rgba(60, 42, 33, 0.4);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+
+  filter: blur(15px);
+  box-shadow: 0 0 30px rgba(60, 42, 33, 0.2);
+}
+
+
+.coffecup {
+  width: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.5));
+}
+
+.coffecup-img {
+  width: 100%;
+  height: auto;
+}
+
+
+.launching .coffee-stain {
+  animation: fillScreen 1.2s ease-in-out forwards;
+}
+
+
+.launching {
+  animation: cupBehavior 1.2s ease-in-out forwards;
+}
+
+@keyframes fillScreen {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  80% {
+    width: 150vmax;
+    height: 150vmax;
+    opacity: 1;
+  }
+
+  100% {
+    width: 150vmax;
+    height: 150vmax;
+    opacity: 0;
+  }
+}
+
+
+
+
+@keyframes cupBehavior {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+
+  20% {
+    transform: scale(1.2) rotate(-10deg);
+    opacity: 1;
+  }
+
+  40% {
+    transform: scale(1) rotate(10deg);
+  }
+
+  60% {
+    transform: scale(1.1) rotate(0deg);
+  }
+
+  80% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+/* Estilos de la animacion de la taza de cafe para el navbar */
+
+
+/* menu hamgurguesa */
+.hamburger-btn {
+  border: none;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hamburger-line {
+  width: 25px;
+  height: 3px;
+  background-color: var(--color-primary);
+  display: block;
+  border-radius: 2px;
+}
+.navbar-toggler[aria-expanded="true"] .hamburger-line:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.navbar-toggler[aria-expanded="true"] .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar-toggler[aria-expanded="true"] .hamburger-line:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+

@@ -47,6 +47,32 @@ function initNavbar() {
 
   const navLinks = document.querySelectorAll(".nav-link");
   const menuCollapse = document.getElementById("navbarMenu");
+  const usuarioActivo = JSON.parse(localStorage.getItem("usuarioActivo"));
+  const userContent = document.getElementById("user-status-content");
+  const authBtn = document.getElementById("nav-auth-btn");
+
+  if (usuarioActivo && authBtn && userContent) {
+    // ESTADO: LOGUEADO
+    const primerNombre = usuarioActivo.name.split(" ")[0];
+    userContent.innerHTML = `<span class="welcome-msg">Hola, <strong>${primerNombre}</strong></span>`;
+    
+    authBtn.textContent = "Salir";
+    authBtn.classList.add("btn-logout"); // Clase para estilo diferente
+
+    authBtn.onclick = () => {
+      localStorage.removeItem("usuarioActivo");
+      window.location.href = "/pages/home.html"; // AJUSTAR AQUI CUANDO ESTE LISTO EL HOME.
+    };
+  } else if (authBtn && userContent) {
+    // ESTADO: INVITADO
+    userContent.innerHTML = ""; // No hay saludo
+    authBtn.textContent = "Entrar";
+    authBtn.classList.remove("btn-logout");
+
+    authBtn.onclick = () => {
+      window.location.href = "/pages/users/users.html";
+    };
+  }
 
   navLinks.forEach((l) => {
     l.addEventListener("click", () => {
@@ -83,10 +109,14 @@ if (document.getElementById("register-container")) {
     loadComponent("register-container", "/components/register/register.html", cargarFormRegister);
   }
 
+  if (document.getElementById("login-container")) {
+    loadComponent("login-container", "/components/login/login.html", inicializarLogin); 
+  }
+
   if (document.getElementById("contact-container")) {
     loadComponent("contact-container", "/components/contact/contact.html", cargarFormContact);
   }
-  loadComponent("login-container", "/components/login/login.html"); 
+
   
  
   loadComponent("carrito-container","/components/cart/cart.html",(typeof initCart === 'function') ? initCart : () => console.warn("initCart no definida")

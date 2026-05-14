@@ -76,7 +76,7 @@ body {
     position: absolute;
     top: 50%;
     right: 82%;
-    width: 320px;
+    width: 360px;
     text-align: left;
     color: #eee;
     transform: translateY(-50%);
@@ -86,13 +86,11 @@ body {
 
 #spanDescuento
 {
-  background-color: #ff4d4d; /* rojo intenso */
-  color: #fff;              /* texto blanco */
-  font-size: 1.5em;          /* más grande */
-  font-weight: bold;
-  padding: 10px 20px;
-  border-radius: 8px;
-  text-align: center;
+    background: #bc2a6a;
+    padding: 5px 10px;
+    border-radius: 30px;
+    font-weight: bold;
+    margin-right: 20px;
 }
 
 

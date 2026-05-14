@@ -61,7 +61,7 @@ function initNavbar() {
 
     authBtn.onclick = () => {
       localStorage.removeItem("usuarioActivo");
-      window.location.href = "/pages/home.html"; // AJUSTAR AQUI CUANDO ESTE LISTO EL HOME.
+      window.location.href = "/pages/home/home.html"; 
     };
   } else if (authBtn && userContent) {
     // ESTADO: INVITADO

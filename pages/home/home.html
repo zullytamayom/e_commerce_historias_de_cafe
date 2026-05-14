@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Home Historias de cafe</title>
+  <link rel="icon" type="image/x-icon" href="/assets/img/logo.png">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&family=Roboto+Mono:wght@300;400;700&display=swap"
+        rel="stylesheet">
+
+  <!-- Iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="/assets/css/paletaColores.css">
+  <link rel="stylesheet" href="/components/navBar/navBar.css">
+  <link rel="stylesheet" href="/components/footer/footer.css">
+  <link rel="stylesheet" href="/pages/acercaDeNosotros/acerca_de_nosotros.css">
+  <link rel="stylesheet" href="/pages/home/home.css">
+</head>
+
+<body>
+    <div id="navbar-container"></div>
+
+
+
+
+    <!-- SLIDER -->
+    <section id="seccion-catalogo" class="slider-intergalactico">
+        <div class="container">
+            <ul class="slide-list">
+                <li class="item"
+                    style="background-image: url('/assets/imgProductos/auroraFloral-removebg-preview.png')">
+                    <div class="content">  
+                        <h2 class="title">Aurora Floral ahora <span id="spanDescuento">EN DESCUENTO</span></h2>
+                        <p class="description">Aurora floral un aroma matutino y complejo de una vcariedad de Geisha Lavado, un tueste muy legero y una identidad delicado con notas florales y elegantes</p>
+                    </div>
+                </li> 
+                <li class="item"
+                    style="background-image: url('/assets/imgProductos/brisaMarina-removebg-preview.png')">
+                    <div class="content">
+                        <h2 class="title">Brisas Marina ahora <span>EN DESCUENTO</span></h2>
+                        <p class="description">Nuestro cafe Brisas Marina de un cultivo costero una varidad Bournbon Azul junto a un tueste medio ligero y una identidad de cafe con carcater maritimo, evocando frescura y singularidad. Ideal para quienes buscan sabores balanceados con un toque exotico</p>
+                    </div>
+                </li>
+                <li class="item"
+                    style="background-image: url('/assets/imgProductos/auroraFloralRosada-removebg-preview.png')">
+                    <div class="content">
+                        <h2 class="title">Aurora Floral Rosada ahora <span>EN DESCUENTO</span></h2>
+                        <p class="description">Con un aroma intenso, variedad Geisha Ligero, un tueste medio y una identidad propuesta floral mas robusta, con cuerpo y fuerza aromatica. Perfecto para quienes quieren intensidad sin perder la elegancia.</p>
+                    </div>
+                </li>
+                <li class="item"
+                    style="background-image: url('/assets/imgProductos/esenciaAncestral-removebg-preview.png')">
+                    <div class="content">
+                        <h2 class="title">Esencia Ancestral ahora <span>EN DESCUENTO</span></h2>
+                        <p class="description">De origen Tradicion Maya de varidad Criollo Arabica con un proceso natura y una identidad de cafe con raices culturales, resaltando herencia y autenticidad. Su diseño y perfil evoccan historia y conexion con lo ancestral</p>
+
+                    </div>
+                </li>
+
+                <li class="item"
+                    style="background-image: url('/assets/imgProductos/montanaMistica-removebg-preview.png')">
+                    <div class="content">
+                        <h2 class="title">Montaña Mística ahora <span>EN DESCUENTO</span></h2>
+                        <p class="description">Cafe de origen es de Finca Las Nubes de variedad Pacamara Miel con Tueste Edicion Limitada y una Identidad de cafe Premium, con empaque elegante y dorado. Representando exclusivdad y sostificacion, pensado para experiencias unicas </p>
+
+                    </div>
+                </li>
+            </ul>
+
+            <nav class="nav-buttons">
+                <button class="prev">❮</button>
+                <button class="next">❯</button>
+            </nav>
+        </div>
+    </section>    
+    </main>
+
+    <div class="divider"></div>
+
+    <!-- SECCIÓN HERO (Encabezado Principal) -->
+    <header class="hero-section container my-5.">
+        <div class="bw-wrapper">
+            <!-- Capas de Efectos Visuales -->
+            <div class="visual-layers">
+                <div class="bg-layer"></div>
+                <div class="gold-sweep"></div>
+                <div class="olive-accent"></div>
+                <div class="cream-glow"></div>
+                <div class="grain"></div>
+            </div>
+
+            <!-- Gráfico de Granos de Café (SVG) -->
+            <div class="bean-zone">
+                <svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                    <defs>
+                        <!-- Definición de un solo grano de café -->
+                        <g id="coffee-bean">
+                            <ellipse cx="0" cy="0" rx="15" ry="10" fill="#4B2C20" />
+                            <path d="M -15 0 Q 0 5 15 0" fill="none" stroke="#2D1B14" stroke-width="1.5" stroke-linecap="round" />
+                        </g>
+                        
+                        <!-- Sombra suave para los granos -->
+                        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
+                            <feOffset dx="1" dy="1" result="offsetblur" />
+                            <feComponentTransfer>
+                                <feFuncA type="linear" slope="0.4" />
+                            </feComponentTransfer>
+                            <feMerge>
+                                <feMergeNode />
+                                <feMergeNode in="SourceGraphic" />
+                            </feMerge>
+                        </filter>
+                    </defs>
+
+                    
+                    <!-- Grupo de granos distribuidos -->
+                    <g filter="url(#shadow)">
+                        <!-- Ejemplo de granos posicionados manualmente -->
+                        <use xlink:href="#coffee-bean" x="100" y="150" transform="rotate(45, 100, 150)" />
+                        <use xlink:href="#coffee-bean" x="250" y="400" transform="rotate(-20, 250, 400)" />
+                        <use xlink:href="#coffee-bean" x="450" y="200" transform="rotate(110, 450, 200)" />
+                        <use xlink:href="#coffee-bean" x="600" y="450" transform="rotate(10, 600, 450)" />
+                        <use xlink:href="#coffee-bean" x="750" y="150" transform="rotate(160, 750, 150)" />
+                        <use xlink:href="#coffee-bean" x="150" y="500" transform="rotate(75, 150, 500)" />
+                        <use xlink:href="#coffee-bean" x="900" y="500" transform="rotate(-45, 800, 500)" />
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Capas de Viñeta -->
+            <div class="vignettes">
+                <div class="vignette"></div>
+                <div class="vignette-v"></div>
+            </div>
+
+            <!-- Contenido de Texto -->
+            <div class="content-overlay">
+                <div class="eyebrow">Origen Certificado &nbsp;·&nbsp; Colombia</div>
+                <h1 class="headline">
+                    HISTORIAS<br>
+                    <span class="gold">DE CAFÉ</span><br>
+                    <span class="small-year">2026</span>
+                </h1>
+                <p class="subtitle">Sabor Puro, Origen Auténtico</p>
+                
+                <div class="divider"></div>
+                
+                <div class="actions">
+                    <button class="btn-comprar">
+                        <svg class="cart-anim" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                        </svg>
+                        Comprar Ahora
+                    </button>
+                    <a href="/pages/catalogo/catalogo.html" class="btn-ver">Explorar Fincas</a>
+                </div>
+            </div>
+
+       
+            <!-- Información de Pie del hero -->
+            <div class="footer-tag">
+                <span class="dot-sm"></span>
+                <span>Altitud 1.800m &nbsp;·&nbsp; Cosecha 2025</span>
+                <span class="dot-sm"></span>
+            </div>
+        </div>
+    </header>
+  <!-- FOOTER -->
+  <div id="footer-container"></div>
+
+  <!-- JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/home.js"></script>
+  
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+:root
+{
+  /* Paleta de Colores (Basada en Herencia y Tierra) */
+  --color-primary: #532721;           /* Marrón oscuro (Principal) */
+  --color-primary-active: #3d1c18;    /* Versión más oscura para hover */
+  
+  --color-secondary: #B08D57;         /* Dorado/Tierra */
+  --color-secondary-muted: rgba(176, 141, 87, 0.6); /* #B08D57 con 60% transparencia */
+  
+  --color-accent: #5F6335;            /* Verde Oliva */
+  
+  --color-background: #E4DBBF;        /* Crema claro (Fondo) */
+  --color-text-default: #1A1A1A;      /* Negro casi puro (Texto) */
+  
+  /* Variables de apoyo para el formulario Bootstrap/Custom */
+  --color-border-default: #B08D57;
+  --color-border-active: #532721;
+  --color-highlight: rgba(95, 99, 53, 0.2); /* Resalte basado en el Verde Oliva */
+}
+
+Fonts
+{
+  --font-family-body: "Source Sans 3", sans-serif;
+  --font-family-display: "Playfair Display", serif;
+}
+
+/* Icono Carrito */
+.carrito-icon {
+  width: 30px;
+  height: 30px;
+}
+
+/* Icono Usuario */
+.usuario-icon {
+  width: 26px;
+  height: 26px;
+}
+

@@ -36,7 +36,12 @@ document.addEventListener("DOMContentLoaded", () => {
         "Productos": "<h2>Productos</h2><div id='productform-container'></div>",
         "Ordenes": "<h2>Órdenes</h2>",
         "Usuarios": "<h2>Usuarios</h2>",
-        "Configuración": "<h2>Configuración</h2>"
+        "Configuración": "<h2>Configuración</h2>",
+        "Salir": "<h2>Salir</h2>"
+    };
+    authBtn.onclick = () => {
+      localStorage.removeItem("usuarioActivo");
+      window.location.href = "/pages/home/home.html"; 
     };
 
     menuItems.forEach(item => {

@@ -425,7 +425,7 @@ function initCart()
             timer: 2400,
             showConfirmButton: false
           });
-        textArea.value = "";
+         //textArea.value = "";
       
 
       try {

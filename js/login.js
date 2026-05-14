@@ -63,12 +63,12 @@ function inicializarLogin() {
             swal.fire({
                 icon: 'success',
                 iconColor: '#8B5E3C',
-                title: `¡Bienvenido! ${usuarioEncontrado.name}!`,
+                title: `¡Bienvenid@ ${usuarioEncontrado.name}!`,
                 confirmButtonColor: '#8B5E3C',
                 timer: 3400,
                 showConfirmButton: false
             }).then(() => {
-                window.location.href = "/pages/catalogo/catalogo.html";
+                window.location.href = "/pages/home/home.html";
             });
         }
     });

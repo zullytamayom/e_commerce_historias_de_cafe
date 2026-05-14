@@ -50,6 +50,7 @@ function initNavbar() {
   const usuarioActivo = JSON.parse(localStorage.getItem("usuarioActivo"));
   const userContent = document.getElementById("user-status-content");
   const authBtn = document.getElementById("nav-auth-btn");
+ 
 
   if (usuarioActivo && authBtn && userContent) {
     // ESTADO: LOGUEADO
@@ -61,7 +62,7 @@ function initNavbar() {
 
     authBtn.onclick = () => {
       localStorage.removeItem("usuarioActivo");
-      window.location.href = "/pages/home/home.html"; 
+      window.location.href = "/pages/home/home.html";
     };
   } else if (authBtn && userContent) {
     // ESTADO: INVITADO

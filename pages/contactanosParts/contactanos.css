@@ -1,8 +1,8 @@
-@import url('https://googleapis.com');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 @import url("/assets/img/paletaColores.css");
 
 body {
-    background: url('/assets/img/background1.jpg') center/cover;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/assets/img/background1.jpg') center/cover;
     background-attachment: fixed;
     margin: 0;
     display: flex;
@@ -10,46 +10,14 @@ body {
     min-height: 100vh;
 }
 
-.form-label {
-    color: var(--color-primary);
-    font-weight: 500;
-    margin-bottom: 8px;
-    letter-spacing: 0.5px;
+/* Forzar que el main se centre verticalmente de forma elegante */
+main.container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.form-control {
-    background: rgba(255, 255, 255, 0.9);
-    border: 2px solid transparent;
-    border-radius: 10px;
-    padding: 12px;
-    transition: all 0.3s ease;
-}
-
-.form-control:focus {
-    background: #fff;
-    border-color: var(--color-secondary);
-    box-shadow: 0 0 15px var(--color-highlight);
-    transform: translateY(-2px);
-}
-
-.btnEnviar {
-    background: var(--color-primary);
-    color: white;
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 1.1rem;
-    border: none;
-    border-radius: 50px;
-    padding: 12px 40px !important;
-    box-shadow: 0 4px 15px rgba(83, 39, 33, 0.4);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.btnEnviar:hover {
-    background: var(--color-segundary-active);
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(83, 39, 33, 0.6);
-    border: var(--color-primary-active);
-    border-radius: 10px;
-    border-color: var(--color-primary);
+.shadow-lg {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25) !important;
 }

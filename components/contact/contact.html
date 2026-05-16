@@ -1,40 +1,39 @@
-<div id="contact-container">
-    <main class="flex-fill container py-5">
-        <div class="card container">
-            <div class="text-center mb-4">
-                <h2 style="font-family: 'Playfair Display', serif; color: var(--color-primary);">Escríbenos</h2>
-                <p style="color: var(--color-primary); opacity: 0.8;">Tu opinión es el aroma de nuestro servicio</p>
+<!-- Contenido para inyectar en contact-container -->
+<div class="contact-form-inner">
+    <div class="mb-4 header-contact">
+        <span class="coffee-badge mb-2 d-inline-block"><i class="fa-solid fa-mug-hot me-2"></i>Contacto Directo</span>
+        <h2 style="font-family: 'Playfair Display', serif; color: var(--color-primary);" class="fw-bold display-6">Escríbenos</h2>
+        <p class="text-muted lead-sm">Tu opinión es el aroma de nuestro servicio</p>
+    </div>
+
+    <form action="https://formspree.io/f/xlgajpkq" class="row g-4" novalidate target="_top" method="POST">
+        <div class="col-12">
+            <label class="form-label" for="name">Nombre</label>
+            <div class="input-group-custom">
+                <input type="text" class="form-control" id="name" name="name" placeholder="Tu nombre completo" required />
             </div>
-            <form action="https://formspree.io/f/xlgajpkq" class="row g-3" novalidate target="_top" method="POST">
+        </div>
 
-                <div class="col-12">
-                    <label class="form-label" for="name">Nombre</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Tu nombre completo" />
-                </div>
+        <div class="col-md-6">
+            <label class="form-label" for="email">Correo Electrónico</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="nombre@ejemplo.com" required />
+        </div>
 
-                <div class="col-md-6">
-                    <label class="form-label" for="email">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="nombre@ejemplo.com" />
-                </div>
+        <div class="col-md-6">
+            <label class="form-label" for="number">Teléfono</label>
+            <input type="tel" class="form-control" id="number" name="number" placeholder="+57 300 000 0000" />
+        </div>
 
-                <div class="col-md-6">
-                    <label class="form-label" for="number">Número Teléfono</label>
-                    <input type="tel" class="form-control" id="number" name="number" placeholder="+57 300 1234567" />
-                </div>
+        <div class="col-12">
+            <label class="form-label" for="message">Mensaje</label>
+            <textarea class="form-control" id="message" name="message" rows="4" required
+                placeholder="Cuéntanos cómo podemos ayudarte o qué historia quieres compartir..."></textarea>
+        </div>
 
-                <div class="col-12">
-                    <label class="form-label" for="message">Mensaje</label>
-                    <textarea class="form-control" id="message" name="message" rows="4" required
-                        placeholder="Escribe aca tu mensaje de contacto"></textarea>
-                </div>
-
-                <div class="col-12 text-end">
-                    <button class="btnEnviar btn px-4 py-2" type="submit">Enviar</button>
-                </div>
-            </form>
-    </main>
+        <div class="col-12 text-end mt-4">
+            <button class="btnEnviar btn w-100 w-md-auto text-uppercase" type="submit">
+                Enviar Mensaje <i class="bi bi-send-fill ms-2"></i>
+            </button>
+        </div>
+    </form>
 </div>
-    
-
-
-

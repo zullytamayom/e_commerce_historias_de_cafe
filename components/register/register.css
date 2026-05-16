@@ -1,156 +1,205 @@
-.team-avatars { display: flex; justify-content: center; gap: -10px; margin-bottom: 15px; }
-.avatar { 
-    width: 45px; height: 45px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.2);
-    display: flex; align-items: center; justify-content: center; font-weight: bold;
-}
-.avatar.blue { background: #0077b6; }
-.avatar.yellow { background: #ffb703; color: #333; }
-.avatar.photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-.checkbox-group { display: flex; gap: 10px; font-size: 0.75rem; margin: 15px 0; align-items: center; }
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-body, html {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    overflow-y: auto;
+.auth-component {
+    width: 100%;
 }
 
 .card {
-    width: 350px;
-    background-color: #8d6e63; 
-    border-radius: 40px;
-    overflow: hidden;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    width: 100%;
+    background: transparent;
+    border: none;
 }
 
 .header-imagen {
     width: 100%;
-    height: 25vh; 
-    min-height: 120px;
-    background-color: #fff;
-    border-bottom-left-radius: 80px; 
-    flex-shrink: 0;
+    height: 190px;
+    overflow: hidden;
+    position: relative;
 }
 
 .header-imagen img {
-    width: 90%;
-    height: auto;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    filter: sepia(0.1) brightness(0.95); 
+}
+
+.header-imagen::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background: linear-gradient(to top, rgba(250, 246, 240, 0.2), transparent);
 }
 
 .contenedor-formulario {
-    padding: 20px 30px; 
-    background-color: #8d6e63;
-    color: #f3e5f5;
+    padding: 35px 40px;
 }
+
 
 .tabs {
     display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
+    justify-content: center;
+    gap: 35px;
+    margin-bottom: 35px;
 }
 
 .tab {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: rgba(62, 39, 35, 0.4);
     cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding-bottom: 6px;
+    border-bottom: 2px solid transparent;
+}
+
+.tab:hover {
+    color: var(--cafe-premium);
 }
 
 .tab.active {
-    color: #fff;
-    border-bottom: 3px solid #5d4037;
-    padding-bottom: 5px;
+    color: var(--cafe-premium);
+    border-bottom: 2px solid var(--cafe-acento);
 }
 
-/* ── campo-wrapper: agrupa input + mensaje de error ───────── */
 .campo-wrapper {
-    margin-bottom: 22px;
+    margin-bottom: 28px;
+    position: relative;
 }
 
-/* ── grupo-input: fila icono + input (+ ojito) ────────────── */
 .grupo-input {
     display: flex;
     align-items: center;
-    border-bottom: 2px solid #5d4037;
-    padding-bottom: 5px;
+    border-bottom: 2px solid rgba(62, 39, 35, 0.15);
+    padding-bottom: 8px;
+    transition: all 0.3s ease;
+}
+
+.grupo-input:focus-within {
+    border-bottom-color: var(--cafe-acento);
 }
 
 .grupo-input i {
     margin-right: 15px;
-    color: #4e342e;
-    font-size: 1.1rem;
+    color: rgba(62, 39, 35, 0.6);
+    font-size: 1.05rem;
+    width: 20px;
+    text-align: center;
 }
 
 .grupo-input input {
     background: none;
     border: none;
     outline: none;
-    color: #fff;
+    color: var(--cafe-premium); 
     width: 100%;
-    font-size: 0.95rem;
+    font-size: 1rem;
 }
 
 .grupo-input input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(62, 39, 35, 0.35);
 }
 
-/* ── Ojito ─────────────────────────────────────────────────── */
 .toggle-pass {
     cursor: pointer;
-    color: rgba(255, 255, 255, 0.45);
-    font-size: 1rem;
-    margin-left: 8px;
-    flex-shrink: 0;
-    transition: color 0.2s;
+    color: rgba(62, 39, 35, 0.4);
+}
+.toggle-pass:hover { color: var(--cafe-premium); }
+
+.olvido-pass {
+    text-align: right;
+    margin-top: -12px;
+    margin-bottom: 30px;
 }
 
-.toggle-pass:hover {
-    color: #fff;
+.olvido-pass a {
+    color: rgba(62, 39, 35, 0.5);
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: color 0.3s;
 }
+.olvido-pass a:hover { color: var(--cafe-acento); text-decoration: underline; }
 
-/* ── Mensaje de error: dentro del campo-wrapper ───────────── */
+/* Mensajes de error flotantes estéticos */
 .invalid-feedback {
     display: block;
-    color: #ffffff;
-    font-size: 0.72rem;
-    padding-left: 36px;    /* alineado con el texto del input */
-    margin-top: -20px;
-    white-space: nowrap;
+    color: #D9383A; /* Rojo elegante con buena visibilidad */
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding-left: 35px;
+    margin-top: 5px;
+    position: absolute;
+    animation: fadeInError 0.25s ease-out forwards;
 }
 
-/* Línea del input cuando hay error */
+@keyframes fadeInError {
+    from { opacity: 0; transform: translateY(-3px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .grupo-input:has(input.is-invalid) {
-    border-bottom: 1.5px solid rgba(255, 255, 255, 0.7);
+    border-bottom-color: #D9383A !important;
 }
 
-/* ── Botón registrarse ─────────────────────────────────────── */
+/* Botón Orgánico Premium */
 .btn-registrarse {
     display: block;
-    width: 70%;
-    margin: 20px auto 10px;
-    padding: 12px;
-    border-radius: 30px;
-    border: none;
-    background-color: #5d4037;
-    color: white;
-    font-size: 1.1rem;
-    font-weight: bold;
+    width: 100%;
+    padding: 14px;
+    border-radius: 50px;
+    border: 2px solid transparent;
+    background-color: var(--cafe-premium); /* Botón café oscuro sofisticado */
+    color: #FAF6F0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
     cursor: pointer;
-    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.3), 
-                2px 2px 10px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
+    box-shadow: 0 5px 15px rgba(62, 39, 35, 0.15);
+    transition: all 0.3s ease;
+    margin-top: 10px;
 }
 
 .btn-registrarse:hover {
-    transform: scale(1.05);
-    background-color: #4e342e;
+    background-color: var(--cafe-acento);
+    transform: translateY(-1.5px);
+    box-shadow: 0 8px 20px rgba(169, 132, 103, 0.3);
+}
+
+/* Caja de validación de contraseña minimalista */
+#pswd_info {
+    background: rgba(62, 39, 35, 0.04);
+    border-radius: 14px;
+    padding: 15px 18px;
+    margin-top: 15px;
+    border: 1px solid rgba(62, 39, 35, 0.08);
+    animation: slideDownInfo 0.35s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+#pswd_info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+#pswd_info li {
+    font-size: 0.78rem;
+    color: #C0392B;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+}
+
+#pswd_info li.valid {
+    color: #27AE60; /* Verde oliva/cafetalero para aciertos */
+}
+
+@keyframes slideDownInfo {
+    from { opacity: 0; transform: scale(0.97) translateY(-8px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
 }

@@ -12,10 +12,9 @@
   --color-text-default: #1A1A1A;
   --color-border-default: #B08D57;
   --color-highlight: rgba(176, 141, 87, 0.1);
-  /* Suave para el hover */
+
 }
 
-/* --- Estilos Base --- */
 body {
   background: var(--color-background);
   margin: 0;

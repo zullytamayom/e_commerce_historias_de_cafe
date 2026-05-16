@@ -1,77 +1,85 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.auth-component {
+    width: 100%;
 }
 
-body {
-    background-color: #f0e6dd;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
 
 .card {
-    width: 350px;
-    background-color: #8d6e63; 
-    border-radius: 40px;
+    width: 100%;
+    background: transparent; 
+    border: none;
     overflow: hidden;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
 }
+
 
 .header-imagen {
     width: 100%;
-    height: 250px;
-    background-color: #fff;
-    border-bottom-left-radius: 80px; 
+    height: 190px;
+    overflow: hidden;
 }
 
 .header-imagen img {
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: cover;
 }
 
 .contenedor-formulario {
-    padding: 30px;
-    background-color: #8d6e63;
-    color: #f3e5f5;
+    padding: 35px 40px; 
 }
 
 
 .tabs {
     display: flex;
-    justify-content: space-around;
-    margin-bottom: 40px;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
 }
 
 .tab {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.5);
     cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
+}
+
+.tab:hover {
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .tab.active {
-    color: #fff;
-    border-bottom: 3px solid #5d4037;
-    padding-bottom: 5px;
+    color: #ffffff;
+    border-bottom: 2px solid var(--cafe-acento, #A0785C);
 }
+
+
+.campo-wrapper {
+    margin-bottom: 25px;
+    position: relative;
+}
+
 
 .grupo-input {
     display: flex;
     align-items: center;
-    margin-bottom: 25px;
-    border-bottom: 2px solid #5d4037;
-    padding-bottom: 5px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 8px;
+    transition: all 0.3s ease;
+}
+
+.grupo-input:focus-within {
+    border-bottom-color: var(--cafe-acento, #A0785C);
 }
 
 .grupo-input i {
     margin-right: 15px;
-    color: #4e342e;
+    color: rgba(255, 255, 255, 0.6);
     font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
 }
 
 .grupo-input input {
@@ -80,32 +88,122 @@ body {
     outline: none;
     color: #fff;
     width: 100%;
-    font-size: 0.95rem;
+    font-size: 1rem;
+    padding: 2px 0;
 }
 
 .grupo-input input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.toggle-pass {
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.4);
+    transition: color 0.2s;
+}
+
+.toggle-pass:hover { color: #fff; }
+
+.olvido-pass {
+    text-align: right;
+    margin-top: -10px;
+    margin-bottom: 25px;
+}
+
+.olvido-pass a {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.olvido-pass a:hover { color: #fff; text-decoration: underline; }
+
+
+.invalid-feedback {
+    display: block;
+    color: #ff6b6b; 
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding-left: 35px;
+    margin-top: 6px;
+    position: absolute; 
+    animation: fadeInError 0.3s ease-out forwards;
+}
+
+@keyframes fadeInError {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+.grupo-input:has(input.is-invalid) {
+    border-bottom-color: #ff6b6b !important;
 }
 
 
 .btn-registrarse {
     display: block;
-    width: 70%;
-    margin: 40px auto 10px;
-    padding: 12px;
-    border-radius: 30px;
-    border: none;
-    background-color: #5d4037;
+    width: 100%; 
+    padding: 14px;
+    border-radius: 50px;
+    border: 2px solid transparent;
+    background-color: var(--cafe-acento, #A0785C);
     color: white;
-    font-size: 1.1rem;
-    font-weight: bold;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
     cursor: pointer;
-    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.3), 
-                2px 2px 10px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    margin-top: 30px;
 }
 
 .btn-registrarse:hover {
-    transform: scale(1.05);
-    background-color: #4e342e;
+    background-color: transparent;
+    border-color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+
+#pswd_info {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    padding: 15px 20px;
+    margin-top: 15px;
+    border: 1px solid rgba(255,255,255,0.1);
+    animation: slideDownInfo 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+#pswd_info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+#pswd_info li {
+    font-size: 0.78rem;
+    color: #ff6b6b;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.3s ease;
+}
+
+
+#pswd_info li.valid {
+    color: #2ecc71;
+}
+
+#pswd_info li::before {
+    content: "•";
+    font-size: 1.2rem;
+}
+
+@keyframes slideDownInfo {
+    from { opacity: 0; transform: scale(0.95) translateY(-10px); max-height: 0; }
+    to { opacity: 1; transform: scale(1) translateY(0); max-height: 200px; }
 }

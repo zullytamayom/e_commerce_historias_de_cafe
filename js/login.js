@@ -68,7 +68,7 @@ function inicializarLogin() {
                 timer: 3400,
                 showConfirmButton: false
             }).then(() => {
-                window.location.href = "/pages/users/users.html";
+                window.location.href = "/pages/home/home.html";
             });
         }
     });

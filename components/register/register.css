@@ -162,7 +162,7 @@
 }
 
 .btn-registrarse:hover {
-    background-color: var(--cafe-acento);
+    background-color: #A0785C;
     transform: translateY(-1.5px);
     box-shadow: 0 8px 20px rgba(169, 132, 103, 0.3);
 }

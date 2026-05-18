@@ -67,8 +67,8 @@
 
 /* Animación sofisticada sin perder la forma ovalada */
 .btnEnviar:hover {
-    background: transparent;
-    color: var(--color-primary) !important;
+    background: var(--color-primary);
+    color: #fdfcfb !important;
     border-color: var(--color-primary);
     transform: translateY(-3px);
     box-shadow: 0 10px 22px rgba(83, 39, 33, 0.35);

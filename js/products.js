@@ -1,216 +1,270 @@
 const listaProductos = [];
 
-// --- 1. LÓGICA DEL FORMULARIO ---
+// --- 1. LÓGICA DEL FORMULARIO (CORREGIDA Y SINCRONIZADA) ---
 function initProductLogic() {
-    const form = document.getElementById('form-producto');
-    const modal = document.getElementById('modal-producto');
+  const form = document.getElementById("form-producto");
+  const modal = document.getElementById("modal-producto");
 
-    if (!form) {
-        console.error("No se encontró el formulario con id 'form-producto'");
-        return;
+  if (!form) {
+    console.error("No se encontró el formulario con id 'form-producto'");
+    return;
+  }
+
+  // IMPORTANTE: Clonar el formulario elimina cualquier addEventListener previo acumulado
+  const nuevoForm = form.cloneNode(true);
+  form.parentNode.replaceChild(nuevoForm, form);
+
+  nuevoForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    // Limpiar errores anteriores
+    document.querySelectorAll(".invalid-feedback").forEach((el) => el.remove());
+    document
+      .querySelectorAll(".is-invalid")
+      .forEach((el) => el.classList.remove("is-invalid"));
+
+    let isValid = true;
+
+    // --- ENLAZAR INPUTS (Sincronizado con el nuevo HTML) ---
+    const marcaInput = document.getElementById("marca"); // Ajustado: id="marca"
+    const origenInput = document.getElementById("origen");
+    const tostadoInput = document.getElementById("tostado");
+    const regionInput = document.getElementById("region");
+    const imagenInput = document.getElementById("imagen");
+    const stockInput = document.getElementById("stock");
+    const precioInput = document.getElementById("precio");
+    const descInput = document.getElementById("descripcion");
+
+    // --- VALIDACIONES ---
+    if (!marcaInput || marcaInput.value.trim().length < 3) {
+      if (marcaInput) mostrarError(marcaInput, "La marca es obligatoria (mín. 3 caracteres)");
+      isValid = false;
     }
 
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
+    if (!origenInput || origenInput.value.trim().length < 3) {
+      if (origenInput) mostrarError(origenInput, "La finca de origen es obligatoria (mín. 3 caracteres)");
+      isValid = false;
+    }
 
-        // Limpiar errores anteriores
-        document.querySelectorAll(".invalid-feedback").forEach(el => el.remove());
-        document.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
+    if (!tostadoInput || !tostadoInput.value) {
+      if (tostadoInput) mostrarError(tostadoInput, "Selecciona un tipo de tostión");
+      isValid = false;
+    }
 
-        let isValid = true;
+    if (!regionInput || !regionInput.value) {
+      if (regionInput) mostrarError(regionInput, "Selecciona la región del café");
+      isValid = false;
+    }
 
-        // --- VALIDACIONES ---
-        const nombreInput = document.getElementById('nombre');
-        const origenInput = document.getElementById('origen');
-        const tostadoInput = document.getElementById('tostado');
-        const estadoInput = document.getElementById('estado');
-        const imagenInput = document.getElementById('imagen');
-        const stockInput = document.getElementById('stock');
-        const precioInput = document.getElementById('precio');
-        const descInput = document.getElementById('descripcion');
+    if (!imagenInput || !imagenInput.files[0]) {
+      if (imagenInput) mostrarError(imagenInput, "Debes cargar una imagen");
+      isValid = false;
+    }
 
-        if (nombreInput.value.trim().length < 3) {
-            mostrarError(nombreInput, 'Nombre obligatorio (mín. 3 caracteres)');
-            isValid = false;
-        }
+    if (!stockInput || stockInput.value === "" || parseInt(stockInput.value) < 0) {
+      if (stockInput) mostrarError(stockInput, "Stock no válido");
+      isValid = false;
+    }
 
-        if (origenInput.value.trim().length < 3) {
-            mostrarError(origenInput, 'Origen obligatorio (mín. 3 caracteres)');
-            isValid = false;
-        }
+    if (!precioInput || precioInput.value === "" || parseFloat(precioInput.value) <= 0) {
+      if (precioInput) mostrarError(precioInput, "El precio debe ser mayor a 0");
+      isValid = false;
+    }
 
-        if (!tostadoInput.value) {
-            mostrarError(tostadoInput, 'Selecciona un tipo de tostión');
-            isValid = false;
-        }
+    if (!descInput || descInput.value.trim().length < 10) {
+      if (descInput) mostrarError(descInput, "Descripción demasiado corta (mín. 10 caracteres)");
+      isValid = false;
+    }
 
-        if (!estadoInput.value) {
-            mostrarError(estadoInput, 'Selecciona el estado');
-            isValid = false;
-        }
+    // --- PROCESO DE GUARDADO ASINCRÓNICO ---
+    if (isValid) {
+      const file = imagenInput.files[0];
+      const reader = new FileReader();
 
-        if (!imagenInput.files[0]) {
-            mostrarError(imagenInput, 'Debes cargar una imagen');
-            isValid = false;
-        }
+      reader.onload = function () {
+        const base64Image = reader.result;
+        
+        const producto = {
+          id: Date.now(),
+          nombre: marcaInput.value.trim(), // Se mapea marca a la propiedad 'nombre' para la tabla
+          origen: origenInput.value.trim(),
+          tostado: tostadoInput.value,
+          region: regionInput.value,
+          estado: "Activo", // Estado lógico controlado por el sistema por defecto
+          stock: parseInt(stockInput.value),
+          precio: parseFloat(precioInput.value),
+          descripcion: descInput.value.trim(),
+          imagen: base64Image
+        };
 
-        if (stockInput.value === '' || parseInt(stockInput.value) < 0) {
-            mostrarError(stockInput, 'Stock no válido');
-            isValid = false;
-        }
+        // Guardar en el estado de la aplicación
+        listaProductos.push(producto);
+        
+        // Guardar en LocalStorage
+        localStorage.setItem("productos", JSON.stringify(listaProductos));
 
-        if (precioInput.value === '' || parseFloat(precioInput.value) <= 0) {
-            mostrarError(precioInput, 'Precio debe ser mayor a 0');
-            isValid = false;
-        }
+        // Actualizar la interfaz física
+        actualizarTabla();
 
-        if (descInput.value.trim().length < 10) {
-            mostrarError(descInput, 'Descripción demasiado corta');
-            isValid = false;
-        }
+        // Limpiar el formulario y cerrar el modal ANTES de la alerta para mejorar UX
+        nuevoForm.reset();
+        modal.style.display = "none";
 
-        // --- GUARDADO ---
-        if (isValid) {
-            const file = imagenInput.files[0];
-            const reader = new FileReader();
-            
-
-            reader.onload = function (e){
-            const base64Image = reader.result
-            const producto = {
-                id: Date.now(),
-                nombre: nombreInput.value.trim(),
-                origen: origenInput.value.trim(),
-                tostado: tostadoInput.value,
-                estado: estadoInput.value,
-                stock: parseInt(stockInput.value),
-                precio: parseFloat(precioInput.value),
-                descripcion: descInput.value.trim(),
-                imagen: base64Image      //imagenInput.files[0].name
-            };
-
-            listaProductos.push(producto);
-            console.log("%c☕ Nuevo Producto Agregado:", "color: #6F4E37; font-weight: bold; font-size: 12px;");
-            console.table(listaProductos);
-
-
-            /// local stage (simulación)
-            localStorage.setItem('productos', JSON.stringify(listaProductos));
-            
-            // Actualizar la tabla visualmente
-            actualizarTabla();
-
-            // Reset y cierre
-            form.reset();
-            modal.style.display = "none"; 
-
-            setTimeout(() => {
-                swal.fire({
-                    icon: 'success',
-                    iconColor: '#8B5E3C',
-                    title: `¡Producto de Historias de Café agregado con éxito!`,
-                    confirmButtonColor: '#8B5E3C',
-                    timer: 3400,
-                    showConfirmButton: false    
-                });
-            }, 100);
-            };
-            reader.readAsDataURL(file);
-        }
-    
-    });
-    
+        // Lanzar alerta estética de SweetAlert2
+        setTimeout(() => {
+          Swal.fire({
+            icon: "success",
+            iconColor: "#532721",
+            title: "¡Producto Agregado!",
+            text: "El producto se guardó correctamente en Historias de Café",
+            confirmButtonColor: "#B08D57",
+            confirmButtonText: "Genial",
+          });
+        }, 100);
+      };
+      
+      reader.readAsDataURL(file);
+    }
+  });
 }
 
-// --- MOSTRAR ERRORES ---
+// --- 2. ELIMINAR PRODUCTO ---
+function eliminarProducto(id) {
+  const producto = listaProductos.find(prod => prod.id === id);
+  if (!producto) return;
+
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: `Vas a eliminar "${producto.nombre}" de Historias de Café.`,
+    icon: 'warning',
+    iconColor: '#d33',
+    showCancelButton: true,
+    confirmButtonColor: '#532721',
+    cancelButtonColor: '#7a7a7a',
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar',
+    reverseButtons: true 
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const index = listaProductos.findIndex(prod => prod.id === id);
+      
+      if (index !== -1) {
+        listaProductos.splice(index, 1);
+        localStorage.setItem("productos", JSON.stringify(listaProductos));
+        actualizarTabla();
+        
+        Swal.fire({
+          icon: 'success',
+          title: 'Eliminado',
+          text: 'El producto ha sido removido con éxito.',
+          confirmButtonColor: '#B08D57',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      }
+    }
+  });
+}
+
+// --- 3. MOSTRAR ERRORES ---
 function mostrarError(input, mensaje) {
-    input.classList.add('is-invalid');
-    const error = document.createElement('div');
-    error.className = 'invalid-feedback';
-    error.textContent = mensaje;
-    input.parentElement.appendChild(error);
+  input.classList.add("is-invalid");
+  const error = document.createElement("div");
+  error.className = "invalid-feedback";
+  error.textContent = mensaje;
+  input.parentElement.appendChild(error);
 
-    input.addEventListener('input', function handleInput() {
-        if (input.value.trim() !== '') {
-            input.classList.remove('is-invalid');
-            error.remove();
-            input.removeEventListener('input', handleInput);
-        }
-    });
+  input.addEventListener("input", function handleInput() {
+    if (input.value.trim() !== "") {
+      input.classList.remove("is-invalid");
+      error.remove();
+      input.removeEventListener("input", handleInput);
+    }
+  });
 }
 
-// --- RENDERIZAR TABLA EN ADMIN.HTML ---
+// --- 4. RENDERIZAR TABLA CON DISEÑO PREMIUM ---
 function actualizarTabla() {
-    const tbody = document.getElementById('cuerpo-tabla');
-    if (!tbody) return;
+  const tbody = document.getElementById("cuerpo-tabla");
+  if (!tbody) return;
 
-    tbody.innerHTML = ""; // Limpiar tabla
+  tbody.innerHTML = ""; 
 
-    listaProductos.forEach(prod => {
-        const fila = `
+  listaProductos.forEach((prod) => {
+    // Salvaguarda: si viene de un registro viejo sin estado, se asigna 'Activo'
+    const estadoActual = prod.estado || "Activo";
+    const badgeClass = estadoActual === "Activo" ? "badge-activo" : "badge-inactivo";
+
+    const fila = `
             <tr>
-                <td>${prod.nombre}</td>
-                <td>$${prod.precio.toLocaleString()}</td>
-                <td>${prod.stock}</td>
-                <td><span class="badge ${prod.estado === 'Activo' ? 'bg-success' : 'bg-secondary'}">${prod.estado}</span></td>
-                <td>
-                    <button class="btn-edit">✏️</button>
-                    <button class="btn-delete">🗑️</button>
+                <td class="text-left">
+                  <strong>${prod.nombre}</strong>
+                  <br><small style="color: #888; font-size: 0.8rem;">📍 ${prod.region || 'Región no especificada'}</small>
+                </td>
+                <td class="text-right"><strong>$${prod.precio.toLocaleString()}</strong></td>
+                <td class="text-right">${prod.stock} uds</td>
+                <td class="text-center">
+                    <span class="${badgeClass}">${estadoActual}</span>
+                </td>
+                <td class="text-center">
+                    <div class="actions-wrapper">
+                        <button class="btn-table-edit" title="Editar">
+                            <i class="bi bi-pencil"></i> Editar
+                        </button>
+                        <button class="btn-table-delete" title="Borrar" data-id="${prod.id}" onclick="eliminarProducto(${prod.id})">
+                            <i class="bi bi-trash"></i> Borrar
+                        </button>
+                    </div>
                 </td>
             </tr>
         `;
-        tbody.innerHTML += fila;
-    });
+    tbody.innerHTML += fila;
+  });
 }
 
-// --- MODAL (OPEN/CLOSE) ---
-const btnAdd = document.querySelector('.btn-add');
-const modal = document.getElementById('modal-producto');
-const btnClose = document.querySelector('.close-btn');
+// --- 5. MODAL (OPEN/CLOSE) ---
+const btnAdd = document.querySelector(".btn-add");
+const modal = document.getElementById("modal-producto");
+const btnClose = document.querySelector(".close-btn");
 
 if (btnAdd) {
-    btnAdd.addEventListener("click", async () => {
-        modal.style.display = "block";
+  btnAdd.addEventListener("click", async () => {
+    modal.style.display = "block";
 
-        try {
-            const respuesta = await fetch('/components/product/productForm.html');
-            if (!respuesta.ok) throw new Error("No se pudo cargar el formulario");
+    try {
+      const respuesta = await fetch("/components/product/productForm.html");
+      if (!respuesta.ok) throw new Error("No se pudo cargar el formulario");
 
-            const htmlFormulario = await respuesta.text();
-            document.getElementById('productform-container').innerHTML = htmlFormulario;
-            initProductLogic();
-
-        } catch (error) {
-            console.error("Error cargando el form:", error);
-        }
-    });
+      const htmlFormulario = await respuesta.text();
+      document.getElementById("productform-container").innerHTML = htmlFormulario;
+      
+      initProductLogic();
+    } catch (error) {
+      console.error("Error cargando el form:", error);
+    }
+  });
 }
 
-// Cerrar modal
 if (btnClose) {
-    btnClose.onclick = () => modal.style.display = "none";
+  btnClose.onclick = () => (modal.style.display = "none");
 }
 
 window.onclick = (event) => {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
 };
 
-// --- PERSISTENCIA: Cargar datos al iniciar ---
+// --- 6. PERSISTENCIA: Cargar datos al iniciar ---
 function cargarDesdeStorage() {
-    const datosGuardados = localStorage.getItem('productos');
-    if (datosGuardados) {
-        // Limpiamos el array actual y le pasamos los datos del storage
-        const productosRecuperados = JSON.parse(datosGuardados);
-        
-        // Usamos spread operator para meter los datos en nuestra lista constante
-        listaProductos.push(...productosRecuperados);
-        
-        // Refrescamos la tabla para que se vean
-        actualizarTabla();
-    }
+  const datosGuardados = localStorage.getItem("productos");
+  if (datosGuardados) {
+    const productosRecuperados = JSON.parse(datosGuardados);
+    listaProductos.length = 0; 
+    listaProductos.push(...productosRecuperados);
+    actualizarTabla();
+  }
 }
 
-// Ejecutar cuando cargue el script
+// Ejecución inicial de persistencia
 cargarDesdeStorage();

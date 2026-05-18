@@ -1,11 +1,13 @@
 @import url('/assets/css/paletaColores.css');
 
-{
+/* ==================== VARIABLES LOCALES GLOBALES ==================== */
+:root {
   --bg-main: #f4f4f4;
   --accent: #6f4e37;
   --text-dark: #333;
 }
 
+/* ==================== ESTILOS GENERALES ==================== */
 body {
   font-family: "Segoe UI", sans-serif;
   margin: 0;
@@ -17,16 +19,18 @@ body {
   min-height: 100vh;
 }
 
-/* Sidebar */
+/* ==================== SIDEBAR ==================== */
 .sidebar {
   width: 160px;
   padding: 20px;
   margin: 0;
 }
+
 .sidebar ul {
   list-style: none;
   padding: 0;
 }
+
 .sidebar li {
   display: flex;
   align-items: center;
@@ -44,19 +48,19 @@ body {
   background: var(--color-primary-active);  /* #3d1c18 marrón más oscuro */
 }
 
-
 .sidebar li.active {
   background: var(--color-secondary);       /* #B08D57 dorado */
   color: var(--color-primary);              /* #532721 texto marrón sobre dorado */
   font-weight: 600;
 }
 
-/* Main Content */
+/* ==================== CONTENIDO PRINCIPAL ==================== */
 .main-content {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
+
 .top-bar {
   background: white;
   padding: 15px 30px;
@@ -69,122 +73,209 @@ body {
   padding: 25px;
 }
 
-/* Stats Cards */
+/* ==================== TARJETAS DE ESTADÍSTICAS ==================== */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 15px;
   margin-bottom: 30px;
 }
+
 .stat-card {
   background: #d9d9d9;
   padding: 20px;
   text-align: center;
   border-radius: 4px;
 }
+
 .stat-card strong {
   display: block;
   font-size: 1.5rem;
 }
 
-/* Tabla */
+/* ==================== SECCIÓN DE LA TABLA PREMIUM ==================== */
 .table-section {
   background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(83, 39, 33, 0.05);
 }
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #f4f0ea;
+}
+
+.table-header h3 {
+  font-family: "Playfair Display", serif;
+  color: var(--color-primary);
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
 table {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 5px;
 }
+
 th {
-  background: #e0e0e0;
-  padding: 12px;
-  text-align: left;
-}
-td {
-  padding: 12px;
-  border-bottom: 1px solid #eee;
-}
-
-/* Botones de estado parecidos a la imagen */
-.status-pill {
-  padding: 4px 12px;
-  border-radius: 20px;
+  background-color: #fcfbfa;
+  color: #666;
   font-size: 0.85rem;
-  background: #bbb;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 16px;
+  border-bottom: 2px solid #eaddca;
 }
 
-/* Contenedor del encabezado de la tabla */
-.table-header {
-    display: flex;
-    flex-direction: column; 
-    align-items: flex-start; 
-    gap: 10px; 
-    margin-bottom: 15px;
+td {
+  padding: 16px;
+  color: var(--color-text-default);
+  font-size: 0.95rem;
+  border-bottom: 1px solid #f4f0ea;
+  vertical-align: middle;
+  transition: background-color 0.2s ease;
 }
 
+tbody tr:hover td {
+  background-color: #fdfbf7; 
+}
 
+/* Clases de alineación de datos */
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+/* Badges de Estado del Producto */
+.badge-activo {
+  background-color: #e6f4ea;
+  color: #137333;
+  padding: 6px 12px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.badge-inactivo {
+  background-color: #f1f3f4;
+  color: #5f6368;
+  padding: 6px 12px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Botones de acción dentro de la tabla */
+.actions-wrapper {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.btn-table-edit, .btn-table-delete {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-table-edit {
+  background-color: #fbf5ee;
+  color: var(--color-secondary);
+}
+
+.btn-table-edit:hover {
+  background-color: var(--color-secondary);
+  color: white;
+}
+
+.btn-table-delete {
+  background-color: #fdebee;
+  color: #d93025;
+}
+
+.btn-table-delete:hover {
+  background-color: #d93025;
+  color: white;
+}
+
+/* ==================== BOTÓN AÑADIR PRODUCTO (CABEZA TABLA) ==================== */
 .btn-add {
-    background-color: #6F4E37; 
-    color: #ffffff;
-    padding: 8px 16px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: fit-content;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: #6F4E37; 
+  color: #ffffff;
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  width: fit-content;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-
 
 .btn-add:hover {
-    background-color: #5d4037;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  background-color: #5d4037;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
 .btn-add:active {
-    transform: translateY(0);
+  transform: translateY(0);
 }
 
-/* MODAL */
-/* El fondo oscuro */
+/* ==================== VENTANAS MODALES ==================== */
 .modal-overlay {
-    display: none; /* Escondido por defecto */
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(3px); /* Efecto borroso elegante */
-    z-index: 1000;
+  display: none; 
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px); 
+  z-index: 1000;
 }
 
-/* La caja del formulario */
 .modal-content {
-    background: white;
-    width: 90%;
-    max-width: 500px;
-    margin: 5% auto;
-    padding: 25px;
-    border-radius: 12px;
-    position: relative;
-    animation: slideIn 0.3s ease-out;
+  background: white;
+  width: 90%;
+  max-width: 500px;
+  margin: 5% auto;
+  padding: 25px;
+  border-radius: 12px;
+  position: relative;
+  animation: slideIn 0.3s ease-out;
 }
 
 .close-btn {
-    position: absolute;
-    right: 20px; top: 15px;
-    font-size: 24px;
-    cursor: pointer;
-    color: #6F4E37;
+  position: absolute;
+  right: 20px; top: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #6F4E37;
 }
 
 @keyframes slideIn {
-    from { transform: translateY(-20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }

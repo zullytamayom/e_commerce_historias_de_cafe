@@ -63,6 +63,12 @@ button:active {
   font-size: 0.95rem;
   font-weight: 600;
   text-align: center;
-  color: var(--color-background);  /* #E4DBBF crema — contrasta con el marrón */
+  color: var(--color-background); 
   letter-spacing: 0.5px;
+}
+
+.sidebar nav ul li a {
+    color: inherit;           
+    text-decoration: none;  
+    display: inline-block;  
 }

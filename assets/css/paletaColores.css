@@ -1,11 +1,10 @@
-:root
-{
+:root {
   /* Paleta de Colores (Basada en Herencia y Tierra) */
   --color-primary: #532721;           /* Marrón oscuro (Principal) */
   --color-primary-active: #3d1c18;    /* Versión más oscura para hover */
   
   --color-secondary: #B08D57;         /* Dorado/Tierra */
-  --color-secondary-muted: rgba(176, 141, 87, 0.6); /* #B08D57 con 60% transparencia */
+  --color-secondary-muted: rgba(176, 141, 87, 0.6); 
   
   --color-accent: #5F6335;            /* Verde Oliva */
   
@@ -15,11 +14,9 @@
   /* Variables de apoyo para el formulario Bootstrap/Custom */
   --color-border-default: #B08D57;
   --color-border-active: #532721;
-  --color-highlight: rgba(95, 99, 53, 0.2); /* Resalte basado en el Verde Oliva */
-}
+  --color-highlight: rgba(95, 99, 53, 0.2); 
 
-Fonts
-{
+  /*  CORREGIDO: Las fuentes ahora están dentro de :root y son globales */
   --font-family-body: "Source Sans 3", sans-serif;
   --font-family-display: "Playfair Display", serif;
 }
@@ -35,4 +32,3 @@ Fonts
   width: 26px;
   height: 26px;
 }
-

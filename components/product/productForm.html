@@ -1,30 +1,45 @@
 <div class="container">
-<div class="contenedor-admin">
-    <h2>Panel de Administración - Carga de Café</h2>
-    <form id="form-producto" novalidate>
-        <input type="text" id="nombre" placeholder="Nombre del grano (Ej: Geisha)" >
-        <input type="text" id="origen" placeholder="Origen (Ej: Huila, Colombia)" >
-        <select id="tostado">
-  
-            <option value="" selected>seleccionar tipo de tostion</option>
-            <option value="Claro">Tostado Claro</option>
-            <option value="Medio">Tostado Medio</option>
-            <option value="Oscuro">Tostado Oscuro</option>
-        </select>
-        <select  id="estado">
-            <label for="estado">Estado</label>
-            <option value="" selected> Seleccionar estado</option>
-            <option value="disponible">Disponible</option>
-            <option value="no-disponible">No disponible</option>
-        </select>
+    <div class="contenedor-admin">
+        <h2>Panel de Administración - Carga de Café</h2>
+        <form id="form-producto" novalidate>
+            
+            <!-- Nombre -->
+            <input type="text" id="marca" placeholder="Marca (Ej: Geisha)">
+            
+            <!-- Finca -->
+            <input type="text" id="origen" placeholder="Finca de origen">
+            
+            <!-- Tostión -->
+            <select id="tostado">
+                <option value="" disabled selected>Seleccionar tipo de tostión</option>
+                <option value="Claro">Tostado Claro</option>
+                <option value="Medio">Tostado Medio</option>
+                <option value="Oscuro">Tostado Oscuro</option>
+            </select>
 
-     <label for="imagen" class="form-label">Imagen del producto</label>
-  <input class="form-control" type="file" id="imagen" accept="image/*" >
-    
-    <input type="number" id="stock" placeholder="Cantidad en inventario (Stock)" >
-    <input type="number" id="precio" placeholder="Precio" required>
-        <textarea id="descripcion" placeholder="Notas de cata (Ej: Notas frutales, jazmín)"></textarea>
-        
-        <button type="submit" id="btnAgregar">Agregar al Catálogo</button>
-    </form>
+            <!-- Region -->
+            <select id="region">
+                <option value="" disabled selected>Seleccionar región colombiana</option>
+                <option value="Región Andina">Región Andina (Eje Cafetero, Huila, Santander, etc.)</option>
+                <option value="Región Caribe">Región Caribe (Sierra Nevada, Perijá)</option>
+                <option value="Región Pacífica">Región Pacífica</option>
+                <option value="Región de la Orinoquía">Región de la Orinoquía</option>
+                <option value="Región de la Amazonía">Región de la Amazonía</option>
+            </select>
+
+            <!-- Imagen -->
+            <label for="imagen" class="form-label">Imagen del producto</label>
+            <input class="form-control" type="file" id="imagen" accept="image/*">
+            
+            <!-- Stock y Precio -->
+            <input type="number" id="stock" placeholder="Cantidad en inventario (Stock)">
+            <input type="number" id="precio" placeholder="Precio unidad (COP)">
+            
+            <!-- Descripción -->
+            <textarea id="descripcion" placeholder="Notas de cata (Ej: Notas frutales, acidez cítrica, jazmín)"></textarea>
+            
+            <!-- Botón de envío -->
+            <button type="submit" id="btnAgregar">Agregar al Catálogo</button>
+        </form>
+    </div>
 </div>

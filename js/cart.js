@@ -432,7 +432,7 @@ function initCart()
         checkoutButton.textContent = "Cargando pago...";
         checkoutButton.disabled = true;
 
-        const response = await fetch("http://localhost:3000/create_preference",
+        const response = await fetch(`${process.env.BASE_URL || "http://localhost:3000"}/create_preference`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

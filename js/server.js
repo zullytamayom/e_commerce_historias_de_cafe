@@ -1,16 +1,24 @@
 const express = require("express");
 const cors = require("cors");
-require('dotenv').config({ path: '../.env' });
-console.log("Token cargado:", process.env.PAYMENT_ACCESS_TOKEN ? "SÍ" : "NO");
+const path = require("path"); // ← faltaba
+require('dotenv').config(); // Render inyecta las variables, no necesita ruta
 const { MercadoPagoConfig, Preference } = require("mercadopago");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-
 const client = new MercadoPagoConfig({
   accessToken: process.env.PAYMENT_ACCESS_TOKEN
+});
+
+// __dirname es js/, subimos un nivel para llegar a la raíz
+const ROOT = path.join(__dirname, '..');
+
+app.use(express.static(ROOT));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(ROOT, 'pages', 'home', 'home.html'));
 });
 
 app.post("/create_preference", async (req, res) => {
@@ -24,13 +32,15 @@ app.post("/create_preference", async (req, res) => {
       currency_id: "COP"
     }));
 
+    const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
+
     const result = await preference.create({
       body: {
-        items: req.body.items,
+        items: itemsLimpios, // ← ahora sí se usan los items limpios
         back_urls: {
-          success: "http://127.0.0.1:5502/pages/catalogo/catalogo.html",
-          failure: "http://127.0.0.1:5502/pages/catalogo/catalogo.html",
-          pending: "http://127.0.0.1:5502/pages/catalogo/catalogo.html",
+          success: `${BASE_URL}/pages/catalogo/catalogo.html`,
+          failure: `${BASE_URL}/pages/catalogo/catalogo.html`,
+          pending: `${BASE_URL}/pages/catalogo/catalogo.html`,
         },
       },
     });
@@ -43,6 +53,7 @@ app.post("/create_preference", async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log("Servidor corriendo en http://localhost:3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });

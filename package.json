@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "start": "node js/server.js"
+  },
+
   "dependencies":
   {
     "cors": "^2.8.6",

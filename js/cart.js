@@ -278,7 +278,7 @@ function initCart()
       })
 
       guardarCarritoStorage()
-      swal.fire({
+      Swal.fire({
             icon: 'success',
             iconColor: '#8B5E3C',
             //background: '#999',
@@ -432,7 +432,14 @@ function initCart()
         checkoutButton.textContent = "Cargando pago...";
         checkoutButton.disabled = true;
 
-        const response = await fetch(`${process.env.BASE_URL || "http://localhost:3000"}/create_preference`,
+        const API_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+        ? "http://localhost:3000"
+        : "https://e-commerce-historias-de-cafe.onrender.com";
+
+        const response = await fetch(`${API_URL}/create_preference`,
+
+
+
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

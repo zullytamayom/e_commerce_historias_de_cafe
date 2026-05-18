@@ -60,7 +60,6 @@ function inicializarLogin() {
                 window.location.href = "/pages/admin/admin.html";
             });
         } else {
-<<<<<<< Updated upstream
             swal.fire({
                 icon: 'success',
                 iconColor: '#8B5E3C',
@@ -69,12 +68,8 @@ function inicializarLogin() {
                 timer: 3400,
                 showConfirmButton: false
             }).then(() => {
-                window.location.href = "/pages/home/home.html";
+                window.location.href = "/pages/users/users.html";
             });
-=======
-            // Si es cualquier otro usuario, va al catálogo
-            window.location.href = "/pages/home/home.html";
->>>>>>> Stashed changes
         }
     });
 

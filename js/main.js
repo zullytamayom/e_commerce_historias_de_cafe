@@ -67,7 +67,7 @@ function initNavbar() {
   } else if (authBtn && userContent) {
     // ESTADO: INVITADO
     userContent.innerHTML = ""; // No hay saludo
-    authBtn.textContent = "Entrar";
+    authBtn.textContent = "Iniciar Sesión";
     authBtn.classList.remove("btn-logout");
 
     authBtn.onclick = () => {

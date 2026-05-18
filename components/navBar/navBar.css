@@ -48,13 +48,14 @@ body {
 .nav-custom-full {
   max-width: 1400px;
   margin: auto 55px;
-  height: 100px;
+  min-height: 100px;
   /* <Agrandar la barra para tener espacio */
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 5%;
-  flex-wrap: nowrap;
+  gap: 15px;
+  flex-wrap: wrap;
 
 }
 
@@ -99,6 +100,21 @@ body {
 .link3.active3 {
   color: var(--color-primary);
   border-bottom-color: var(--color-primary);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 10px;
+}
+
+.brand-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: 0.3px;
+  white-space: nowrap;
 }
 
 /* Recuadros de Botones carrito y usuario--- */
@@ -302,6 +318,11 @@ body {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  transition: transform 0.25s ease;
+}
+
+.hamburger-btn:hover {
+  transform: scale(1.05);
 }
 
 .hamburger-line {
@@ -310,7 +331,9 @@ body {
   background-color: var(--color-primary);
   display: block;
   border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease;
 }
+
 .navbar-toggler[aria-expanded="true"] .hamburger-line:nth-child(1) {
   transform: rotate(45deg) translate(5px, 5px);
 }
@@ -321,6 +344,86 @@ body {
 
 .navbar-toggler[aria-expanded="true"] .hamburger-line:nth-child(3) {
   transform: rotate(-45deg) translate(6px, -6px);
+}
+
+@media (max-width: 991.98px) {
+  .nav-custom-full {
+    margin: auto 16px;
+    padding: 10px 14px;
+    min-height: auto;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .navbar-toggler {
+    margin-left: auto;
+  }
+
+  .collapse.navbar-collapse {
+    width: 100%;
+    padding-top: 10px;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.35s ease, padding-top 0.35s ease;
+  }
+
+  .collapse.navbar-collapse.show {
+    opacity: 1;
+    max-height: 640px;
+    padding-top: 10px;
+  }
+
+  .navbar-nav.mx-auto {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    margin: 8px auto 0;
+  }
+
+  .navbar-nav.mx-auto .nav-link {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 0;
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  .navbar-nav.mx-auto .nav-link:hover {
+    color: var(--color-primary);
+    transform: scale(1.02);
+  }
+
+  .nav-actions {
+    width: 100%;
+    justify-content: center;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .user-auth-wrapper {
+    width: 100%;
+    justify-content: center;
+    padding-left: 0;
+    border-left: none;
+    border-top: 1px solid rgba(176, 141, 87, 0.16);
+    padding-top: 10px;
+    margin-top: 10px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .icon-btn3 {
+    margin-right: 0;
+  }
 }
 
 /* --- SECCIÓN DE USUARIO DINÁMICA */

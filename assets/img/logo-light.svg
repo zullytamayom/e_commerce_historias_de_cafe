@@ -1,0 +1,33 @@
+<svg width="240" height="80" viewBox="0 0 240 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Icono de Grano de Café -->
+  <g transform="translate(10, 10) scale(0.66)">
+    <path
+      d="M50 10C75 10 90 35 90 55C90 75 75 90 50 90C25 90 10 75 10 55C10 35 25 10 50 10Z"
+      fill="#532721"
+    />
+    <path
+      d="M50 10C35 30 65 70 50 90"
+      stroke="#B08D57"
+      stroke-width="6"
+      stroke-linecap="round"
+    />
+  </g>
+
+  <!-- Texto -->
+  <text 
+    x="85" 
+    y="42" 
+    fill="#532721" 
+    style="font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; letter-spacing: -0.02em;"
+  >
+    Historias
+  </text>
+  <text 
+    x="85" 
+    y="65" 
+    fill="#B08D57" 
+    style="font-family: 'Source Sans 3', sans-serif; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3em;"
+  >
+    DE CAFÉ
+  </text>
+</svg>

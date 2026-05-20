@@ -45,14 +45,14 @@ document.querySelectorAll('.opcionesBarra').forEach(link => {
 
 const videoCards = document.querySelectorAll(".video-card");
 
-const isMobile = window.innerWidth <= 768;
+const isMobile = () => window.matchMedia("(max-width: 768px)").matches;
 
 videoCards.forEach(card => {
 
     const video = card.querySelector("video");
 
     /* DESKTOP */
-    if(!isMobile){
+    if(!isMobile()){
 
         card.addEventListener("mouseenter", () => {
 
@@ -88,7 +88,7 @@ videoCards.forEach(card => {
 
                 v.controls = false;
 
-                v.parentElement.classList.remove("playing");
+                v.closest(".video-card")?.classList.remove("playing");
             });
 
             if(!isPlaying){

@@ -8,16 +8,29 @@ function cargarFormRegister() {
 
   if (!form) return;
 
-  // ── Ojito: mostrar / ocultar contraseña ────────────────────────────────
+  // ── Ojito: mostrar / ocultar contraseña Inicio Sesión ────────────────────────────────
   document.querySelectorAll(".toggle-pass").forEach(function (icono) {
     icono.addEventListener("click", function () {
-      const input = document.getElementById(this.getAttribute("data-target"));
+      const input = document.getElementById(this.getAttribute("data-target-login"));
       const viendo = input.type === "text";
       input.type = viendo ? "password" : "text";
       this.classList.toggle("fa-eye", viendo);
       this.classList.toggle("fa-eye-slash", !viendo);
     });
   });
+
+// ── Ojito: mostrar / ocultar contraseña registro  ────────────────────────────────
+  document.querySelectorAll(".toggle-pass").forEach(function (icono) {
+    icono.addEventListener("click", function () {
+      const input = document.getElementById(this.getAttribute("data-target-register"));
+      const viendo = input.type === "text";
+      input.type = viendo ? "password" : "text";
+      this.classList.toggle("fa-eye", viendo);
+      this.classList.toggle("fa-eye-slash", !viendo);
+    });
+  });
+
+
 
   // ── Indicadores de fortaleza en tiempo real ────────────────────────────
   function setIndicator(id, isValid) {

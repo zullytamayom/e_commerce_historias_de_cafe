@@ -615,8 +615,15 @@ body::before {
 
 /* Información */
 .video-info{
+    display: block;
     padding: 18px;
     background: white;
+    color: inherit;
+    text-decoration: none;
+}
+
+.video-info:hover{
+    text-decoration: none;
 }
 
 .video-info h3{

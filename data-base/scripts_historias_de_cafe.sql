@@ -125,7 +125,7 @@ INSERT INTO orders (state_order, subtotal, total, user_id) VALUES
 
 SELECT * FROM orders;
 --Insercion de datos en la tabla details
-INSERT INTO details (queantity_products, order_id, product_id) VALUES
+INSERT INTO details (quantity_products, order_id, product_id) VALUES
 (1, 1, 1),
 (2, 2, 2),
 (1, 3, 4),

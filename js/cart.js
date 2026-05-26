@@ -334,7 +334,7 @@ function initCart()
   document.addEventListener('catalogoListo', adjuntarBotonesCarrito)
 
   // =========================================================
-  // 7. API DE PAGO SINCRONIZADA CON TUS DTOS DE JAVA
+  // 7. API DE PAGO SINCRONIZADA
   // =========================================================
   const checkoutButton = document.getElementById("btn-pagar");
 

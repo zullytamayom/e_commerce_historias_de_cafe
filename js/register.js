@@ -19,7 +19,7 @@ function cargarFormRegister() {
     });
   });
 
-// ── Ojito: mostrar / ocultar contraseña registro  ────────────────────────────────
+  // ── Ojito: mostrar / ocultar contraseña registro  ────────────────────────────────
   document.querySelectorAll(".toggle-pass").forEach(function (icono) {
     icono.addEventListener("click", function () {
       const input = document.getElementById(this.getAttribute("data-target-register"));
@@ -29,8 +29,6 @@ function cargarFormRegister() {
       this.classList.toggle("fa-eye-slash", !viendo);
     });
   });
-
-
 
   // ── Indicadores de fortaleza en tiempo real ────────────────────────────
   function setIndicator(id, isValid) {
@@ -73,64 +71,84 @@ function cargarFormRegister() {
   inputEmail.addEventListener("blur", () => validarEmail(inputEmail));
 
   // ── Submit ─────────────────────────────────────────────────────────────
-  form.addEventListener("submit", function (e) {
+  form.addEventListener("submit", async function (e) {
     e.preventDefault();
 
     [inputName, inputEmail, inputPass1, inputPass2].forEach(limpiarError);
 
     const nombreOk = validarNombre(inputName);
-    const emailOk = validarEmail(inputEmail);
-    const passOk = validarFortaleza(inputPass1);
-    const matchOk = validarContrasenas(inputPass1, inputPass2);
+    const emailOk  = validarEmail(inputEmail);
+    const passOk   = validarFortaleza(inputPass1);
+    const matchOk  = validarContrasenas(inputPass1, inputPass2);
 
-    if (nombreOk && emailOk && passOk && matchOk) {
-      console.log("Formulario válido ✓");
+    if (!nombreOk || !emailOk || !passOk || !matchOk) return;
 
-      const nuevoUsuario = {
-        id: Date.now(),
-        name: inputName.value.trim(),
-        email: inputEmail.value.trim(),
-        password: inputPass1.value
-      };
+    // ── API: POST /auth/register ───────────────────────────────────────
+    const API_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+      ? "http://localhost:8080"
+      : "https://e-commerce-historias-de-cafe.onrender.com";
 
-      const usuariosRegistrados = JSON.parse(localStorage.getItem("usuarios")) || [];
+    const registerPayload = {
+      name:     inputName.value.trim(),
+      email:    inputEmail.value.trim(),
+      password: inputPass1.value
+    };
 
-      const existe = usuariosRegistrados.some(user => user.email === nuevoUsuario.email);
+    const btnSubmit = form.querySelector('[type="submit"]');
+    if (btnSubmit) { btnSubmit.disabled = true; btnSubmit.textContent = "Registrando..."; }
 
-      if (existe) {
+    try {
+      const response = await fetch(`${API_URL}/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(registerPayload)
+      });
 
-        swal.fire({
-            icon: 'info',
-            iconColor: '#8B5E3C',
-            title: `Este correo ya está registrado`,
-            confirmButtonColor: '#8B5E3C',
-            timer: 3400,
-            showConfirmButton: false
-        });
-        console.warn("Este correo ya está registrado");
+      if (response.status === 409) {
+        // El backend devuelve 409 si el correo ya existe
         mostrarError(inputEmail, "El correo ya está registrado");
-      } else {
-        
-        usuariosRegistrados.push(nuevoUsuario);
-      
-        localStorage.setItem("usuarios", JSON.stringify(usuariosRegistrados));
-
-        swal.fire({
-            icon: 'success',
-            iconColor: '#8B5E3C',
-            title: `Usuario registrado exitosamente`,
-            confirmButtonColor: '#8B5E3C',
-            timer: 3400,
-            showConfirmButton: false
+        Swal.fire({
+          icon: 'info',
+          iconColor: '#8B5E3C',
+          title: 'Este correo ya está registrado',
+          confirmButtonColor: '#8B5E3C',
+          timer: 3400,
+          showConfirmButton: false
         });
-        console.log("Usuario guardado exitosamente. Total:", usuariosRegistrados.length);
-
-     
-        form.reset();
-        [inputName, inputEmail, inputPass1, inputPass2].forEach(limpiarError);
+        return;
       }
-    }
 
+      if (!response.ok) throw new Error(`Error del servidor: ${response.status}`);
+
+      // UserResponseDTO: { id, name, email, role }
+      const nuevoUsuario = await response.json();
+
+      Swal.fire({
+        icon: 'success',
+        iconColor: '#8B5E3C',
+        title: `¡Bienvenid@ ${nuevoUsuario.name}!`,
+        text: 'Tu cuenta fue creada exitosamente.',
+        confirmButtonColor: '#8B5E3C',
+        timer: 3400,
+        showConfirmButton: false
+      });
+
+      console.log("Usuario registrado:", nuevoUsuario);
+
+      form.reset();
+      [inputName, inputEmail, inputPass1, inputPass2].forEach(limpiarError);
+
+    } catch (error) {
+      console.error("Error al registrar:", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al conectar con el servidor',
+        text: 'No se pudo completar el registro. Inténtalo de nuevo.',
+        confirmButtonColor: '#8B5E3C'
+      });
+    } finally {
+      if (btnSubmit) { btnSubmit.disabled = false; btnSubmit.textContent = "Registrarse"; }
+    }
   });
 
   // ── Validaciones por campo ─────────────────────────────────────────────────

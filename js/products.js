@@ -6,6 +6,22 @@ const API_URL_PRODUCTS = (window.location.hostname === "localhost" || window.loc
   ? "http://localhost:8080/products"
   : "https://e-commerce-historias-de-cafe.onrender.com/products";
 
+function obtenerHeadersAutenticados() {
+  const token = localStorage.getItem("authToken");
+  const headers = { "Content-Type": "application/json" };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  return headers;
+}
+
+function usuarioTienePermisosAdmin() {
+  const usuarioActivo = JSON.parse(localStorage.getItem("usuarioActivo"));
+  return usuarioActivo && usuarioActivo.role && usuarioActivo.role.toUpperCase() === "ADMIN";
+}
+
 // --- 1. LÓGICA DEL FORMULARIO (CONECTADA CON EL BACKEND) ---
 function initProductLogic() {
   const form = document.getElementById("form-producto");
@@ -19,6 +35,16 @@ function initProductLogic() {
   // Escuchar el evento directamente sobre el formulario cargado
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    if (!usuarioTienePermisosAdmin()) {
+      Swal.fire({
+        icon: "error",
+        title: "Permisos insuficientes",
+        text: "Debes iniciar sesión con un usuario ADMIN para crear productos.",
+        confirmButtonColor: "#532721"
+      });
+      return;
+    }
 
     // Limpiar errores anteriores
     document.querySelectorAll(".invalid-feedback").forEach((el) => el.remove());
@@ -117,11 +143,15 @@ function initProductLogic() {
         // FASE C: Petición POST al Controlador de Spring Boot
         const response = await fetch(API_URL_PRODUCTS, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: obtenerHeadersAutenticados(),
           body: JSON.stringify(productoPayload)
         });
 
-        if (!response.ok) throw new Error("El backend rechazó los datos (Error 400).");
+        if (response.status === 401 || response.status === 403) {
+          throw new Error("No tienes autorización para crear productos. Vuelve a iniciar sesión como ADMIN.");
+        }
+
+        if (!response.ok) throw new Error(`El backend rechazó los datos (Error ${response.status}).`);
 
         form.reset();
         modal.style.display = "none";
@@ -159,6 +189,16 @@ function initProductLogic() {
 function eliminarProducto(id) {
   if (!id) return;
 
+  if (!usuarioTienePermisosAdmin()) {
+    Swal.fire({
+      icon: "error",
+      title: "Permisos insuficientes",
+      text: "Debes iniciar sesión con un usuario ADMIN para eliminar productos.",
+      confirmButtonColor: "#532721"
+    });
+    return;
+  }
+
   const producto = listaProductos.find(prod => (prod.idProduct || prod.id) === id);
   const nombreDisplay = producto ? producto.name : "este producto";
 
@@ -177,10 +217,15 @@ function eliminarProducto(id) {
     if (result.isConfirmed) {
       try {
         const response = await fetch(`${API_URL_PRODUCTS}/${id}`, {
-          method: "DELETE"
+          method: "DELETE",
+          headers: obtenerHeadersAutenticados()
         });
 
-        if (!response.ok) throw new Error("No se pudo eliminar el producto del servidor.");
+        if (response.status === 401 || response.status === 403) {
+          throw new Error("No tienes autorización para eliminar productos. Vuelve a iniciar sesión como ADMIN.");
+        }
+
+        if (!response.ok) throw new Error(`No se pudo eliminar el producto del servidor. Error ${response.status}.`);
 
         await cargarProductosDesdeBackend();
         

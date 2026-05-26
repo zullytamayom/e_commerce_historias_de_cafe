@@ -368,9 +368,21 @@ function initCart()
           ? "http://localhost:8080"
           : "https://e-commerce-historias-de-cafe.onrender.com";
 
+        const token = localStorage.getItem("authToken");
+        const usuarioActivo = JSON.parse(localStorage.getItem("usuarioActivo"));
+
+        if (!token || !usuarioActivo || !(usuarioActivo.id || usuarioActivo.idUser)) {
+          throw new Error("Debes iniciar sesión para procesar el pago.");
+        }
+
+        const authHeaders = {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        };
+
         // JSON estructurado idéntico a OrderRequestDto
         const orderPayload = {
-          userId: 1, 
+          userId: usuarioActivo.id || usuarioActivo.idUser, 
           stateOrder: "En proceso", 
           details: details 
         };
@@ -378,9 +390,13 @@ function initCart()
         // PASO 1: Crear la orden
         const orderResponse = await fetch(`${API_URL}/orders`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: authHeaders,
           body: JSON.stringify(orderPayload)
         });
+
+        if (orderResponse.status === 401 || orderResponse.status === 403) {
+          throw new Error("No tienes autorización para crear la orden. Verifica los permisos del rol CLIENTE en el backend.");
+        }
 
         if (!orderResponse.ok) throw new Error("Error interno en /orders");
 
@@ -390,9 +406,13 @@ function initCart()
         // PASO 2: Procesar el pago pasándole el ID real
         const paymentResponse = await fetch(`${API_URL}/payments`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: authHeaders,
           body: JSON.stringify({ orderId: nuevoOrderId })
         });
+
+        if (paymentResponse.status === 401 || paymentResponse.status === 403) {
+          throw new Error("No tienes autorización para procesar el pago. Verifica los permisos del rol CLIENTE en el backend.");
+        }
 
         if (!paymentResponse.ok) throw new Error("Error interno en /payments");
 

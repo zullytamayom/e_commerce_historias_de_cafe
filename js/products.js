@@ -74,7 +74,7 @@ function initProductLogic() {
     if (isValid) {
       const file = imagenInput.files[0];
       
-      const CLOUD_NAME = "drm0fsfix"; 
+      const CLOUD_NAME = "dg6oyckab"; 
       const UPLOAD_PRESET = "historias_de_cafe"; 
       
       const formData = new FormData();

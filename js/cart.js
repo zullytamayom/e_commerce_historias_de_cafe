@@ -1,25 +1,15 @@
-// initCart — callback de loadComponent en main.js
-// Se ejecuta cuando cart.html ya está en el DOM
 
 function initCart()
 {
-
-  // VARIABLES
+  // 1. VARIABLES
   let cantidadItems = 0
   let totalAcumulado = 0
 
-  // LOCAL STORAGE
+  // 2. LOCAL STORAGE
   let carritoGuardado =
       JSON.parse(localStorage.getItem("carritoCafe")) || []
 
-  function guardarCarritoStorage() {
-    localStorage.setItem(
-        "carritoCafe",
-        JSON.stringify(carritoGuardado)
-    )
-  }
-
-  // REFERENCIAS
+  // 3. REFERENCIAS
   const carritoLateral = document.querySelector('#carrito-lateral')
   const carritoOverlay = document.querySelector('#carrito-overlay')
   const carritoItems = document.querySelector('#carrito-items')
@@ -28,15 +18,22 @@ function initCart()
   const btnPagar = document.querySelector('.btn-pagar')
   const badgeNav = document.getElementById('conteo-productos-nav');
 
-
   carritoItems.innerHTML = ''
 
-  // ALERTAS
+  // =========================================================
+  // 4. FUNCIONES DE UTILERÍA Y CONTEO
+  // =========================================================
+  function guardarCarritoStorage() {
+    localStorage.setItem(
+        "carritoCafe",
+        JSON.stringify(carritoGuardado)
+    )
+  }
+
   function alertaProducto(texto, icono = "success")
   {
-
     if (typeof Swal !== "undefined")
-      {
+    {
       Swal.fire(
       {
         toast: true,
@@ -51,7 +48,38 @@ function initCart()
     {
       alert(texto)
     }
+  }
 
+  function updateConteo()
+  {
+    if (conteoProductos) {
+      conteoProductos.textContent =
+        cantidadItems === 1
+          ? '1 producto'
+          : `${cantidadItems} productos`;
+    }
+
+    if (badgeNav) {
+        badgeNav.textContent = cantidadItems;
+        console.log("Badge actualizado a:", cantidadItems);
+    } else {
+        console.warn("No se encontró el badge con ID: conteo-productos-nav");
+    }
+  }
+
+  function updateSubtotal()
+  {
+    if (subtotalValor) {
+      subtotalValor.textContent =
+          '$' +
+          totalAcumulado.toLocaleString(
+              'es-CO',
+              {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+              }
+          )
+    }
   }
 
   // ABRIR / CERRAR
@@ -61,60 +89,22 @@ function initCart()
     carritoOverlay.classList.toggle('activo')
   }
 
-  // BOTONES DEL CATÁLOGO
-  function adjuntarBotonesCarrito()
+  function actualizarCantidadItem(div, nuevaCantidad)
   {
+    const precio = parseFloat(div.dataset.precio)
+    const nuevoSubtotal = precio * nuevaCantidad
 
-    document.querySelectorAll('.btn-cart').forEach(function (boton)
-    {
-
-      if (boton.dataset.cartReady) return
-      boton.dataset.cartReady = 'true'
-
-      boton.addEventListener('click', function ()
-      {
-
-        const card = boton.closest('.card')
-
-        const nombre =
-            card.querySelector('h3').textContent.trim()
-
-        const imgSrc =
-            card.querySelector('img')?.src || ''
-
-        const precioTexto =
-            card.querySelector('.price').textContent
-                .replace('$', '')
-                .replace(/\./g, '')
-                .trim()
-
-        const precio = parseFloat(precioTexto)
-
-        agregarAlCarrito(nombre, precio, imgSrc)
-
-        if (!carritoLateral.classList.contains('abierto'))
-        {
-          toggleCarrito()
-        }
-
-      })
-
-    })
-
+    div.dataset.cantidad = nuevaCantidad
+    div.querySelector('.item-cantidad').textContent = nuevaCantidad
+    div.querySelector('.item-subtotal').textContent =
+        '$' + nuevoSubtotal.toLocaleString('es-CO')
   }
 
-  adjuntarBotonesCarrito()
-  document.addEventListener(
-      'catalogoListo',
-      adjuntarBotonesCarrito
-  )
-
-
-  // AGREGAR AL CARRITO
-
-  function agregarAlCarrito(nombre, precio, imgSrc, desdeStorage = false)
+  // =========================================================
+  // 5. AGREGAR AL CARRITO (productId)
+  // =========================================================
+  function agregarAlCarrito(id, nombre, precio, imgSrc, desdeStorage = false)
   {
-
     const itemExistente =
         carritoItems.querySelector(
             `[data-nombre="${nombre}"]`
@@ -123,14 +113,10 @@ function initCart()
     // SI YA EXISTE
     if (itemExistente)
     {
-
       const nuevaCantidad =
           parseInt(itemExistente.dataset.cantidad) + 1
 
-      actualizarCantidadItem(
-          itemExistente,
-          nuevaCantidad
-      )
+      actualizarCantidadItem(itemExistente, nuevaCantidad)
 
       cantidadItems += 1
       totalAcumulado += precio
@@ -139,24 +125,19 @@ function initCart()
       updateSubtotal()
 
       if (!desdeStorage) {
-        let prodExiste =
-            carritoGuardado.find(
-                p => p.nombre === nombre
-            )
-
+        let prodExiste = carritoGuardado.find(p => p.nombre === nombre)
         if (prodExiste) {
           prodExiste.cantidad += 1
           guardarCarritoStorage()
         }
       }
-
       return
     }
 
     // CREAR NUEVO ITEM
     const div = document.createElement('div')
-
     div.className = 'carrito-item'
+    div.dataset.productId = id // Guardamos el ID que requiere tu OrderDetailRequestDto
     div.dataset.nombre = nombre
     div.dataset.precio = precio
     div.dataset.cantidad = 1
@@ -166,17 +147,14 @@ function initCart()
         <div class="prod-img-placeholder">
           <img src="${imgSrc}" alt="${nombre}">
         </div>
-
         <div class="prod-detalles">
           <p>${nombre}</p>
           <button class="btn-eliminar">🗑️eliminar</button>
         </div>
       </div>
-
       <div class="prod-precio">
         $${precio.toLocaleString('es-CO')}
       </div>
-
       <div class="prod-cantidad">
         <div class="control-cantidad">
           <button class="btn-restar-item">−</button>
@@ -184,7 +162,6 @@ function initCart()
           <button class="btn-sumar-item">+</button>
         </div>
       </div>
-
       <div class="prod-total item-subtotal">
         $${precio.toLocaleString('es-CO')}
       </div>
@@ -193,72 +170,50 @@ function initCart()
     carritoItems.appendChild(div)
 
     // BOTON +
-    div.querySelector('.btn-sumar-item')
-        .addEventListener('click', function ()
-        {
+    div.querySelector('.btn-sumar-item').addEventListener('click', function ()
+    {
+      const nueva = parseInt(div.dataset.cantidad) + 1
+      if (nueva > 99) return
 
-          const nueva =
-              parseInt(div.dataset.cantidad) + 1
+      actualizarCantidadItem(div, nueva)
+      cantidadItems += 1
+      totalAcumulado += parseFloat(div.dataset.precio)
 
-          if (nueva > 99) return
+      let prodMas = carritoGuardado.find(p => p.nombre === div.dataset.nombre)
+      if (prodMas) {
+        prodMas.cantidad += 1
+        guardarCarritoStorage()
+      }
 
-          actualizarCantidadItem(div, nueva)
-
-          cantidadItems += 1
-          totalAcumulado += parseFloat(div.dataset.precio)
-
-          let prodMas =
-              carritoGuardado.find(
-                  p => p.nombre === div.dataset.nombre
-              )
-
-          if (prodMas) {
-            prodMas.cantidad += 1
-            guardarCarritoStorage()
-          }
-
-          updateConteo()
-          updateSubtotal()
-
-        })
+      updateConteo()
+      updateSubtotal()
+    })
 
     // BOTON -
-    div.querySelector('.btn-restar-item')
-        .addEventListener('click', function ()
-        {
+    div.querySelector('.btn-restar-item').addEventListener('click', function ()
+    {
+      const nueva = parseInt(div.dataset.cantidad) - 1
+      if (nueva < 1) return
 
-          const nueva =
-              parseInt(div.dataset.cantidad) - 1
+      actualizarCantidadItem(div, nueva)
+      cantidadItems -= 1
+      totalAcumulado -= parseFloat(div.dataset.precio)
 
-          if (nueva < 1) return
+      let prodMenos = carritoGuardado.find(p => p.nombre === div.dataset.nombre)
+      if (prodMenos && prodMenos.cantidad > 1) {
+        prodMenos.cantidad -= 1
+        guardarCarritoStorage()
+      }
 
-          actualizarCantidadItem(div, nueva)
-
-          cantidadItems -= 1
-          totalAcumulado -= parseFloat(div.dataset.precio)
-
-          let prodMenos =
-              carritoGuardado.find(
-                  p => p.nombre === div.dataset.nombre
-              )
-
-          if (prodMenos && prodMenos.cantidad > 1)
-          {
-            prodMenos.cantidad -= 1
-            guardarCarritoStorage()
-          }
-
-          updateConteo()
-          updateSubtotal()
-
-        })
+      updateConteo()
+      updateSubtotal()
+    })
 
     // ELIMINAR
-    div.querySelector('.btn-eliminar')
-        .addEventListener('click', function ()
-        {
-          eliminarItem(div)
-        })
+    div.querySelector('.btn-eliminar').addEventListener('click', function ()
+    {
+      eliminarItem(div)
+    })
 
     cantidadItems += 1
     totalAcumulado += precio
@@ -268,9 +223,8 @@ function initCart()
 
     if (!desdeStorage)
     {
-
-      carritoGuardado.push(
-      {
+      carritoGuardado.push({
+        id: id, // Guardamos el ID también en el LocalStorage
         nombre: nombre,
         precio: precio,
         imgSrc: imgSrc,
@@ -281,52 +235,22 @@ function initCart()
       Swal.fire({
             icon: 'success',
             iconColor: '#8B5E3C',
-            //background: '#999',
             title: '¡Producto Agregado al Carrito!',
             confirmButtonColor: '#8B5E3C',
             timer: 2400,
             showConfirmButton: false
-          });
-        textArea.value = "";
+      });
     }
-
   }
 
- 
-  // ACTUALIZAR ITEM
- 
-  function actualizarCantidadItem(div, nuevaCantidad)
-  {
-
-    const precio =
-        parseFloat(div.dataset.precio)
-
-    const nuevoSubtotal =
-        precio * nuevaCantidad
-
-    div.dataset.cantidad = nuevaCantidad
-
-    div.querySelector('.item-cantidad')
-        .textContent = nuevaCantidad
-
-    div.querySelector('.item-subtotal')
-        .textContent =
-        '$' + nuevoSubtotal.toLocaleString('es-CO')
-
-  }
-
-  
-  // ELIMINAR
-  
+  // ELIMINAR ITEM
   function eliminarItem(div)
   {
-
     const nombreProducto = div.dataset.nombre
     const cantidad = parseInt(div.dataset.cantidad)
     const precio = parseFloat(div.dataset.precio)
 
     if (typeof Swal !== "undefined") {
-
       Swal.fire({
         title: "¿Eliminar producto?",
         text: `¿Deseas quitar ${nombreProducto} del carrito?`,
@@ -337,186 +261,175 @@ function initCart()
         confirmButtonColor: "#8B5E3C",
         cancelButtonColor: "#999"
       }).then((result) => {
-
-        if (result.isConfirmed)
-        {
-
+        if (result.isConfirmed) {
           cantidadItems -= cantidad
           totalAcumulado -= precio * cantidad
 
           if (cantidadItems < 0) cantidadItems = 0
           if (totalAcumulado < 0) totalAcumulado = 0
 
-          carritoGuardado = carritoGuardado.filter(
-              item => item.nombre !== nombreProducto
-          )
-
+          carritoGuardado = carritoGuardado.filter(item => item.nombre !== nombreProducto)
           guardarCarritoStorage()
-
           div.remove()
 
           updateConteo()
           updateSubtotal()
-
           alertaProducto("Producto eliminado", "success")
         }
-
       })
-
-    }
-    else
-    {
-
-      let confirmar = confirm(
-          `¿Deseas quitar ${nombreProducto} del carrito?`
-      )
-
-      if (confirmar)
-      {
-
+    } else {
+      let confirmar = confirm(`¿Deseas quitar ${nombreProducto} del carrito?`)
+      if (confirmar) {
         cantidadItems -= cantidad
         totalAcumulado -= precio * cantidad
 
         if (cantidadItems < 0) cantidadItems = 0
         if (totalAcumulado < 0) totalAcumulado = 0
 
-        carritoGuardado = carritoGuardado.filter(
-            item => item.nombre !== nombreProducto
-        )
-
+        carritoGuardado = carritoGuardado.filter(item => item.nombre !== nombreProducto)
         guardarCarritoStorage()
-
         div.remove()
 
         updateConteo()
         updateSubtotal()
-
         alert("Producto eliminado")
       }
-
     }
-
   }
 
-  //API DE PAGO
+  // =========================================================
+  // 6. BOTONES DEL CATÁLOGO (Capturan data-id)
+  // =========================================================
+  function adjuntarBotonesCarrito()
+  {
+    document.querySelectorAll('.btn-cart').forEach(function (boton)
+    {
+      if (boton.dataset.cartReady) return
+      boton.dataset.cartReady = 'true'
 
- const checkoutButton = document.getElementById("btn-pagar");
+      boton.addEventListener('click', function ()
+      {
+        const card = boton.closest('.card')
+        
+        // Buscamos el ID del producto que viene de tu DB (en el botón o en la card)
+        const id = boton.dataset.id || card.dataset.id || "1"; 
+        const nombre = card.querySelector('h3').textContent.trim()
+        const imgSrc = card.querySelector('img')?.src || ''
+        const precioTexto = card.querySelector('.price').textContent
+                .replace('$', '')
+                .replace(/\./g, '')
+                .trim()
+        const precio = parseFloat(precioTexto)
+
+        agregarAlCarrito(id, nombre, precio, imgSrc)
+
+        if (!carritoLateral.classList.contains('abierto')) {
+          toggleCarrito()
+        }
+      })
+    })
+  }
+
+  adjuntarBotonesCarrito()
+  document.addEventListener('catalogoListo', adjuntarBotonesCarrito)
+
+  // =========================================================
+  // 7. API DE PAGO SINCRONIZADA CON TUS DTOS DE JAVA
+  // =========================================================
+  const checkoutButton = document.getElementById("btn-pagar");
 
   if (checkoutButton) {
     checkoutButton.addEventListener("click", async () => {
       
-      const items = [];
-      document.querySelectorAll('.carrito-item').forEach(div =>
-      {
-        items.push({
-          title: div.dataset.nombre,
-          unit_price: Number(div.dataset.precio),
-          quantity: Number(div.dataset.cantidad),
-          currency_id: 'COP'
+      const details = [];
+      document.querySelectorAll('.carrito-item').forEach(div => {
+        details.push({
+          productId: Number(div.dataset.productId || 1), // Asegura un Long válido
+          quantityProducts: Number(div.dataset.cantidad)  // Mapea a Integer de quantityProducts
         });
       });
 
-      if (items.length === 0) return swal.fire({
-            icon: 'info',
-            iconColor: '#8B5E3C',
-            //background: '#999',
-            title: '¡Tu carretilla está vacía!',
-            confirmButtonColor: '#8B5E3C',
-            timer: 2400,
-            showConfirmButton: false
-          });
-         //textArea.value = "";
-      
+      if (details.length === 0) {
+        return Swal.fire({
+          icon: 'info',
+          iconColor: '#8B5E3C',
+          title: '¡Tu carretilla está vacía!',
+          confirmButtonColor: '#8B5E3C',
+          timer: 2400,
+          showConfirmButton: false
+        });
+      }
 
       try {
         checkoutButton.textContent = "Cargando pago...";
         checkoutButton.disabled = true;
 
         const API_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
-        ? "http://localhost:3000"
-        : "https://e-commerce-historias-de-cafe.onrender.com";
+          ? "http://localhost:8080"
+          : "https://e-commerce-historias-de-cafe.onrender.com";
 
-        const response = await fetch(`${API_URL}/create_preference`,
+        // JSON estructurado idéntico a OrderRequestDto
+        const orderPayload = {
+          userId: 1, 
+          stateOrder: "En proceso", 
+          details: details 
+        };
 
-
-
-        {
+        // PASO 1: Crear la orden
+        const orderResponse = await fetch(`${API_URL}/orders`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ items })
+          body: JSON.stringify(orderPayload)
         });
 
-        const data = await response.json();
+        if (!orderResponse.ok) throw new Error("Error interno en /orders");
 
-        if (data.init_point)
-        {
-          // REDIRECCIÓN DIRECTA: Esto ignora el error del SDK
-          window.location.href = data.init_point;
-        } else
-        {
-          throw new Error("No se pudo obtener el link de pago");
+        const orderData = await orderResponse.json();
+        const nuevoOrderId = orderData.id; 
+
+        // PASO 2: Procesar el pago pasándole el ID real
+        const paymentResponse = await fetch(`${API_URL}/payments`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ orderId: nuevoOrderId })
+        });
+
+        if (!paymentResponse.ok) throw new Error("Error interno en /payments");
+
+        const paymentData = await paymentResponse.json();
+        const linkDePago = paymentData.paymentUrl;
+
+        if (linkDePago) {
+          window.location.href = linkDePago;
+        } else {
+          throw new Error("No se obtuvo paymentUrl de la respuesta.");
         }
-
       }
-      catch (error)
-      {
+      catch (error) {
         console.error("Error:", error);
-        alert("Error al conectar con el servidor de pagos");
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al conectar con el servidor',
+          text: 'No se pudo procesar tu compra de café. Inténtalo de nuevo.',
+          confirmButtonColor: '#8B5E3C'
+        });
         checkoutButton.textContent = "Ir a pagar";
         checkoutButton.disabled = false;
       }
     });
   }
 
-  // CONTEO
-
-  function updateConteo()
-  {
-
-    if (conteoProductos) {
-    conteoProductos.textContent =
-      cantidadItems === 1
-        ? '1 producto'
-        : `${cantidadItems} productos`;
-   }
-
-    if (badgeNav) {
-        badgeNav.textContent = cantidadItems;
-        console.log("Badge actualizado a:", cantidadItems);
-    } else {
-        console.warn("No se encontró el badge con ID: conteo-productos-nav");
-    }
-
-  }
-
-  // SUBTOTAL
-  function updateSubtotal()
-  {
-
-    subtotalValor.textContent =
-        '$' +
-        totalAcumulado.toLocaleString(
-            'es-CO',
-            {
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 0
-            }
-        )
-
-  }
-
-
-  // CARGAR STORAGE
+  // =========================================================
+  // 8. CARGAR STORAGE
+  // =========================================================
   if (carritoGuardado.length > 0)
   {
-
     carritoGuardado.forEach(producto =>
     {
-
       for (let i = 0; i < producto.cantidad; i++)
       {
-
         agregarAlCarrito(
+            producto.id || "1",
             producto.nombre,
             producto.precio,
             producto.imgSrc,

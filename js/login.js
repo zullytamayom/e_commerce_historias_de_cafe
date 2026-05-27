@@ -30,7 +30,7 @@ function inicializarLogin() {
         // ── API: POST /auth/login ──────────────────────────────────────────
         const API_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
             ? "http://localhost:8080"
-            : "https://e-commerce-historias-de-cafe.onrender.com";
+            : "https://e-commerce-historias-de-cafe-backend.onrender.com";
 
         const loginPayload = {
             email:    inputEmail.value.trim(),
@@ -78,7 +78,7 @@ function inicializarLogin() {
                     timer: 3400,
                     showConfirmButton: false
                 }).then(() => {
-                    window.location.href = "/pages/admin/admin.html";
+                    window.location.href = "../../pages/admin/admin.html";
                 });
             } else {
                 Swal.fire({
@@ -89,7 +89,7 @@ function inicializarLogin() {
                     timer: 3400,
                     showConfirmButton: false
                 }).then(() => {
-                    window.location.href = "/pages/home/home.html";
+                    window.location.href = "../../pages/home/home.html";
                 });
             }
 

@@ -1,5 +1,7 @@
 // Carga el componente sidebar en admin.html
-fetch('../../components/menuAdmin/menuAdmin.html')
+// BASE_URL se define en main.js (cargado antes que este script)
+const sidebarUrl = (typeof BASE_URL !== 'undefined' ? BASE_URL : '../../') + 'components/menuAdmin/menuAdmin.html';
+fetch(sidebarUrl)
   .then(response => response.text())
   .then(html => {
     document.getElementById('sidebar-container').innerHTML = html;
@@ -41,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     authBtn.onclick = () => {
       localStorage.removeItem("usuarioActivo");
-      window.location.href = "/pages/home/home.html"; 
+      window.location.href = "../../pages/home/home.html"; 
     };
 
     menuItems.forEach(item => {

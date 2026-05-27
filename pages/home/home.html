@@ -17,14 +17,13 @@
       rel="stylesheet">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-  
 
   <!-- Estilos -->
-  <link rel="stylesheet" href="./assets/css/paletaColores.css">
-  <link rel="stylesheet" href="./components/navBar/navBar.css">
-  <link rel="stylesheet" href="./components/footer/footer.css">
-  <link rel="stylesheet" href="./pages/acercaDeNosotros/acerca_de_nosotros.css">
-  <link rel="stylesheet" href="./pages/home/home.css">
+  <link rel="stylesheet" href="../../assets/css/paletaColores.css">
+  <link rel="stylesheet" href="../../components/navBar/navBar.css">
+  <link rel="stylesheet" href="../../components/footer/footer.css">
+  <link rel="stylesheet" href="../acercaDeNosotros/acerca_de_nosotros.css">
+  <link rel="stylesheet" href="home.css">
 </head>
 
 <body>
@@ -41,8 +40,8 @@
                     <h1 class="hero-title">Una historia por cada taza de café</h1>
                     <p class="hero-copy">Explora el origen, aroma y tradición de nuestro café seleccionado para amantes de la experiencia auténtica.</p>
                     <div class="hero-actions">
-                        <a href="./pages/users/users.html" class="hero-btn">Unete y se parte de una historia</a>
-                        <a href="./pages/acercaDeNosotros/acerca_de_nosotros.html" class="hero-link">Conoce más</a>
+                        <a href="../users/users.html" class="hero-btn">Unete y se parte de una historia</a>
+                        <a href="../acercaDeNosotros/acerca_de_nosotros.html" class="hero-link">Conoce más</a>
                     </div>
                 </div>
             </div>
@@ -75,16 +74,13 @@
                     <div class="content">
                         <h2 class="title">Esencia Ancestral<span id="spanDescuento">DESCUENTO</span></h2>
                         <p class="description">De origen Tradicion Maya de varidad Criollo Arabica con un proceso natura y una identidad de cafe con raices culturales, resaltando herencia y autenticidad. Su diseño y perfil evoccan historia y conexion con lo ancestral</p>
-
                     </div>
                 </li>
-
                 <li class="item"
                     style="background-image: url('../../assets/imgProductos/montanaMistica-removebg-preview.png')">
                     <div class="content">
                         <h2 class="title">Montaña Mística<span id="spanDescuento">DESCUENTO</span></h2>
                         <p class="description">Cafe de origen es de Finca Las Nubes de variedad Pacamara Miel con Tueste Edicion Limitada y una Identidad de cafe Premium, con empaque elegante y dorado. Representando exclusivdad y sostificacion, pensado para experiencias unicas </p>
-
                     </div>
                 </li>
             </ul>
@@ -98,39 +94,27 @@
 </div>
     </section>
 
-    <!-- SECCIÓN HERO (Encabezado Principal) -->
-    <!-- =========================
-     SECCIÓN VIDEOS PRODUCTOS   ========================= -->
+    <!-- SECCIÓN VIDEOS PRODUCTOS -->
 <section class="productos-videos container">
     
-    <!-- Título -->
     <div class="section-header">
         <h2>Nuestros Productos</h2>
         <p>Conoce nuestras fincas, procesos y el origen auténtico de nuestro café.</p>
     </div>
 
-    <!-- Grid de Videos -->
     <div class="videos-grid">
 
         <!-- VIDEO 1 -->
         <article class="video-card">
-            <video
-                class="product-video"
-                muted
-                loop
-                playsinline
-                preload="metadata"
-                poster="../../assets/imgProductos/cosechaNocturna.png"
-            >
+            <video class="product-video" muted loop playsinline preload="metadata"
+                poster="../../assets/imgProductos/cosechaNocturna.png">
                 <source src="../../assets/mp4/extended-cinematic-product-animation-of-premium-co.mp4" type="video/mp4">
                 Tu navegador no soporta la etiqueta de video.
             </video>
-
             <div class="video-overlay">
                 <button type="button" class="play-btn" aria-label="Reproducir video">▶</button>
             </div>
-
-            <a class="video-info" href="./pages/catalogo/catalogo.html">
+            <a class="video-info" href="../catalogo/catalogo.html">
                 <h3>Cosecha Nocturna</h3>
                 <p>Que no te haga falta un cafe nocturno</p>
             </a>
@@ -138,23 +122,15 @@
 
         <!-- VIDEO 2 -->
         <article class="video-card">
-            <video
-                class="product-video"
-                muted
-                loop
-                playsinline
-                preload="metadata"
-                poster="../../assets/imgProductos/solLevante.png"
-            >
+            <video class="product-video" muted loop playsinline preload="metadata"
+                poster="../../assets/imgProductos/solLevante.png">
                 <source src="../../assets/mp4/SolLevanteTaza.mp4" type="video/mp4">
                 Tu navegador no soporta la etiqueta de video.
             </video>
-
             <div class="video-overlay">
                 <button type="button" class="play-btn" aria-label="Reproducir video">▶</button>
             </div>
-
-            <a class="video-info" href="./pages/catalogo/catalogo.html">
+            <a class="video-info" href="../catalogo/catalogo.html">
                 <h3>Sol levante</h3>
                 <p>Una taza de cafe perfecta para tu mañana</p>
             </a>
@@ -162,23 +138,15 @@
 
         <!-- VIDEO 3 -->
         <article class="video-card">
-            <video
-                class="product-video"
-                muted
-                loop
-                playsinline
-                preload="metadata"
-                poster="../../assets/imgProductos/volcanFuego.png"
-            >
+            <video class="product-video" muted loop playsinline preload="metadata"
+                poster="../../assets/imgProductos/volcanFuego.png">
                 <source src="../../assets/mp4/VolcanFuegoTaza.mp4" type="video/mp4">
                 Tu navegador no soporta la etiqueta de video.
             </video>
-
             <div class="video-overlay">
                 <button type="button" class="play-btn" aria-label="Reproducir video">▶</button>
             </div>
-
-            <a class="video-info" href="../../pages/catalogo/catalogo.html">
+            <a class="video-info" href="../catalogo/catalogo.html">
                 <h3>Origen Colombiano</h3>
                 <p>Cultivado en las mejores montañas.</p>
             </a>
@@ -196,7 +164,6 @@
   <script src="../../js/main.js"></script>
   <script src="../../js/home.js"></script>
   <script src="../../js/cart.js"></script>
-  
 
 </body>
 </html>

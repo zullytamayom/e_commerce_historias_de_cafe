@@ -39,9 +39,28 @@ document.addEventListener("DOMContentLoaded", () => {
         "Configuración": "<h2>Configuración</h2>",
         "Salir": "<h2>Salir</h2>"
     };
+    
+    function getBasePath() {
+      const pathname = window.location.pathname;
+      const segments = pathname.split('/').filter(s => s);
+      let depth = 0;
+      for (let i = segments.length - 1; i >= 0; i--) {
+        if (segments[i] === 'pages' || segments[i] === 'components') {
+          depth = segments.length - i;
+          break;
+        }
+      }
+      let basePath = '';
+      for (let i = 0; i < depth; i++) {
+        basePath += '../';
+      }
+      return basePath;
+    }
+    
+    const BASE_PATH = getBasePath();
     authBtn.onclick = () => {
       localStorage.removeItem("usuarioActivo");
-      window.location.href = "/pages/home/home.html"; 
+      window.location.href = BASE_PATH + "pages/home/home.html"; 
     };
 
     menuItems.forEach(item => {

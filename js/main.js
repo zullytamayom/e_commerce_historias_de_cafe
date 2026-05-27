@@ -1,8 +1,37 @@
+// Calcula la ruta base relativa según la ubicación actual
+function getBasePath() {
+  const pathname = window.location.pathname;
+  // Detectar si estamos en pages/ o components/ u otra carpeta profunda
+  const segments = pathname.split('/').filter(s => s);
+  
+  // Contar niveles de profundidad desde la raíz del proyecto
+  let depth = 0;
+  for (let i = segments.length - 1; i >= 0; i--) {
+    if (segments[i] === 'pages' || segments[i] === 'components') {
+      depth = segments.length - i;
+      break;
+    }
+  }
+  
+  // Generar la ruta base relativa (../../ para cada nivel)
+  let basePath = '';
+  for (let i = 0; i < depth; i++) {
+    basePath += '../';
+  }
+  return basePath;
+}
+
+const BASE_PATH = getBasePath();
+
 function loadComponent(containerId, path, callback) {
   const container = document.getElementById(containerId);
   if (!container) return; //  Si el contenedor no existe en esta página, no hace nada
 
-  fetch(path)
+  // Convertir rutas absolutas a relativas
+  let relativePath = path.startsWith('/') ? path.substring(1) : path;
+  const fullPath = BASE_PATH + relativePath;
+
+  fetch(fullPath)
     .then((res) => res.text())
     .then((data) => {
       container.innerHTML = data;
@@ -62,7 +91,7 @@ function initNavbar() {
 
     authBtn.onclick = () => {
       localStorage.removeItem("usuarioActivo");
-      window.location.href = "/pages/home/home.html";
+      window.location.href = BASE_PATH + "pages/home/home.html";
     };
   } else if (authBtn && userContent) {
     // ESTADO: INVITADO
@@ -71,7 +100,7 @@ function initNavbar() {
     authBtn.classList.remove("btn-logout");
 
     authBtn.onclick = () => {
-      window.location.href = "/pages/users/users.html";
+      window.location.href = BASE_PATH + "pages/users/users.html";
     };
   }
 

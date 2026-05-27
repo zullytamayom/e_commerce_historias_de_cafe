@@ -5,6 +5,26 @@ function inicializarLogin() {
 
     if (!form) return;
 
+    // Calcula la ruta base relativa
+    function getBasePath() {
+      const pathname = window.location.pathname;
+      const segments = pathname.split('/').filter(s => s);
+      let depth = 0;
+      for (let i = segments.length - 1; i >= 0; i--) {
+        if (segments[i] === 'pages' || segments[i] === 'components') {
+          depth = segments.length - i;
+          break;
+        }
+      }
+      let basePath = '';
+      for (let i = 0; i < depth; i++) {
+        basePath += '../';
+      }
+      return basePath;
+    }
+
+    const BASE_PATH = getBasePath();
+
     // ── Ojito: mostrar / ocultar contraseña ───────────────────────────────
     document.querySelectorAll(".toggle-pass").forEach(function (icono) {
         icono.addEventListener("click", function () {
@@ -78,7 +98,7 @@ function inicializarLogin() {
                     timer: 3400,
                     showConfirmButton: false
                 }).then(() => {
-                    window.location.href = "/pages/admin/admin.html";
+                    window.location.href = BASE_PATH + "pages/admin/admin.html";
                 });
             } else {
                 Swal.fire({
@@ -89,7 +109,7 @@ function inicializarLogin() {
                     timer: 3400,
                     showConfirmButton: false
                 }).then(() => {
-                    window.location.href = "/pages/home/home.html";
+                    window.location.href = BASE_PATH + "pages/home/home.html";
                 });
             }
 

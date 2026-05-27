@@ -1,6 +1,28 @@
-const listaProductos = [];
+// Estado de la aplicación para renderizar la tabla de administración
+let listaProductos = [];
 
-// --- 1. LÓGICA DEL FORMULARIO (CORREGIDA Y SINCRONIZADA) ---
+// Base URL de tu API de productos (detecta si estás en local o producción)
+const API_URL_PRODUCTS = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+  ? "http://localhost:8080/products"
+  : "https://e-commerce-historias-de-cafe.onrender.com/products";
+
+function obtenerHeadersAutenticados() {
+  const token = localStorage.getItem("authToken");
+  const headers = { "Content-Type": "application/json" };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  return headers;
+}
+
+function usuarioTienePermisosAdmin() {
+  const usuarioActivo = JSON.parse(localStorage.getItem("usuarioActivo"));
+  return usuarioActivo && usuarioActivo.role && usuarioActivo.role.toUpperCase() === "ADMIN";
+}
+
+// --- 1. LÓGICA DEL FORMULARIO (CONECTADA CON EL BACKEND) ---
 function initProductLogic() {
   const form = document.getElementById("form-producto");
   const modal = document.getElementById("modal-producto");
@@ -10,26 +32,31 @@ function initProductLogic() {
     return;
   }
 
-  // IMPORTANTE: Clonar el formulario elimina cualquier addEventListener previo acumulado
-  const nuevoForm = form.cloneNode(true);
-  form.parentNode.replaceChild(nuevoForm, form);
-
-  nuevoForm.addEventListener("submit", (e) => {
+  // Escuchar el evento directamente sobre el formulario cargado
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    if (!usuarioTienePermisosAdmin()) {
+      Swal.fire({
+        icon: "error",
+        title: "Permisos insuficientes",
+        text: "Debes iniciar sesión con un usuario ADMIN para crear productos.",
+        confirmButtonColor: "#532721"
+      });
+      return;
+    }
 
     // Limpiar errores anteriores
     document.querySelectorAll(".invalid-feedback").forEach((el) => el.remove());
-    document
-      .querySelectorAll(".is-invalid")
-      .forEach((el) => el.classList.remove("is-invalid"));
+    document.querySelectorAll(".is-invalid").forEach((el) => el.classList.remove("is-invalid"));
 
     let isValid = true;
 
-    // --- ENLAZAR INPUTS (Sincronizado con el nuevo HTML) ---
-    const marcaInput = document.getElementById("marca"); // Ajustado: id="marca"
+    // --- ENLAZAR INPUTS ---
+    const marcaInput = document.getElementById("marca");
     const origenInput = document.getElementById("origen");
     const tostadoInput = document.getElementById("tostado");
-    const regionInput = document.getElementById("region");
+    const regionInput = document.getElementById("region"); // Este representa tu categorie_id / id_categorie
     const imagenInput = document.getElementById("imagen");
     const stockInput = document.getElementById("stock");
     const precioInput = document.getElementById("precio");
@@ -40,102 +67,144 @@ function initProductLogic() {
       if (marcaInput) mostrarError(marcaInput, "La marca es obligatoria (mín. 3 caracteres)");
       isValid = false;
     }
-
     if (!origenInput || origenInput.value.trim().length < 3) {
       if (origenInput) mostrarError(origenInput, "La finca de origen es obligatoria (mín. 3 caracteres)");
       isValid = false;
     }
-
     if (!tostadoInput || !tostadoInput.value) {
       if (tostadoInput) mostrarError(tostadoInput, "Selecciona un tipo de tostión");
       isValid = false;
     }
-
     if (!regionInput || !regionInput.value) {
       if (regionInput) mostrarError(regionInput, "Selecciona la región del café");
       isValid = false;
     }
-
     if (!imagenInput || !imagenInput.files[0]) {
       if (imagenInput) mostrarError(imagenInput, "Debes cargar una imagen");
       isValid = false;
     }
-
     if (!stockInput || stockInput.value === "" || parseInt(stockInput.value) < 0) {
       if (stockInput) mostrarError(stockInput, "Stock no válido");
       isValid = false;
     }
-
     if (!precioInput || precioInput.value === "" || parseFloat(precioInput.value) <= 0) {
       if (precioInput) mostrarError(precioInput, "El precio debe ser mayor a 0");
       isValid = false;
     }
-
     if (!descInput || descInput.value.trim().length < 10) {
       if (descInput) mostrarError(descInput, "Descripción demasiado corta (mín. 10 caracteres)");
       isValid = false;
     }
 
-    // --- PROCESO DE GUARDADO ASINCRÓNICO ---
+    // --- ENVÍO DE DATOS A SPRING BOOT (CON OPTIMIZACIÓN DE CLOUDINARY) ---
     if (isValid) {
       const file = imagenInput.files[0];
-      const reader = new FileReader();
+      
+      const CLOUD_NAME = "dg6oyckab"; 
+      const UPLOAD_PRESET = "historias_de_cafe"; 
+      
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", UPLOAD_PRESET);
 
-      reader.onload = function () {
-        const base64Image = reader.result;
-        
-        const producto = {
-          id: Date.now(),
-          nombre: marcaInput.value.trim(), // Se mapea marca a la propiedad 'nombre' para la tabla
-          origen: origenInput.value.trim(),
-          tostado: tostadoInput.value,
-          region: regionInput.value,
-          estado: "Activo", // Estado lógico controlado por el sistema por defecto
+      // Deshabilitar el botón antes de arrancar los procesos asíncronos
+      const btnSubmit = form.querySelector("button[type='submit']");
+      if (btnSubmit) {
+        btnSubmit.disabled = true;
+        btnSubmit.textContent = "Subiendo imagen a la nube...";
+      }
+
+      try {
+        // FASE A: Subir imagen a Cloudinary
+        const cloudinaryResponse = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+          method: "POST",
+          body: formData
+        });
+
+        if (!cloudinaryResponse.ok) throw new Error("Error al subir la imagen a Cloudinary.");
+
+        const cloudinaryData = await cloudinaryResponse.json();
+        const urlPublicaImagen = cloudinaryData.secure_url; 
+
+        if (btnSubmit) btnSubmit.textContent = "Guardando producto en base de datos...";
+
+        const productoPayload = {
+          name: marcaInput.value.trim(),
+          description: descInput.value.trim(),
+          price: parseFloat(precioInput.value),
           stock: parseInt(stockInput.value),
-          precio: parseFloat(precioInput.value),
-          descripcion: descInput.value.trim(),
-          imagen: base64Image
+          categoryId: Number(regionInput.value), // 🌟 Captura limpia del valor numérico del Select
+          imagen: urlPublicaImagen 
         };
 
-        // Guardar en el estado de la aplicación
-        listaProductos.push(producto);
-        
-        // Guardar en LocalStorage
-        localStorage.setItem("productos", JSON.stringify(listaProductos));
+        // Imprime en consola para asegurarte de que categoryId no vaya en null
+        console.log("Enviando payload al backend:", productoPayload);
 
-        // Actualizar la interfaz física
-        actualizarTabla();
+        // FASE C: Petición POST al Controlador de Spring Boot
+        const response = await fetch(API_URL_PRODUCTS, {
+          method: "POST",
+          headers: obtenerHeadersAutenticados(),
+          body: JSON.stringify(productoPayload)
+        });
 
-        // Limpiar el formulario y cerrar el modal ANTES de la alerta para mejorar UX
-        nuevoForm.reset();
+        if (response.status === 401 || response.status === 403) {
+          throw new Error("No tienes autorización para crear productos. Vuelve a iniciar sesión como ADMIN.");
+        }
+
+        if (!response.ok) throw new Error(`El backend rechazó los datos (Error ${response.status}).`);
+
+        form.reset();
         modal.style.display = "none";
+        await cargarProductosDesdeBackend();
 
-        // Lanzar alerta estética de SweetAlert2
-        setTimeout(() => {
-          Swal.fire({
-            icon: "success",
-            iconColor: "#532721",
-            title: "¡Producto Agregado!",
-            text: "El producto se guardó correctamente en Historias de Café",
-            confirmButtonColor: "#B08D57",
-            confirmButtonText: "Genial",
-          });
-        }, 100);
-      };
-      
-      reader.readAsDataURL(file);
+        Swal.fire({
+          icon: "success",
+          iconColor: "#532721",
+          title: "¡Café Registrado!",
+          text: "El producto y su imagen en la nube se guardaron exitosamente.",
+          confirmButtonColor: "#B08D57",
+          confirmButtonText: "Excelente",
+        });
+
+      } catch (error) {
+        console.error("Error en el flujo de guardado:", error);
+        
+        if (btnSubmit) {
+          btnSubmit.disabled = false;
+          btnSubmit.textContent = "Guardar Producto";
+        }
+
+        Swal.fire({
+          icon: "error",
+          title: "Error al procesar",
+          text: "No se pudo registrar el producto. Verifica que los campos cumplan las validaciones del backend.",
+          confirmButtonColor: "#532721"
+        });
+      }
     }
-  });
-}
+  }); 
+} 
 
-// --- 2. ELIMINAR PRODUCTO ---
+// --- 2. ELIMINAR PRODUCTO (CONECTADO A DELETE /products/{id}) ---
 function eliminarProducto(id) {
-  const producto = listaProductos.find(prod => prod.id === id);
-  if (!producto) return;
+  if (!id) return;
+
+  if (!usuarioTienePermisosAdmin()) {
+    Swal.fire({
+      icon: "error",
+      title: "Permisos insuficientes",
+      text: "Debes iniciar sesión con un usuario ADMIN para eliminar productos.",
+      confirmButtonColor: "#532721"
+    });
+    return;
+  }
+
+  const producto = listaProductos.find(prod => (prod.idProduct || prod.id) === id);
+  const nombreDisplay = producto ? producto.name : "este producto";
 
   Swal.fire({
     title: '¿Estás seguro?',
-    text: `Vas a eliminar "${producto.nombre}" de Historias de Café.`,
+    text: `Vas a eliminar "${nombreDisplay}" de la base de datos.`,
     icon: 'warning',
     iconColor: '#d33',
     showCancelButton: true,
@@ -144,14 +213,21 @@ function eliminarProducto(id) {
     confirmButtonText: 'Sí, eliminar',
     cancelButtonText: 'Cancelar',
     reverseButtons: true 
-  }).then((result) => {
+  }).then(async (result) => {
     if (result.isConfirmed) {
-      const index = listaProductos.findIndex(prod => prod.id === id);
-      
-      if (index !== -1) {
-        listaProductos.splice(index, 1);
-        localStorage.setItem("productos", JSON.stringify(listaProductos));
-        actualizarTabla();
+      try {
+        const response = await fetch(`${API_URL_PRODUCTS}/${id}`, {
+          method: "DELETE",
+          headers: obtenerHeadersAutenticados()
+        });
+
+        if (response.status === 401 || response.status === 403) {
+          throw new Error("No tienes autorización para eliminar productos. Vuelve a iniciar sesión como ADMIN.");
+        }
+
+        if (!response.ok) throw new Error(`No se pudo eliminar el producto del servidor. Error ${response.status}.`);
+
+        await cargarProductosDesdeBackend();
         
         Swal.fire({
           icon: 'success',
@@ -160,6 +236,15 @@ function eliminarProducto(id) {
           confirmButtonColor: '#B08D57',
           timer: 2000,
           showConfirmButton: false
+        });
+
+      } catch (error) {
+        console.error("Error al eliminar:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error al eliminar",
+          text: "El backend rechazó la solicitud de eliminación.",
+          confirmButtonColor: "#532721"
         });
       }
     }
@@ -183,7 +268,7 @@ function mostrarError(input, mensaje) {
   });
 }
 
-// --- 4. RENDERIZAR TABLA CON DISEÑO PREMIUM ---
+// --- 4. RENDERIZAR TABLA CON TU PRODUCTRESPONSEDTO (INGLÉS) ---
 function actualizarTabla() {
   const tbody = document.getElementById("cuerpo-tabla");
   if (!tbody) return;
@@ -191,17 +276,21 @@ function actualizarTabla() {
   tbody.innerHTML = ""; 
 
   listaProductos.forEach((prod) => {
-    // Salvaguarda: si viene de un registro viejo sin estado, se asigna 'Activo'
-    const estadoActual = prod.estado || "Activo";
-    const badgeClass = estadoActual === "Activo" ? "badge-activo" : "badge-inactivo";
+    const estadoActual = "Activo"; 
+    const badgeClass = "badge-activo";
+    
+    const idReal = prod.idProduct || prod.id; 
+    const nombreProd = prod.name || "Café Tradicional";
+    const precioProd = prod.price || 0;
+    const regionProd = prod.categoryName || "Región Premium"; 
 
     const fila = `
             <tr>
                 <td class="text-left">
-                  <strong>${prod.nombre}</strong>
-                  <br><small style="color: #888; font-size: 0.8rem;">📍 ${prod.region || 'Región no especificada'}</small>
+                  <strong>${nombreProd}</strong>
+                  <br><small style="color: #888; font-size: 0.8rem;">📍 ${regionProd}</small>
                 </td>
-                <td class="text-right"><strong>$${prod.precio.toLocaleString()}</strong></td>
+                <td class="text-right"><strong>$${precioProd.toLocaleString('es-CO')}</strong></td>
                 <td class="text-right">${prod.stock} uds</td>
                 <td class="text-center">
                     <span class="${badgeClass}">${estadoActual}</span>
@@ -211,7 +300,7 @@ function actualizarTabla() {
                         <button class="btn-table-edit" title="Editar">
                             <i class="bi bi-pencil"></i> Editar
                         </button>
-                        <button class="btn-table-delete" title="Borrar" data-id="${prod.id}" onclick="eliminarProducto(${prod.id})">
+                        <button class="btn-table-delete" title="Borrar" data-id="${idReal}" onclick="eliminarProducto(${idReal})">
                             <i class="bi bi-trash"></i> Borrar
                         </button>
                     </div>
@@ -238,6 +327,7 @@ if (btnAdd) {
       const htmlFormulario = await respuesta.text();
       document.getElementById("productform-container").innerHTML = htmlFormulario;
       
+      // Inicializar la lógica directamente sobre el HTML inyectado fresco
       initProductLogic();
     } catch (error) {
       console.error("Error cargando el form:", error);
@@ -255,16 +345,19 @@ window.onclick = (event) => {
   }
 };
 
-// --- 6. PERSISTENCIA: Cargar datos al iniciar ---
-function cargarDesdeStorage() {
-  const datosGuardados = localStorage.getItem("productos");
-  if (datosGuardados) {
-    const productosRecuperados = JSON.parse(datosGuardados);
-    listaProductos.length = 0; 
-    listaProductos.push(...productosRecuperados);
+// --- 6. PERSISTENCIA CON EL BACKEND: GET /products ---
+async function cargarProductosDesdeBackend() {
+  try {
+    const response = await fetch(API_URL_PRODUCTS);
+    if (!response.ok) throw new Error("No se pudieron recuperar los productos.");
+
+    const productosRecuperados = await response.json(); 
+    listaProductos = productosRecuperados; 
     actualizarTabla();
+  } catch (error) {
+    console.error("Error cargando productos desde la API:", error);
   }
 }
 
-// Ejecución inicial de persistencia
-cargarDesdeStorage();
+// Ejecución inicial
+cargarProductosDesdeBackend();

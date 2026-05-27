@@ -1,6 +1,6 @@
 
 @import url('https://googleapis.com');
-@import url("/assets/img/paletaColores.css");
+@import url("/assets/css/paletaColores.css");
 
 :root {
   --color-primary: #532721;

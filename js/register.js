@@ -86,7 +86,7 @@ function cargarFormRegister() {
     // ── API: POST /auth/register ───────────────────────────────────────
     const API_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
       ? "http://localhost:8080"
-      : "https://e-commerce-historias-de-cafe.onrender.com";
+      : "https://e-commerce-historias-de-cafe-backend.onrender.com";
 
     const registerPayload = {
       name:     inputName.value.trim(),

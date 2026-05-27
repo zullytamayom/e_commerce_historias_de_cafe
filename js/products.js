@@ -4,7 +4,7 @@ let listaProductos = [];
 // Base URL de tu API de productos (detecta si estás en local o producción)
 const API_URL_PRODUCTS = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
   ? "http://localhost:8080/products"
-  : "https://e-commerce-historias-de-cafe.onrender.com/products";
+  : "https://e-commerce-historias-de-cafe-backend.onrender.com/products";
 
 function obtenerHeadersAutenticados() {
   const token = localStorage.getItem("authToken");

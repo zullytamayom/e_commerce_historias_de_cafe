@@ -78,7 +78,7 @@ function inicializarLogin() {
                     timer: 3400,
                     showConfirmButton: false
                 }).then(() => {
-                    window.location.href = "/pages/admin/admin.html";
+                    window.location.href = "../../pages/admin/admin.html";
                 });
             } else {
                 Swal.fire({
@@ -89,7 +89,7 @@ function inicializarLogin() {
                     timer: 3400,
                     showConfirmButton: false
                 }).then(() => {
-                    window.location.href = "/pages/home/home.html";
+                    window.location.href = "../../pages/home/home.html";
                 });
             }
 

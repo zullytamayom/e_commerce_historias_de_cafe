@@ -62,7 +62,7 @@ function initNavbar() {
 
     authBtn.onclick = () => {
       localStorage.removeItem("usuarioActivo");
-      window.location.href = "../../pages/home/home.html";
+      window.location.href = "/pages/home/home.html";
     };
   } else if (authBtn && userContent) {
     // ESTADO: INVITADO
@@ -71,7 +71,7 @@ function initNavbar() {
     authBtn.classList.remove("btn-logout");
 
     authBtn.onclick = () => {
-      window.location.href = "../../pages/users/users.html";
+      window.location.href = "/pages/users/users.html";
     };
   }
 
@@ -104,25 +104,25 @@ function handlePageAnimation() {
 document.addEventListener("DOMContentLoaded", () => {
   handlePageAnimation();
 
-  loadComponent("navbar-container","../../components/navBar/navBar.html", initNavbar);
-  loadComponent("footer-container", "../../components/footer/footer.html");
+  loadComponent("navbar-container","/components/navBar/navBar.html", initNavbar);
+  loadComponent("footer-container", "/components/footer/footer.html");
 if (document.getElementById("register-container")) {
-    loadComponent("register-container", "../../components/register/register.html", cargarFormRegister);
+    loadComponent("register-container", "/components/register/register.html", cargarFormRegister);
   }
 
   if (document.getElementById("login-container")) {
-    loadComponent("login-container", "../../components/login/login.html", inicializarLogin); 
+    loadComponent("login-container", "/components/login/login.html", inicializarLogin); 
   }
 
   if (document.getElementById("contact-container")) {
-    loadComponent("contact-container", "../../components/contact/contact.html", cargarFormContact);
+    loadComponent("contact-container", "/components/contact/contact.html", cargarFormContact);
   }
 
   
  
-  loadComponent("carrito-container","../../components/cart/cart.html",(typeof initCart === 'function') ? initCart : () => console.warn("initCart no definida")
+  loadComponent("carrito-container","/components/cart/cart.html",(typeof initCart === 'function') ? initCart : () => console.warn("initCart no definida")
 ); //  carrito
-loadComponent("productform-container","../../components/product/productForm.html",(typeof initProductLogic === 'function')? initProductLogic :() => console.warn("producto no definido")
+loadComponent("productform-container","/components/product/productForm.html",(typeof initProductLogic === 'function')? initProductLogic :() => console.warn("producto no definido")
 );
 
 });

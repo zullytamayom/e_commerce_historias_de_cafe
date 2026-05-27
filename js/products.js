@@ -321,7 +321,7 @@ if (btnAdd) {
     modal.style.display = "block";
 
     try {
-      const respuesta = await fetch("../../components/product/productForm.html");
+      const respuesta = await fetch("/components/product/productForm.html");
       if (!respuesta.ok) throw new Error("No se pudo cargar el formulario");
 
       const htmlFormulario = await respuesta.text();

@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     authBtn.onclick = () => {
       localStorage.removeItem("usuarioActivo");
-      window.location.href = "../../pages/home/home.html"; 
+      window.location.href = "/pages/home/home.html"; 
     };
 
     menuItems.forEach(item => {

@@ -167,20 +167,16 @@ function initProductLogic() {
           price: parseFloat(precioInput.value),
           stock: parseInt(stockInput.value),
 
-          // 1. Enviamos origen y tostado que faltaban (asegúrate de usar el nombre exacto de tu backend)
-          origen: origenInput.value.trim(),
-          tostado: tostadoInput.value,
+          // 1. Usamos 'imagen' tal como está definido en tu atributo privado de Java
+          imagen: urlPublicaImagen,
 
-          // 2. Si tu backend usa 'imageUrl' en inglés en vez de 'imagen', cámbialo aquí:
-          imageUrl: urlPublicaImagen,
-
-          // 3. Si tu backend recibe la categoría como un objeto completo en lugar de un ID suelto, usa esto:
+          // 2. Mapeamos la relación como un objeto que coincide con el atributo 'category'
           category: {
-            id: Number(regionInput.value),
+            id: Number(regionInput.value), // El ID de la categoría (1, 2, etc.)
           },
 
-          // NOTA: Si confirmas que tu backend sí recibe el campo plano 'categoryId',
-          // borra el bloque 'category' de arriba y deja: categoryId: Number(regionInput.value)
+          // ⚠️ NOTA IMPORTANTE: Hemos removido por completo 'origen' y 'tostado'
+          // ya que tu modelo de base de datos actual no los tiene mapeados.
         };
 
         // Imprime en consola para asegurarte de que categoryId no vaya en null

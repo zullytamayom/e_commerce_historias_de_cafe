@@ -1,14 +1,36 @@
-function loadComponent(containerId, path, callback) {
-  const container = document.getElementById(containerId);
-  if (!container) return; //  Si el contenedor no existe en esta página, no hace nada
+// Calcula la ruta base desde la ubicación del script hacia la raíz del proyecto
+// main.js está en /js/, así que la raíz es un nivel arriba
+const BASE_URL = (() => {
+  const scripts = document.querySelectorAll('script[src]');
+  for (const s of scripts) {
+    if (s.src.includes('main.js')) {
+      return s.src.replace(/js\/main\.js.*$/, '');
+    }
+  }
+  // Fallback: calcular desde la URL de la página actual
+  const depth = window.location.pathname.split('/').filter(Boolean).length;
+  const repoName = window.location.pathname.split('/').filter(Boolean)[0];
+  const isGitHubPages = window.location.hostname.includes('github.io');
+  if (isGitHubPages) {
+    return `/${repoName}/`;
+  }
+  return '/';
+})();
 
-  fetch(path)
+function loadComponent(containerId, relativePath, callback) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  // Construir URL absoluta desde la raíz del proyecto
+  const url = BASE_URL + relativePath;
+
+  fetch(url)
     .then((res) => res.text())
     .then((data) => {
       container.innerHTML = data;
       if (callback) callback();
     })
-    .catch((err) => console.error("Error cargando componente:", path, err));
+    .catch((err) => console.error("Error cargando componente:", url, err));
 }
 
 //  Navbar logic
@@ -50,7 +72,6 @@ function initNavbar() {
   const usuarioActivo = JSON.parse(localStorage.getItem("usuarioActivo"));
   const userContent = document.getElementById("user-status-content");
   const authBtn = document.getElementById("nav-auth-btn");
- 
 
   if (usuarioActivo && authBtn && userContent) {
     // ESTADO: LOGUEADO
@@ -58,20 +79,20 @@ function initNavbar() {
     userContent.innerHTML = `<span class="welcome-msg">Hola, <strong>${primerNombre}</strong></span>`;
     
     authBtn.textContent = "Salir";
-    authBtn.classList.add("btn-logout"); // Clase para estilo diferente
+    authBtn.classList.add("btn-logout");
 
     authBtn.onclick = () => {
       localStorage.removeItem("usuarioActivo");
-      window.location.href = "/pages/home/home.html";
+      window.location.href = BASE_URL + "pages/home/home.html";
     };
   } else if (authBtn && userContent) {
     // ESTADO: INVITADO
-    userContent.innerHTML = ""; // No hay saludo
+    userContent.innerHTML = "";
     authBtn.textContent = "Iniciar Sesión";
     authBtn.classList.remove("btn-logout");
 
     authBtn.onclick = () => {
-      window.location.href = "/pages/users/users.html";
+      window.location.href = BASE_URL + "pages/users/users.html";
     };
   }
 
@@ -104,30 +125,26 @@ function handlePageAnimation() {
 document.addEventListener("DOMContentLoaded", () => {
   handlePageAnimation();
 
-  loadComponent("navbar-container","/components/navBar/navBar.html", initNavbar);
-  loadComponent("footer-container", "/components/footer/footer.html");
-if (document.getElementById("register-container")) {
-    loadComponent("register-container", "/components/register/register.html", cargarFormRegister);
+  loadComponent("navbar-container", "components/navBar/navBar.html", initNavbar);
+  loadComponent("footer-container", "components/footer/footer.html");
+
+  if (document.getElementById("register-container")) {
+    loadComponent("register-container", "components/register/register.html", cargarFormRegister);
   }
 
   if (document.getElementById("login-container")) {
-    loadComponent("login-container", "/components/login/login.html", inicializarLogin); 
+    loadComponent("login-container", "components/login/login.html", inicializarLogin);
   }
 
   if (document.getElementById("contact-container")) {
-    loadComponent("contact-container", "/components/contact/contact.html", cargarFormContact);
+    loadComponent("contact-container", "components/contact/contact.html", cargarFormContact);
   }
 
-  
- 
-  loadComponent("carrito-container","/components/cart/cart.html",(typeof initCart === 'function') ? initCart : () => console.warn("initCart no definida")
-); //  carrito
-loadComponent("productform-container","/components/product/productForm.html",(typeof initProductLogic === 'function')? initProductLogic :() => console.warn("producto no definido")
-);
+  loadComponent("carrito-container", "components/cart/cart.html",
+    (typeof initCart === 'function') ? initCart : () => console.warn("initCart no definida")
+  );
 
+  loadComponent("productform-container", "components/product/productForm.html",
+    (typeof initProductLogic === 'function') ? initProductLogic : () => console.warn("producto no definido")
+  );
 });
-
-
-
-
-

@@ -2,7 +2,7 @@
 @import url("/assets/css/paletaColores.css");
 
 body {
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/assets/img/background1.jpg') center/cover;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../../assets/img/background1.jpg') center/cover;
     background-attachment: fixed;
     margin: 0;
     display: flex;

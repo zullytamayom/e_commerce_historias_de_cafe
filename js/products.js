@@ -164,10 +164,10 @@ function initProductLogic() {
         const productoPayload = {
   name: marcaInput.value.trim(),
   description: descInput.value.trim(),
-  price: parseFloat(precioInput.value), 
+  price: parseFloat(precioInput.value),
   stock: parseInt(stockInput.value),
-  imagen: urlPublicaImagen, 
-  categoryId: Number(regionInput.value) // 🌟 Volvemos al ID plano que espera tu DTO
+  imagen: urlPublicaImagen,
+  category: { id: Number(regionInput.value) }
 };
 
         // Imprime en consola para asegurarte de que categoryId no vaya en null

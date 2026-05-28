@@ -361,3 +361,10 @@ async function cargarProductosDesdeBackend() {
 
 // Ejecución inicial
 cargarProductosDesdeBackend();
+
+// Debug: Verificar estado de autenticación
+console.log("=== DEBUG AUTENTICACIÓN ===");
+console.log("Token en localStorage:", localStorage.getItem("authToken"));
+console.log("Usuario en localStorage:", localStorage.getItem("usuarioActivo"));
+console.log("¿Tiene permisos de admin?", usuarioTienePermisosAdmin());
+console.log("Headers que se enviarán:", obtenerHeadersAutenticados());

@@ -164,7 +164,7 @@ function initProductLogic() {
         const productoPayload = {
           name: marcaInput.value.trim(),
           description: descInput.value.trim(),
-          price: parseFloat(precioInput.value),
+          price: precioInput.value,
           stock: parseInt(stockInput.value),
 
           // 1. Usamos 'imagen' tal como está definido en tu atributo privado de Java

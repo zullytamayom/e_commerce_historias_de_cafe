@@ -162,22 +162,13 @@ function initProductLogic() {
           btnSubmit.textContent = "Guardando producto en base de datos...";
 
         const productoPayload = {
-          name: marcaInput.value.trim(),
-          description: descInput.value.trim(),
-          price: precioInput.value,
-          stock: parseInt(stockInput.value),
-
-          // 1. Usamos 'imagen' tal como está definido en tu atributo privado de Java
-          imagen: urlPublicaImagen,
-
-          // 2. Mapeamos la relación como un objeto que coincide con el atributo 'category'
-          category: {
-            id: Number(regionInput.value), // El ID de la categoría (1, 2, etc.)
-          },
-
-          // ⚠️ NOTA IMPORTANTE: Hemos removido por completo 'origen' y 'tostado'
-          // ya que tu modelo de base de datos actual no los tiene mapeados.
-        };
+  name: marcaInput.value.trim(),
+  description: descInput.value.trim(),
+  price: parseFloat(precioInput.value), 
+  stock: parseInt(stockInput.value),
+  imagen: urlPublicaImagen, 
+  categoryId: Number(regionInput.value) // 🌟 Volvemos al ID plano que espera tu DTO
+};
 
         // Imprime en consola para asegurarte de que categoryId no vaya en null
         console.log("Enviando payload al backend:", productoPayload);

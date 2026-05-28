@@ -2,9 +2,11 @@
 let listaProductos = [];
 
 // Base URL de tu API de productos (detecta si estás en local o producción)
-const API_URL_PRODUCTS = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
-  ? "http://localhost:8080/products"
-  : "https://e-commerce-historias-de-cafe-backend-1.onrender.com/products";
+const API_URL_PRODUCTS =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1"
+    ? "http://localhost:8080/products"
+    : "https://e-commerce-historias-de-cafe-backend-1.onrender.com/products";
 
 function obtenerHeadersAutenticados() {
   const token = localStorage.getItem("authToken");
@@ -19,7 +21,11 @@ function obtenerHeadersAutenticados() {
 
 function usuarioTienePermisosAdmin() {
   const usuarioActivo = JSON.parse(localStorage.getItem("usuarioActivo"));
-  return usuarioActivo && usuarioActivo.role && usuarioActivo.role.toUpperCase() === "ADMIN";
+  return (
+    usuarioActivo &&
+    usuarioActivo.role &&
+    usuarioActivo.role.toUpperCase() === "ADMIN"
+  );
 }
 
 // --- 1. LÓGICA DEL FORMULARIO (CONECTADA CON EL BACKEND) ---
@@ -41,14 +47,16 @@ function initProductLogic() {
         icon: "error",
         title: "Permisos insuficientes",
         text: "Debes iniciar sesión con un usuario ADMIN para crear productos.",
-        confirmButtonColor: "#532721"
+        confirmButtonColor: "#532721",
       });
       return;
     }
 
     // Limpiar errores anteriores
     document.querySelectorAll(".invalid-feedback").forEach((el) => el.remove());
-    document.querySelectorAll(".is-invalid").forEach((el) => el.classList.remove("is-invalid"));
+    document
+      .querySelectorAll(".is-invalid")
+      .forEach((el) => el.classList.remove("is-invalid"));
 
     let isValid = true;
 
@@ -64,45 +72,65 @@ function initProductLogic() {
 
     // --- VALIDACIONES ---
     if (!marcaInput || marcaInput.value.trim().length < 3) {
-      if (marcaInput) mostrarError(marcaInput, "La marca es obligatoria (mín. 3 caracteres)");
+      if (marcaInput)
+        mostrarError(marcaInput, "La marca es obligatoria (mín. 3 caracteres)");
       isValid = false;
     }
     if (!origenInput || origenInput.value.trim().length < 3) {
-      if (origenInput) mostrarError(origenInput, "La finca de origen es obligatoria (mín. 3 caracteres)");
+      if (origenInput)
+        mostrarError(
+          origenInput,
+          "La finca de origen es obligatoria (mín. 3 caracteres)",
+        );
       isValid = false;
     }
     if (!tostadoInput || !tostadoInput.value) {
-      if (tostadoInput) mostrarError(tostadoInput, "Selecciona un tipo de tostión");
+      if (tostadoInput)
+        mostrarError(tostadoInput, "Selecciona un tipo de tostión");
       isValid = false;
     }
     if (!regionInput || !regionInput.value) {
-      if (regionInput) mostrarError(regionInput, "Selecciona la región del café");
+      if (regionInput)
+        mostrarError(regionInput, "Selecciona la región del café");
       isValid = false;
     }
     if (!imagenInput || !imagenInput.files[0]) {
       if (imagenInput) mostrarError(imagenInput, "Debes cargar una imagen");
       isValid = false;
     }
-    if (!stockInput || stockInput.value === "" || parseInt(stockInput.value) < 0) {
+    if (
+      !stockInput ||
+      stockInput.value === "" ||
+      parseInt(stockInput.value) < 0
+    ) {
       if (stockInput) mostrarError(stockInput, "Stock no válido");
       isValid = false;
     }
-    if (!precioInput || precioInput.value === "" || parseFloat(precioInput.value) <= 0) {
-      if (precioInput) mostrarError(precioInput, "El precio debe ser mayor a 0");
+    if (
+      !precioInput ||
+      precioInput.value === "" ||
+      parseFloat(precioInput.value) <= 0
+    ) {
+      if (precioInput)
+        mostrarError(precioInput, "El precio debe ser mayor a 0");
       isValid = false;
     }
     if (!descInput || descInput.value.trim().length < 10) {
-      if (descInput) mostrarError(descInput, "Descripción demasiado corta (mín. 10 caracteres)");
+      if (descInput)
+        mostrarError(
+          descInput,
+          "Descripción demasiado corta (mín. 10 caracteres)",
+        );
       isValid = false;
     }
 
     // --- ENVÍO DE DATOS A SPRING BOOT (CON OPTIMIZACIÓN DE CLOUDINARY) ---
     if (isValid) {
       const file = imagenInput.files[0];
-      
-      const CLOUD_NAME = "dg6oyckab"; 
-      const UPLOAD_PRESET = "historias_de_cafe"; 
-      
+
+      const CLOUD_NAME = "dg6oyckab";
+      const UPLOAD_PRESET = "historias_de_cafe";
+
       const formData = new FormData();
       formData.append("file", file);
       formData.append("upload_preset", UPLOAD_PRESET);
@@ -116,25 +144,43 @@ function initProductLogic() {
 
       try {
         // FASE A: Subir imagen a Cloudinary
-        const cloudinaryResponse = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
-          method: "POST",
-          body: formData
-        });
+        const cloudinaryResponse = await fetch(
+          `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+          {
+            method: "POST",
+            body: formData,
+          },
+        );
 
-        if (!cloudinaryResponse.ok) throw new Error("Error al subir la imagen a Cloudinary.");
+        if (!cloudinaryResponse.ok)
+          throw new Error("Error al subir la imagen a Cloudinary.");
 
         const cloudinaryData = await cloudinaryResponse.json();
-        const urlPublicaImagen = cloudinaryData.secure_url; 
+        const urlPublicaImagen = cloudinaryData.secure_url;
 
-        if (btnSubmit) btnSubmit.textContent = "Guardando producto en base de datos...";
+        if (btnSubmit)
+          btnSubmit.textContent = "Guardando producto en base de datos...";
 
         const productoPayload = {
           name: marcaInput.value.trim(),
           description: descInput.value.trim(),
           price: parseFloat(precioInput.value),
           stock: parseInt(stockInput.value),
-          categoryId: Number(regionInput.value), // 🌟 Captura limpia del valor numérico del Select
-          imagen: urlPublicaImagen 
+
+          // 1. Enviamos origen y tostado que faltaban (asegúrate de usar el nombre exacto de tu backend)
+          origen: origenInput.value.trim(),
+          tostado: tostadoInput.value,
+
+          // 2. Si tu backend usa 'imageUrl' en inglés en vez de 'imagen', cámbialo aquí:
+          imageUrl: urlPublicaImagen,
+
+          // 3. Si tu backend recibe la categoría como un objeto completo en lugar de un ID suelto, usa esto:
+          category: {
+            id: Number(regionInput.value),
+          },
+
+          // NOTA: Si confirmas que tu backend sí recibe el campo plano 'categoryId',
+          // borra el bloque 'category' de arriba y deja: categoryId: Number(regionInput.value)
         };
 
         // Imprime en consola para asegurarte de que categoryId no vaya en null
@@ -144,14 +190,19 @@ function initProductLogic() {
         const response = await fetch(API_URL_PRODUCTS, {
           method: "POST",
           headers: obtenerHeadersAutenticados(),
-          body: JSON.stringify(productoPayload)
+          body: JSON.stringify(productoPayload),
         });
 
         if (response.status === 401 || response.status === 403) {
-          throw new Error("No tienes autorización para crear productos. Vuelve a iniciar sesión como ADMIN.");
+          throw new Error(
+            "No tienes autorización para crear productos. Vuelve a iniciar sesión como ADMIN.",
+          );
         }
 
-        if (!response.ok) throw new Error(`El backend rechazó los datos (Error ${response.status}).`);
+        if (!response.ok)
+          throw new Error(
+            `El backend rechazó los datos (Error ${response.status}).`,
+          );
 
         form.reset();
         modal.style.display = "none";
@@ -165,10 +216,9 @@ function initProductLogic() {
           confirmButtonColor: "#B08D57",
           confirmButtonText: "Excelente",
         });
-
       } catch (error) {
         console.error("Error en el flujo de guardado:", error);
-        
+
         if (btnSubmit) {
           btnSubmit.disabled = false;
           btnSubmit.textContent = "Guardar Producto";
@@ -178,12 +228,12 @@ function initProductLogic() {
           icon: "error",
           title: "Error al procesar",
           text: "No se pudo registrar el producto. Verifica que los campos cumplan las validaciones del backend.",
-          confirmButtonColor: "#532721"
+          confirmButtonColor: "#532721",
         });
       }
     }
-  }); 
-} 
+  });
+}
 
 // --- 2. ELIMINAR PRODUCTO (CONECTADO A DELETE /products/{id}) ---
 function eliminarProducto(id) {
@@ -194,57 +244,63 @@ function eliminarProducto(id) {
       icon: "error",
       title: "Permisos insuficientes",
       text: "Debes iniciar sesión con un usuario ADMIN para eliminar productos.",
-      confirmButtonColor: "#532721"
+      confirmButtonColor: "#532721",
     });
     return;
   }
 
-  const producto = listaProductos.find(prod => (prod.idProduct || prod.id) === id);
+  const producto = listaProductos.find(
+    (prod) => (prod.idProduct || prod.id) === id,
+  );
   const nombreDisplay = producto ? producto.name : "este producto";
 
   Swal.fire({
-    title: '¿Estás seguro?',
+    title: "¿Estás seguro?",
     text: `Vas a eliminar "${nombreDisplay}" de la base de datos.`,
-    icon: 'warning',
-    iconColor: '#d33',
+    icon: "warning",
+    iconColor: "#d33",
     showCancelButton: true,
-    confirmButtonColor: '#532721',
-    cancelButtonColor: '#7a7a7a',
-    confirmButtonText: 'Sí, eliminar',
-    cancelButtonText: 'Cancelar',
-    reverseButtons: true 
+    confirmButtonColor: "#532721",
+    cancelButtonColor: "#7a7a7a",
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+    reverseButtons: true,
   }).then(async (result) => {
     if (result.isConfirmed) {
       try {
         const response = await fetch(`${API_URL_PRODUCTS}/${id}`, {
           method: "DELETE",
-          headers: obtenerHeadersAutenticados()
+          headers: obtenerHeadersAutenticados(),
         });
 
         if (response.status === 401 || response.status === 403) {
-          throw new Error("No tienes autorización para eliminar productos. Vuelve a iniciar sesión como ADMIN.");
+          throw new Error(
+            "No tienes autorización para eliminar productos. Vuelve a iniciar sesión como ADMIN.",
+          );
         }
 
-        if (!response.ok) throw new Error(`No se pudo eliminar el producto del servidor. Error ${response.status}.`);
+        if (!response.ok)
+          throw new Error(
+            `No se pudo eliminar el producto del servidor. Error ${response.status}.`,
+          );
 
         await cargarProductosDesdeBackend();
-        
-        Swal.fire({
-          icon: 'success',
-          title: 'Eliminado',
-          text: 'El producto ha sido removido con éxito.',
-          confirmButtonColor: '#B08D57',
-          timer: 2000,
-          showConfirmButton: false
-        });
 
+        Swal.fire({
+          icon: "success",
+          title: "Eliminado",
+          text: "El producto ha sido removido con éxito.",
+          confirmButtonColor: "#B08D57",
+          timer: 2000,
+          showConfirmButton: false,
+        });
       } catch (error) {
         console.error("Error al eliminar:", error);
         Swal.fire({
           icon: "error",
           title: "Error al eliminar",
           text: "El backend rechazó la solicitud de eliminación.",
-          confirmButtonColor: "#532721"
+          confirmButtonColor: "#532721",
         });
       }
     }
@@ -273,16 +329,16 @@ function actualizarTabla() {
   const tbody = document.getElementById("cuerpo-tabla");
   if (!tbody) return;
 
-  tbody.innerHTML = ""; 
+  tbody.innerHTML = "";
 
   listaProductos.forEach((prod) => {
-    const estadoActual = "Activo"; 
+    const estadoActual = "Activo";
     const badgeClass = "badge-activo";
-    
-    const idReal = prod.idProduct || prod.id; 
+
+    const idReal = prod.idProduct || prod.id;
     const nombreProd = prod.name || "Café Tradicional";
     const precioProd = prod.price || 0;
-    const regionProd = prod.categoryName || "Región Premium"; 
+    const regionProd = prod.categoryName || "Región Premium";
 
     const fila = `
             <tr>
@@ -290,7 +346,7 @@ function actualizarTabla() {
                   <strong>${nombreProd}</strong>
                   <br><small style="color: #888; font-size: 0.8rem;">📍 ${regionProd}</small>
                 </td>
-                <td class="text-right"><strong>$${precioProd.toLocaleString('es-CO')}</strong></td>
+                <td class="text-right"><strong>$${precioProd.toLocaleString("es-CO")}</strong></td>
                 <td class="text-right">${prod.stock} uds</td>
                 <td class="text-center">
                     <span class="${badgeClass}">${estadoActual}</span>
@@ -325,8 +381,9 @@ if (btnAdd) {
       if (!respuesta.ok) throw new Error("No se pudo cargar el formulario");
 
       const htmlFormulario = await respuesta.text();
-      document.getElementById("productform-container").innerHTML = htmlFormulario;
-      
+      document.getElementById("productform-container").innerHTML =
+        htmlFormulario;
+
       // Inicializar la lógica directamente sobre el HTML inyectado fresco
       initProductLogic();
     } catch (error) {
@@ -349,10 +406,11 @@ window.onclick = (event) => {
 async function cargarProductosDesdeBackend() {
   try {
     const response = await fetch(API_URL_PRODUCTS);
-    if (!response.ok) throw new Error("No se pudieron recuperar los productos.");
+    if (!response.ok)
+      throw new Error("No se pudieron recuperar los productos.");
 
-    const productosRecuperados = await response.json(); 
-    listaProductos = productosRecuperados; 
+    const productosRecuperados = await response.json();
+    listaProductos = productosRecuperados;
     actualizarTabla();
   } catch (error) {
     console.error("Error cargando productos desde la API:", error);

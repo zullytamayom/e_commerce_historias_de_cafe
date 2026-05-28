@@ -1,6 +1,6 @@
 const API_URL_PRODUCTS = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
   ? "http://localhost:8080/products"
-  : "https://e-commerce-historias-de-cafe-backend.onrender.com/products";
+  : "https://e-commerce-historias-de-cafe-backend-1.onrender.com/products";
 
 async function renderizarProductosDesdeBackend() {
   const contenedor = document.getElementById('catalogo-container');
